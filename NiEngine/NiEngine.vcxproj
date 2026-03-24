@@ -137,10 +137,22 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameplayStatics.h" />
+    <ClInclude Include="GraphicsComponent.h" />
+    <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="PhysicsComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameplayStatics.cpp" />
+    <ClCompile Include="GraphicsComponent.cpp" />
+    <ClCompile Include="InputComponent.cpp" />
+    <ClCompile Include="PhysicsComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

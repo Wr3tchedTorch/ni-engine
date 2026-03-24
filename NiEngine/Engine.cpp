@@ -1,15 +1,16 @@
 #include "Engine.h"
 
 #include <optional>
+#include <string>
 
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/WindowEnums.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Window/Event.hpp>
 
-ni::Engine::Engine()
+ni::Engine::Engine(std::string window_name, sf::State start_state)
 {
-	window_.create(sf::VideoMode::getDesktopMode(), "Ni Engine by Eric", sf::State::Fullscreen);
+	window_.create(sf::VideoMode::getDesktopMode(), window_name, start_state);
 }
 
 void ni::Engine::Run()
