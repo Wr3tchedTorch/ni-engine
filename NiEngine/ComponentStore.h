@@ -7,7 +7,7 @@
 
 #include "GameObjectId.h"
 #include "GraphicsComponent.h"
-#include "InputComponent.h"
+#include "UpdateComponent.h"
 #include "PhysicsComponent.h"
 #include "BitmapStore.h"
 
@@ -17,7 +17,7 @@ class ComponentStore
 {
 private:
 	std::unordered_map<GameObjectId, PhysicsComponent>  physics_component_;
-	std::unordered_map<GameObjectId, InputComponent>	input_component_;
+	std::unordered_map<GameObjectId, UpdateComponent>	update_component_;
 	std::unordered_map<GameObjectId, GraphicsComponent> graphics_component_;
 
 public:
@@ -27,9 +27,9 @@ public:
 		physics_component_[target] = component;
 	}
 
-	void addInputComponent(GameObjectId target, InputComponent component)
+	void addUpdateComponent(GameObjectId target, UpdateComponent component)
 	{
-		input_component_[target] = component;
+		update_component_[target] = component;
 	}
 
 	void addGraphicsComponent(GameObjectId target, GraphicsComponent component)
@@ -37,21 +37,22 @@ public:
 		graphics_component_[target] = component;
 	}
 
-	void addPhysicsComponent(GameObjectId target)
+	void removePhysicsComponent(GameObjectId target)
 	{
 		physics_component_.erase(target);
 	}
 
-	void addInputComponent(GameObjectId target)
+	void removeUpdateComponent(GameObjectId target)
 	{
-		input_component_.erase(target);
+		update_component_.erase(target);
 	}
 
-	void addGraphicsComponent(GameObjectId target)
+	void removeaddGraphicsComponent(GameObjectId target)
 	{
 		graphics_component_.erase(target);
 	}
-	 
+
+	void update();
 	void render(sf::RenderTarget& target, sf::RenderStates& states, BitmapStore& store);
 };
 
