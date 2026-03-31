@@ -22,7 +22,7 @@ public:
 		return store_;
 	}
 
-	GameObjectId getNextGameobjectId() 
+	GameObjectId getNextGameObjectId() 
 	{
 		return ++current_game_object_id_;
 	}

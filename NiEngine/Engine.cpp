@@ -2,6 +2,8 @@
 
 #include <optional>
 #include <string>
+#include <utility>
+#include <memory>
 
 #include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/WindowEnums.hpp>
@@ -16,9 +18,14 @@ ni::Engine::Engine(std::string window_name, sf::State start_state)
 	window_.create(sf::VideoMode::getDesktopMode(), window_name, start_state);
 }
 
-void ni::Engine::registerGameMode(GameMode& mode)
+void ni::Engine::registerGameMode(std::unique_ptr<GameMode> mode)
 {
-	current_game_mode_ = mode;
+	current_game_mode_ = std::move(mode);
+}
+
+ni::GameMode* ni::Engine::getGameMode()
+{
+	return current_game_mode_.get();
 }
 
 void ni::Engine::Run()
@@ -33,11 +40,11 @@ void ni::Engine::Run()
 			}
 		}
 
-		current_game_mode_.update();
+		current_game_mode_->update();
 
-		window_.clear(sf::Color::Blue);
+		window_.clear(sf::Color::Black);
 
-		current_game_mode_.render(window_, sf::RenderStates::Default, store_);
+		current_game_mode_->render(window_, sf::RenderStates::Default, store_);
 
 		window_.display();
 	}

@@ -13,6 +13,6 @@ void ni::GameMode::update()
 }
 
 void ni::GameMode::render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
-{	
+{
 	store_.render(target, states, store);
 }

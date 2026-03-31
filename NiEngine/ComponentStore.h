@@ -25,24 +25,26 @@ private:
 	std::unordered_map<GameObjectId, std::unique_ptr<GraphicsComponent>>  graphics_components_;
 
 public:
-	void addPhysicsComponent(GameObjectId target, PhysicsComponent& component)
+	ComponentStore() = default;
+
+	void attachPhysicsComponent(GameObjectId target, std::unique_ptr<PhysicsComponent>component)
 	{
-		physics_components_[target] = std::make_unique<PhysicsComponent>(component);
+		physics_components_.emplace(target, std::move(component));
 	}
 
-	void addUpdateComponent(GameObjectId target, UpdateComponent& component)
+	void attachUpdateComponent(GameObjectId target, std::unique_ptr<UpdateComponent> component)
 	{
-		update_components_[target] = std::make_unique<UpdateComponent>(component);
+		update_components_.emplace(target, std::move(component));
 	}
 
-	void addGraphicsComponent(GameObjectId target, GraphicsComponent& component)
+	void attachGraphicsComponent(GameObjectId target, std::unique_ptr<GraphicsComponent> component)
 	{
-		graphics_components_[target] = std::make_unique<GraphicsComponent>(component);
+		graphics_components_.emplace(target, std::move(component));
 	}
 
-	void addTransformComponent(GameObjectId target, TransformComponent& component)
+	void attachTransformComponent(GameObjectId target, std::unique_ptr<TransformComponent> component)
 	{
-		transform_components_[target] = std::make_unique<TransformComponent>(component);
+		transform_components_.emplace(target, std::move(component));
 	}
 
 	void removePhysicsComponent(GameObjectId target)
@@ -65,7 +67,7 @@ public:
 		transform_components_.erase(target);
 	}
 
-	void getTransformComponent(TransformComponent* component, GameObjectId id);
+	TransformComponent* getTransformComponent(GameObjectId id);
 
 	void update();
 	void physicsUpdate();

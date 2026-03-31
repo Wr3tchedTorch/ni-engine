@@ -5,7 +5,7 @@
 
 struct GameObjectId
 {
-	uint32_t id_;
+	uint32_t id_ = 0;
 
 	bool operator==(const GameObjectId& other) const
 	{

@@ -16,9 +16,10 @@ protected:
 	std::string texture_key_;
 
 public:
-	virtual void update() = 0;
+	GraphicsComponent() = default;
+	GraphicsComponent(std::string texture_key);
 
-	virtual void render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store) = 0;
+	virtual void render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 };
 
 }
