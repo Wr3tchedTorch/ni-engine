@@ -28,9 +28,9 @@ private:
 public:
 	ComponentStore() = default;
 
-	void AttachPhysicsComponent(Id<GameObjectTag> target, std::unique_ptr<PhysicsComponent>component)
+	void AttachPhysicsComponent(Id<GameObjectTag> target, PhysicsComponent& component)
 	{
-		physics_components_.emplace(target, std::move(component));
+		physics_components_.emplace(target, std::make_unique<PhysicsComponent>(component));
 	}
 
 	void AttachUpdateComponent(Id<GameObjectTag> target, std::unique_ptr<UpdateComponent> component)
@@ -38,14 +38,14 @@ public:
 		update_components_.emplace(target, std::move(component));
 	}
 
-	void AttachGraphicsComponent(Id<GameObjectTag> target, std::unique_ptr<GraphicsComponent> component)
+	void AttachGraphicsComponent(Id<GameObjectTag> target, GraphicsComponent&  component)
 	{
-		graphics_components_.emplace(target, std::move(component));
+		graphics_components_.emplace(target, std::make_unique<GraphicsComponent>(component));
 	}
 
-	void AttachTransformComponent(Id<GameObjectTag> target, std::unique_ptr<TransformComponent> component)
+	void AttachTransformComponent(Id<GameObjectTag> target, TransformComponent&  component)
 	{
-		transform_components_.emplace(target, std::move(component));
+		transform_components_.emplace(target, std::make_unique<TransformComponent>(component));
 	}
 
 	void RemovePhysicsComponent(Id<GameObjectTag> target)

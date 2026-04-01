@@ -11,10 +11,16 @@
 #include "GameModeTag.h"
 #include "Id.h"
 
-Id<GameModeTag> ni::GameModeController::Register(std::unique_ptr<GameMode> mode)
+ni::GameModeController::GameModeController()
 {
-	game_modes_.emplace(++current_id, std::move(mode));
-	return current_id;
+	current_id = { 0 };
+	next_id    = { 0 };
+}
+
+ni::Id<GameModeTag> ni::GameModeController::Register(std::unique_ptr<GameMode> mode)
+{
+	game_modes_.emplace(++next_id, std::move(mode));
+	return next_id;
 }
 
 void ni::GameModeController::SwitchTo(Id<GameModeTag> id)
@@ -38,11 +44,19 @@ ni::GameMode& ni::GameModeController::GetCurrent()
 }
 
 void ni::GameModeController::Update()
-{
+{	
+	if (current_id.id_ == 0)
+	{
+		return;
+	}
 	game_modes_.at(current_id)->Update();
 }
 
 void ni::GameModeController::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
 {
+	if (current_id.id_ == 0)
+	{
+		return;
+	}
 	game_modes_.at(current_id)->Render(target, states, store);
 }

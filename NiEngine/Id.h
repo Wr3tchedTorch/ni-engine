@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <type_traits>
 
+namespace ni {
+
 template <typename Tag>
 struct Id
 {
@@ -23,8 +25,10 @@ struct Id
 template<typename Tag>
 struct std::hash<Id<Tag>>
 {
-	size_t operator()(const Id<Tag>& id) const
+	size_t operator()(const ni::Id<Tag>& id) const
 	{
 		return std::hash<uint32_t>{}(id.id_);
 	}
 };
+
+}

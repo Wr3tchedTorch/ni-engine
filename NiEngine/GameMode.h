@@ -18,6 +18,8 @@ private:
 	Id<GameObjectTag> current_game_object_id_;
 
 public:
+	GameMode() = default;
+
 	ComponentStore& GetComponentStore()
 	{
 		return store_;

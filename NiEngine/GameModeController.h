@@ -17,9 +17,13 @@ class GameModeController
 {
 private:
 	std::unordered_map<Id<GameModeTag>, std::unique_ptr<GameMode>> game_modes_;
+	
 	Id<GameModeTag> current_id;
+	Id<GameModeTag> next_id;
 
 public:
+	GameModeController();
+
 	Id<GameModeTag> Register(std::unique_ptr<GameMode> mode);
 	
 	void SwitchTo(Id<GameModeTag> id);
