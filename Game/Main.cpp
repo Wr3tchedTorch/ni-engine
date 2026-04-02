@@ -20,10 +20,16 @@ int main()
     auto my_mode = std::make_unique<ni::GameMode>();
 
     ni::Id<GameObjectTag>  player_id = my_mode->CreateGameObject();
-    ni::GraphicsComponent  player_graphics("graphics/player.png");
+
+    sf::IntRect player_frame_rect = {
+        {16 * 0, 16 * 15},
+        {16, 16}
+    };
+
+    ni::GraphicsComponent  player_graphics("graphics/tilemap.png", player_frame_rect);   
+
     ni::TransformComponent player_transform;
-    player_transform.SetPositionInMeters({ 5, 5 });
-    player_transform.GetTransformable().setScale({ .1f, .1f });
+    player_transform.GetTransformable().setPosition({ 200, 200 });
 
     ni::Id<GameModeTag> mode_id = controller.Register(std::move(my_mode));
     controller.SwitchTo(mode_id);
@@ -37,8 +43,6 @@ int main()
     ni::Id<GameModeTag> mode2_id = controller.Register(std::move(my_mode2));
     controller.Get(mode2_id).GetComponentStore().AttachGraphicsComponent(player_id, player_graphics);
     controller.Get(mode2_id).GetComponentStore().AttachTransformComponent(player_id, player_transform);
-
-    //engine.getGameModeController().Register(std::move(my_mode2));
 
     engine.Run();
 }

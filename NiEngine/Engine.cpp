@@ -27,6 +27,12 @@ ni::GameModeController& ni::Engine::getGameModeController()
 
 void ni::Engine::Run()
 {
+	sf::View camera;
+	camera.zoom(.3);
+	camera.setCenter({200, 200});
+	window_.setView(camera);
+
+
 	sf::Clock deltaClock;
 	while (window_.isOpen())
 	{
