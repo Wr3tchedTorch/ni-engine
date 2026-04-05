@@ -5,6 +5,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "TilemapBlueprint.h"
 #include "LayerBlueprint.h"
@@ -32,20 +33,43 @@ void ni::TilemapGraphicsComponent::UpdateVertices(int index, TilemapBlueprint& b
 	}
 }
 
-void ni::TilemapGraphicsComponent::LoadBlueprint(TilemapBlueprint& blueprint, std::vector<TilesetBlueprint>& tileset_blueprints)
+const ni::TilesetBlueprint& ni::TilemapGraphicsComponent::GetTilesetByGid(const std::vector<TilesetBlueprint>& tileset_blueprints, int gid)
 {
-	layers_vertices_.clear();
+	int lowest_difference = 0;
+	bool found = false;
 
-	layers_vertices_.resize(blueprint.layers_.size());
-	for (int i = 0; i < blueprint.layers_.size(); ++i)
+	const TilesetBlueprint* resulting_tileset;
+	for (auto& tileset : tileset_blueprints)
 	{
-		LayerBlueprint& layer = blueprint.layers_[i];
-		if (layer.name_ == kPrototypeLayerName)
-		{
-			continue;
+		int result = gid - tileset.first_gid_;
+		if (result < 0)
+		{			
+			break;
 		}
-		UpdateVertices(i, blueprint, tileset_blueprints);
+		if (!found || lowest_difference > result)
+		{
+			resulting_tileset = &tileset;
+			lowest_difference = result;
+			found = true;
+		}
+		if (found && lowest_difference < result)
+		{
+			break;
+		}
 	}
+
+	return *resulting_tileset;
+}
+
+void ni::TilemapGraphicsComponent::AddTile(const sf::Vector2i& grid_position, int tile_id, const std::vector<TilesetBlueprint>& tileset_blueprints)
+{
+	int x = grid_position.x;
+	int y = grid_position.y;
+
+	float top  = y * tileset_blueprints.tile_size_.y;
+	float left = x * tileset_blueprints.tile_size_.x;
+	float bottom = top + tileset_blueprints.tile_size_.y;
+	float right = left + tileset_blueprints.tile_size_.x;
 }
 
 void ni::TilemapGraphicsComponent::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
