@@ -32,6 +32,7 @@ public:
 	GameMode& Get(Id<GameModeTag> id);
 	GameMode& GetCurrent();
 
+	virtual void PhysicsUpdate();
 	virtual void Update();
 	virtual void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 };

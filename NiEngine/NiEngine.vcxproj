@@ -151,6 +151,9 @@
     <ClInclude Include="LayerBlueprint.h" />
     <ClInclude Include="FileUtility.h" />
     <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PhysicsEngine.h" />
+    <ClInclude Include="ShapeGraphicsComponent.h" />
+    <ClInclude Include="StandardGraphicsComponent.h" />
     <ClInclude Include="TileBlueprint.h" />
     <ClInclude Include="Tilemap.h" />
     <ClInclude Include="TilemapBlueprint.h" />
@@ -172,6 +175,8 @@
     <ClCompile Include="MapUtility.h" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="GameObjectTag.h" />
+    <ClCompile Include="PhysicsEngine.cpp" />
+    <ClCompile Include="StandardGraphicsComponent.cpp" />
     <ClCompile Include="Tilemap.cpp" />
     <ClCompile Include="TilemapGraphicsComponent.cpp" />
     <ClCompile Include="TransformComponent.cpp" />

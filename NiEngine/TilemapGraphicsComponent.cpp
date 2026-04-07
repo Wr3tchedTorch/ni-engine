@@ -29,10 +29,6 @@ const ni::TilesetBlueprint& ni::TilemapGraphicsComponent::GetTilesetByGid(const 
 	return *result;
 }
 
-ni::TilemapGraphicsComponent::TilemapGraphicsComponent()
-{	
-}
-
 void ni::TilemapGraphicsComponent::AddTile(const sf::Vector2i& grid_position, int tile_id, const std::vector<TilesetBlueprint>& tileset_blueprints)
 {
 	int x = grid_position.x;

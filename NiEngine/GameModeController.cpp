@@ -43,6 +43,15 @@ ni::GameMode& ni::GameModeController::GetCurrent()
 	return *game_modes_.at(current_game_mode).get();
 }
 
+void ni::GameModeController::PhysicsUpdate()
+{
+	if (current_game_mode.id_ == 0)
+	{
+		return;
+	}
+	game_modes_.at(current_game_mode)->PhysicsUpdate();
+}
+
 void ni::GameModeController::Update()
 {	
 	if (current_game_mode.id_ == 0)

@@ -23,8 +23,6 @@ private:
 	const TilesetBlueprint& GetTilesetByGid(const std::vector<TilesetBlueprint>& tileset_blueprints, int gid);
 
 public:
-	TilemapGraphicsComponent();
-	
 	void AddTile(const sf::Vector2i& grid_position, int tile_id, const std::vector<TilesetBlueprint>& tileset_blueprints);
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 };

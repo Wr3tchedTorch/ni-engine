@@ -18,6 +18,8 @@ sf::Time ni::Engine::time_elapsed = sf::Time();
 ni::Engine::Engine(std::string window_name, sf::State start_state)
 {
 	window_.create(sf::VideoMode::getDesktopMode(), window_name, start_state);
+
+	window_.setFramerateLimit(60);
 }
 
 ni::GameModeController& ni::Engine::GetGameModeController()
@@ -41,6 +43,7 @@ void ni::Engine::Run()
 		time_elapsed += deltaClock.restart();
 
 		game_mode_controller_.Update();
+		game_mode_controller_.PhysicsUpdate();
 
 		window_.clear(sf::Color::Black);
 

@@ -123,6 +123,15 @@
     <ClInclude Include="FileUtility.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="ShapeGraphicsComponent.h">
+      <Filter>Header Files\Components\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsEngine.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="StandardGraphicsComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -169,6 +178,12 @@
     </ClCompile>
     <ClCompile Include="MapUtility.h">
       <Filter>Header Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsEngine.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="StandardGraphicsComponent.cpp">
+      <Filter>Source Files\Components\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@ private:
 	b2BodyId body_;
 
 public:
+	PhysicsComponent(b2BodyId body);
 	virtual void PhysicsUpdate(TransformComponent& transform_component);
 };
 

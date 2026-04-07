@@ -19,11 +19,16 @@ void ni::GameMode::RegisterTilemap(const std::string& filepath, bool enable_coll
 	tilemaps_.push_back(map);
 }
 
+void ni::GameMode::PhysicsUpdate()
+{
+	physics_engine_.PhysicsUpdate();
+
+	component_store_.PhysicsUpdate();
+}
+
 void ni::GameMode::Update(GameModeController& controller)
 {	
 	component_store_.Update();
-
-	component_store_.PhysicsUpdate();
 }
 
 void ni::GameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)

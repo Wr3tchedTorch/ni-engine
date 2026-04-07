@@ -29,7 +29,7 @@ public:
 	ComponentStore() = default;
 
 	void AttachPhysicsComponent(Id<GameObjectTag> target, PhysicsComponent& component)
-	{
+	{		
 		physics_components_.emplace(target, std::make_unique<PhysicsComponent>(component));
 	}
 
@@ -38,12 +38,12 @@ public:
 		update_components_.emplace(target, std::move(component));
 	}
 
-	void AttachGraphicsComponent(Id<GameObjectTag> target, GraphicsComponent&  component)
+	void AttachGraphicsComponent(Id<GameObjectTag> target, std::unique_ptr<GraphicsComponent> component)
 	{
-		graphics_components_.emplace(target, std::make_unique<GraphicsComponent>(component));
+		graphics_components_.emplace(target, std::move(component));
 	}
 
-	void AttachTransformComponent(Id<GameObjectTag> target, TransformComponent&  component)
+	void AttachTransformComponent(Id<GameObjectTag> target, TransformComponent& component)
 	{
 		transform_components_.emplace(target, std::make_unique<TransformComponent>(component));
 	}
@@ -70,8 +70,8 @@ public:
 
 	TransformComponent* GetTransformComponent(Id<GameObjectTag> id);
 
-	void Update();
 	void PhysicsUpdate();
+	void Update();
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 };
 

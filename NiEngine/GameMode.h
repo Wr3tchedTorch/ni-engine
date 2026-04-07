@@ -10,6 +10,7 @@
 #include "Id.h"
 #include "GameObjectTag.h"
 #include "Tilemap.h"
+#include "PhysicsEngine.h"
 
 namespace ni {
 
@@ -19,6 +20,7 @@ class GameMode
 {
 private:
 	ComponentStore component_store_;
+	PhysicsEngine  physics_engine_;
 
 	Id<GameObjectTag> current_game_object_id_;	
 
@@ -32,6 +34,11 @@ public:
 		return component_store_;
 	}
 
+	PhysicsEngine& GetPhysicsEngine()
+	{
+		return physics_engine_;
+	}
+
 	Id<GameObjectTag> CreateGameObject()
 	{
 		return ++current_game_object_id_;
@@ -39,6 +46,7 @@ public:
 
 	void RegisterTilemap(const std::string& filepath, bool enable_collision = true);
 
+	virtual void PhysicsUpdate();
 	virtual void Update(GameModeController& controller);
 	virtual void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 };

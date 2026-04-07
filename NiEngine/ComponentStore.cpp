@@ -19,14 +19,6 @@ ni::TransformComponent* ni::ComponentStore::GetTransformComponent(Id<GameObjectT
 	return it->second.get();
 }
 
-void ni::ComponentStore::Update()
-{
-	for (auto& [id, component] : update_components_)
-	{
-		component->Update();
-	}
-}
-
 void ni::ComponentStore::PhysicsUpdate()
 {
 	for (auto& [id, component] : physics_components_)
@@ -38,6 +30,14 @@ void ni::ComponentStore::PhysicsUpdate()
 			continue;
 		}
 		component->PhysicsUpdate(*transform);
+	}
+}
+
+void ni::ComponentStore::Update()
+{
+	for (auto& [id, component] : update_components_)
+	{
+		component->Update();
 	}
 }
 

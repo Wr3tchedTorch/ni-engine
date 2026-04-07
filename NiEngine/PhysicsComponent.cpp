@@ -2,8 +2,13 @@
 
 #include <box2d.h>
 #include <math_functions.h>
+#include <id.h>
 
 #include "TransformComponent.h"
+
+ni::PhysicsComponent::PhysicsComponent(b2BodyId body) : body_(body)
+{
+}
 
 void ni::PhysicsComponent::PhysicsUpdate(TransformComponent& transform_component)
 {
