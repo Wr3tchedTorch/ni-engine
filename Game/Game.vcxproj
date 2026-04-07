@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="BallFactory.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SimulationGameMode.cpp" />
   </ItemGroup>
@@ -153,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="BallFactory.h" />
     <ClInclude Include="SimulationGameMode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

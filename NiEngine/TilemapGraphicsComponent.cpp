@@ -67,7 +67,7 @@ void ni::TilemapGraphicsComponent::Render(sf::RenderTarget& target, sf::RenderSt
 	for (const auto& [texture_key, vertices] : vertices_by_tileset_)
 	{		
 		sf::RenderStates local_state = states;
-
+		
 		local_state.texture = &store.GetTexture(texture_key);
 		target.draw(vertices, local_state);
 	}

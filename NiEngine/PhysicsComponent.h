@@ -14,6 +14,12 @@ private:
 
 public:
 	PhysicsComponent(b2BodyId body);
+	
+	b2BodyId GetBodyId() const
+	{
+		return body_;
+	}
+
 	virtual void PhysicsUpdate(TransformComponent& transform_component);
 };
 

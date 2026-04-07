@@ -1,7 +1,5 @@
 #include "SimulationGameMode.h"
 
-#include <iostream>
-
 #include <types.h>
 
 #include <SFML/Window/Mouse.hpp>
@@ -10,6 +8,9 @@
 #include <GameMode.h>
 #include <Converter.h>
 #include <GameModeController.h>
+#include <PhysicsComponent.h>
+#include <box2d.h>
+
 #include "Ball.h"
 
 SimulationGameMode::SimulationGameMode()
@@ -19,24 +20,31 @@ SimulationGameMode::SimulationGameMode()
 
     GetPhysicsEngine().CreateWorld(world_def);
 
-    RegisterTilemap("maps/level_01/map.json");    
+    RegisterTilemap("maps/level_01/map.json");
 }
 
 void SimulationGameMode::Update(ni::GameModeController& controller)
 {
     GameMode::Update(controller);
 
-    bool is_pressed = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
-
-    if (is_pressed && !was_mouse_pressed_)
+    if (IsMouseButtonJustPressed(sf::Mouse::Button::Left))
     {
-        SpawnBall();
+        ball_factory_.SpawnRandomizedBall(*this, converter::PixelsToMeters(sf::Mouse::getPosition()), { 0, 0 });
     }
 
-    was_mouse_pressed_ = is_pressed;
+    if (IsMouseButtonJustPressed(sf::Mouse::Button::Right))
+    {
+        ball_factory_.SpawnRandomizedBall(*this, converter::PixelsToMeters(sf::Mouse::getPosition()), { 0, -10 });
+    }
 }
 
-void SimulationGameMode::SpawnBall()
+bool SimulationGameMode::IsMouseButtonJustPressed(sf::Mouse::Button button)
 {
-    Ball ball(CreateGameObject(), b2Vec2({ 4, 4 }), GetComponentStore(), GetPhysicsEngine().GetWorldId(), sf::Color::Red, 1.0f);
+    bool is_pressed = sf::Mouse::isButtonPressed(button);
+
+    bool is_just_pressed = is_pressed && !mouse_pressed_history_[button];
+
+    mouse_pressed_history_[button] = is_pressed;
+
+    return is_just_pressed;
 }
