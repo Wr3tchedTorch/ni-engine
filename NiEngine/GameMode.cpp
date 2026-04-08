@@ -32,8 +32,6 @@ void ni::GameMode::Update(GameModeController& controller)
 
 void ni::GameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
 {
-	main_camera_.ApplyTo(target);
-
 	for (auto& map : tilemaps_)
 	{
 		map.Render(target, states, store);

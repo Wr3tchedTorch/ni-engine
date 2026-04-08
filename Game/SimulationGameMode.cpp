@@ -7,6 +7,9 @@
 #include <GameMode.h>
 #include <Converter.h>
 #include <GameModeController.h>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <BitmapStore.h>
 
 SimulationGameMode::SimulationGameMode()
 {
@@ -16,6 +19,8 @@ SimulationGameMode::SimulationGameMode()
     GetPhysicsEngine().CreateWorld(world_def);
 
     RegisterTilemap("maps/level_01/map.json");
+
+    main_camera_.FitTo(tilemaps_.front().GetBounds());    
 }
 
 void SimulationGameMode::Update(ni::GameModeController& controller)
@@ -24,13 +29,22 @@ void SimulationGameMode::Update(ni::GameModeController& controller)
 
     if (IsMouseButtonJustPressed(sf::Mouse::Button::Left))
     {
-        ball_factory_.SpawnRandomizedBall(*this, converter::PixelsToMeters(sf::Mouse::getPosition()), { 0, 0 });
+        ball_factory_.SpawnRandomizedBall(*this, ni::Converter::PixelsToMeters(current_mouse_position_), { 0, 0 });
     }
 
     if (IsMouseButtonJustPressed(sf::Mouse::Button::Right))
     {
-        ball_factory_.SpawnRandomizedBall(*this, converter::PixelsToMeters(sf::Mouse::getPosition()), { 0, -10 });
+        ball_factory_.SpawnRandomizedBall(*this, ni::Converter::PixelsToMeters(current_mouse_position_), { 0, -10 });
     }
+}
+
+void SimulationGameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
+{
+    main_camera_.ApplyTo(target);
+
+    GameMode::Render(target, states, store);
+
+    current_mouse_position_ = main_camera_.GetCoordinatesFromPixel(target, sf::Mouse::getPosition());
 }
 
 bool SimulationGameMode::IsMouseButtonJustPressed(sf::Mouse::Button button)

@@ -8,12 +8,12 @@
 
 void ni::TransformComponent::SetPositionInMeters(b2Vec2 position)
 {
-	transformable_.setPosition(converter::MetersToPixels(position));
+	transformable_.setPosition(Converter::MetersToPixels(position));
 }
 
 b2Vec2 ni::TransformComponent::GetPositionInMeters() const
 {
-	return converter::PixelsToMeters(transformable_.getPosition());
+	return Converter::PixelsToMeters(transformable_.getPosition());
 }
 
 void ni::TransformComponent::SetRotation(float radians)

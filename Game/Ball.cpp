@@ -6,7 +6,7 @@
 #include <utility>
 
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <collision.h>
 #include <GameObjectTag.h>
 #include <Id.h>
@@ -18,7 +18,7 @@
 #include <ComponentStore.h>
 #include <PhysicsComponent.h>
 
-Ball::Ball(ni::Id<GameObjectTag> id, b2Vec2 starting_position, ni::ComponentStore& component_store, b2WorldId world_id, sf::Color color, float radius)
+Ball::Ball(ni::Id<GameObjectTag> id, b2Vec2 starting_position, ni::ComponentStore& component_store, b2WorldId world_id, sf::Color color, float size)
 {
     id_ = id;
 
@@ -28,11 +28,11 @@ Ball::Ball(ni::Id<GameObjectTag> id, b2Vec2 starting_position, ni::ComponentStor
 
     component_store.AttachTransformComponent(id, ball_transform);
 
-    sf::CircleShape shape(converter::MetersToPixels(radius));
+    sf::RectangleShape shape({ni::Converter::MetersToPixels(size), ni::Converter::MetersToPixels(size)});
     shape.setFillColor(color);
-    shape.setOrigin({ converter::MetersToPixels(radius), converter::MetersToPixels(radius) });
-
-    auto ball_graphics = std::make_unique<ni::ShapeGraphicsComponent<sf::CircleShape>>(shape);
+    shape.setOrigin({ ni::Converter::MetersToPixels(size) / 2.f, ni::Converter::MetersToPixels(size) / 2.f });
+    
+    auto ball_graphics = std::make_unique<ni::ShapeGraphicsComponent<sf::RectangleShape>>(shape);
 
     component_store.AttachGraphicsComponent(id, std::move(ball_graphics));
 
@@ -42,14 +42,14 @@ Ball::Ball(ni::Id<GameObjectTag> id, b2Vec2 starting_position, ni::ComponentStor
     ball_body_def.position    = starting_position;
     ball_body_def.enableSleep = false;
 
-    b2Circle circle_shape = { {0, 0}, radius };
+    b2Polygon box_shape = b2MakeBox(size / 2.f, size / 2.f);
 
     b2ShapeDef shape_def = b2DefaultShapeDef();
     shape_def.density = 1.0f;
     shape_def.material.friction = 0.3f;
 
     b2BodyId ball_body_id = b2CreateBody(world_id, &ball_body_def);
-    b2CreateCircleShape(ball_body_id, &shape_def, &circle_shape);
+    b2CreatePolygonShape(ball_body_id, &shape_def, &box_shape);
 
     ni::PhysicsComponent ball_physics(ball_body_id);
     component_store.AttachPhysicsComponent(id, ball_physics);

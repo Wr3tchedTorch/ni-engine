@@ -8,11 +8,14 @@
 #include <Engine.h>
 #include <GameMode.h>
 #include <GameModeTag.h>
+#include <Converter.h>
 
 #include "SimulationGameMode.h"
 
 int main()
 {
+    ni::Converter::PIXELS_PER_METERS = 16.0f;
+
     ni::Engine engine("Ni Engine, by Eric", sf::State::Fullscreen);
 
     auto mode = std::make_unique<SimulationGameMode>();

@@ -5,6 +5,7 @@
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 #include "TilemapBlueprint.h"
 #include "TilemapGraphicsComponent.h"
@@ -38,6 +39,8 @@ public:
 	inline static const std::string kPrototypeLayerName = "prototype";
 
 	bool LoadFromFile(const std::string& filepath, bool collision_enabled = true);
+
+	sf::FloatRect GetBounds() const;
 
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 };

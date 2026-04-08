@@ -12,13 +12,17 @@
 
 #include "TilesetBlueprint.h"
 #include "BitmapStore.h"
-#include "LayerBlueprint.h"
 
 namespace ni {
 
+struct TilesetDrawable
+{
+	sf::VertexArray vertices_ = {};
+	sf::Vector2f	position_offset_ = {};
+};
+
 class TilemapGraphicsComponent
 {
-
 private:
 	std::unordered_map<std::string, TilesetDrawable> tileset_drawables_;
 
@@ -29,12 +33,6 @@ public:
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 
 	sf::FloatRect GetBounds() const;
-};
-
-struct TilesetDrawable
-{
-	sf::VertexArray vertices_		 = {};
-	sf::Vector2f	position_offset_ = {};
 };
 
 }

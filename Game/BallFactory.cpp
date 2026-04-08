@@ -22,7 +22,7 @@ void BallFactory::SpawnRandomizedBall(ni::GameMode& mode, b2Vec2 starting_positi
     float green = dist(rng_);
     float blue  = dist(rng_);
 
-    Ball ball(mode.CreateGameObject(), starting_position, mode.GetComponentStore(), mode.GetPhysicsEngine().GetWorldId(), sf::Color(red, green, blue), 0.20f);
+    Ball ball(mode.CreateGameObject(), starting_position, mode.GetComponentStore(), mode.GetPhysicsEngine().GetWorldId(), sf::Color(red, green, blue), 0.5df);
 
     ni::PhysicsComponent* component = mode.GetComponentStore().GetPhysicsComponent(ball.GetId());
 

@@ -6,6 +6,7 @@
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 #include "DataHandler.h"
 #include "TilemapBlueprint.h"
@@ -44,7 +45,7 @@ void ni::Tilemap::LoadTiles(const LayerBlueprint& layer_blueprint, bool collisio
 			{
 				continue;
 			}
-			graphics_.AddTile({ x, y }, tile_id, tileset_blueprints_);
+			graphics_.AddTile({ x, y }, tile_id, tileset_blueprints_, layer_blueprint.position_);
 		}
 	}
 }
@@ -68,6 +69,11 @@ bool ni::Tilemap::LoadFromFile(const std::string& filepath, bool collision_enabl
 	}
 
 	return true;
+}
+
+sf::FloatRect ni::Tilemap::GetBounds() const
+{
+	return graphics_.GetBounds();
 }
 
 void ni::Tilemap::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)

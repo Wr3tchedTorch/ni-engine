@@ -10,13 +10,17 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "GameModeController.h"
 
-sf::Time ni::Engine::time_elapsed = sf::Time();
+sf::Time     ni::Engine::time_elapsed		= sf::Time();
+sf::Vector2u ni::Engine::window_resolution  = {};
 
 ni::Engine::Engine(std::string window_name, sf::State start_state)
 {
+	window_resolution = sf::VideoMode::getDesktopMode().size;
+
 	window_.create(sf::VideoMode::getDesktopMode(), window_name, start_state);
 
 	window_.setFramerateLimit(60);

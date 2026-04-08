@@ -5,6 +5,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/WindowEnums.hpp>
 #include <SFML/System/Time.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include "BitmapStore.h"
 #include "GameModeController.h"
@@ -21,7 +22,8 @@ private:
 	BitmapStore store_;
 
 public:
-	static sf::Time time_elapsed;
+	static sf::Time		time_elapsed;
+	static sf::Vector2u window_resolution;
 
 	Engine(std::string window_name, sf::State start_state);
 

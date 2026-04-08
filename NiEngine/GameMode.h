@@ -27,7 +27,6 @@ protected:
 
 	ComponentStore component_store_;
 	PhysicsEngine  physics_engine_;
-	Camera main_camera_;
 
 public:
 	ComponentStore& GetComponentStore()

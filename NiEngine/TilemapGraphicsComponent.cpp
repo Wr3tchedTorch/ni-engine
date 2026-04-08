@@ -80,8 +80,6 @@ void ni::TilemapGraphicsComponent::Render(sf::RenderTarget& target, sf::RenderSt
 
 sf::FloatRect ni::TilemapGraphicsComponent::GetBounds() const
 {
-	if (tileset_drawables_.empty()) return {};
-
 	sf::FloatRect result = {};
 	result.position = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
 
