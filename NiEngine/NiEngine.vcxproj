@@ -172,6 +172,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="PolygonBlueprint.h" />
     <ClCompile Include="src\BitmapStore.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Component.cpp" />

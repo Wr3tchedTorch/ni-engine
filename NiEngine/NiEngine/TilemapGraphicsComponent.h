@@ -30,7 +30,7 @@ public:
 	void AddTile(const sf::Vector2i& grid_position, int tile_id, const TilesetBlueprint& tileset, const sf::Vector2f& layer_position_offset);
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 
-	sf::FloatRect GetBounds() const;
+	sf::FloatRect GetBounds(sf::Vector2i map_size, sf::Vector2i tile_size) const;
 };
 
 }

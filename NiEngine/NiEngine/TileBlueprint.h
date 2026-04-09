@@ -10,7 +10,7 @@ struct TileBlueprint
 {
 	int id_ = 0;
 
-	bool full_collision_	  = false;
+	bool is_hill_ = false;
 	bool one_sided_collision_ = false;
 };
 
@@ -29,8 +29,8 @@ inline void to_json(json& j, const TileBlueprint& tb)
 
 	j["properties"] +=
 	{
-		{"name", "fullCollision"},
-		{ "value" }, tb.full_collision_
+		{"name", "isHill"},
+		{ "value" }, tb.is_hill_
 	};
 }
 
@@ -49,9 +49,9 @@ inline void from_json(const json& j, TileBlueprint& tb)
 		{
 			property.at("value").get_to(tb.one_sided_collision_);
 		}
-		else if (property.at("name") == "fullCollision")
+		else if (property.at("name") == "isHill")
 		{
-			property.at("value").get_to(tb.full_collision_);
+			property.at("value").get_to(tb.is_hill_);
 		}
 	}
 }

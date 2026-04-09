@@ -29,13 +29,13 @@ bool ni::TilemapCollisionComponent::IsTileEmpty(const std::vector<int>& map, int
 	return tile_index < 0 || tile_index >= (int)map.size() || map[tile_index] == 0;
 }
 
-std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoops(sf::Vector2i tile_size)
+std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoops(EdgesMap& map, sf::Vector2i tile_size)
 {
 	std::vector<LoopInformation> loops;
 
-	while (!exposed_edges_.empty())
+	while (!map.empty())
 	{
-		sf::Vector2i starting_point = exposed_edges_.begin()->first;
+		sf::Vector2i starting_point = map.begin()->first;
 		sf::Vector2i current_point  = starting_point;
 
 		bool is_closed = true;
@@ -44,8 +44,8 @@ std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoop
 		{
 			loop.push_back(Converter::PixelsToMeters(sf::Vector2i({ current_point.x * tile_size.x, current_point.y * tile_size.y })));
 
-			auto it = exposed_edges_.find(current_point);
-			if (it == exposed_edges_.end())
+			auto it = map.find(current_point);
+			if (it == map.end())
 			{
 				is_closed = false;
 				break;
@@ -53,7 +53,7 @@ std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoop
 
 			sf::Vector2i nextPoint = it->second;
 
-			exposed_edges_.erase(current_point);
+			map.erase(current_point);
 			current_point = nextPoint;
 
 		} while (current_point != starting_point);
@@ -66,9 +66,7 @@ std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoop
 
 void ni::TilemapCollisionComponent::CreateOnesidedCollision(sf::Vector2i tile_size)
 {
-	std::swap(exposed_edges_, one_sided_edges_);
-	std::vector<LoopInformation> one_sided_loops = GetCollisionLoops(tile_size);
-	std::swap(exposed_edges_, one_sided_edges_);
+	std::vector<LoopInformation> one_sided_loops = GetCollisionLoops(one_sided_edges_, tile_size);
 
 	for (const auto& loop : one_sided_loops)
 	{
@@ -116,13 +114,20 @@ void ni::TilemapCollisionComponent::AddTile(sf::Vector2i grid_position, int tile
 	sf::Vector2i right	= { gx + 1, gy	   };
 	sf::Vector2i bottom = { gx,		gy + 1 };
 
-	const TileBlueprint& tile = tileset.tiles_.at(tile_gid);
+
 
 	bool is_top_empty = IsTileEmpty(layer.data_, map_size, top);
-	if (is_top_empty && tile.one_sided_collision_)
+
+	auto it = tileset.tiles_.find(tile_gid);
+	if (it != tileset.tiles_.end())
 	{
-		one_sided_edges_[{gx, gy}] = { gx + 1, gy };
-		return;
+		const TileBlueprint& tile = tileset.tiles_.at(tile_gid);
+
+		if (is_top_empty && tile.one_sided_collision_)
+		{
+			one_sided_edges_[{gx, gy}] = { gx + 1, gy };
+			return;
+		}
 	}
 
 	if (is_top_empty)
@@ -145,7 +150,7 @@ void ni::TilemapCollisionComponent::AddTile(sf::Vector2i grid_position, int tile
 
 void ni::TilemapCollisionComponent::CreateCollision(sf::Vector2i tile_size)
 {	
-	std::vector<LoopInformation> loops = GetCollisionLoops(tile_size);
+	std::vector<LoopInformation> loops = GetCollisionLoops(exposed_edges_, tile_size);
 
 	for (const auto& loop : loops)
 	{

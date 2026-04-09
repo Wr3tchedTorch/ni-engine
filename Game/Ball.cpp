@@ -30,7 +30,7 @@ Ball::Ball(ni::Id<GameObjectTag> id, b2Vec2 starting_position, ni::ComponentStor
 
     sf::RectangleShape shape({ni::Converter::MetersToPixels(size), ni::Converter::MetersToPixels(size)});
     shape.setFillColor(color);
-    shape.setOrigin({ ni::Converter::MetersToPixels(size) / 2.f, ni::Converter::MetersToPixels(size) / 2.f });
+    shape.setOrigin({ ni::Converter::MetersToPixels(size) / 2.f, ni::Converter::MetersToPixels(size) / 2.f });    
     
     auto ball_graphics = std::make_unique<ni::ShapeGraphicsComponent<sf::RectangleShape>>(shape);
 
@@ -41,6 +41,7 @@ Ball::Ball(ni::Id<GameObjectTag> id, b2Vec2 starting_position, ni::ComponentStor
     ball_body_def.type        = b2_dynamicBody;
     ball_body_def.position    = starting_position;
     ball_body_def.enableSleep = false;
+    ball_body_def.isBullet = true;
 
     b2Polygon box_shape = b2MakeBox(size / 2.f, size / 2.f);
 

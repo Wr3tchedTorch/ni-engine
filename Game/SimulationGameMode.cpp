@@ -1,5 +1,8 @@
 #include "SimulationGameMode.h"
 
+#include <format>
+#include <string>
+
 #include <types.h>
 #include <math_functions.h>
 #include <SFML/Window/Mouse.hpp>
@@ -17,9 +20,12 @@ SimulationGameMode::SimulationGameMode()
 
     GetPhysicsEngine().CreateWorld(world_def);
 
-    RegisterTilemap("maps/level_01/map.json");
+    std::string level_to_load = "level_02";
 
-    main_camera_.FitTo(tilemaps_.front().GetBounds());    
+    ni::Converter::PIXELS_PER_METERS = 32.0f;
+    RegisterTilemap(std::format("maps/{}/{}.json", level_to_load, level_to_load));
+
+    main_camera_.FitTo(tilemaps_.front().GetBounds());
 }
 
 void SimulationGameMode::Update(ni::GameModeController& controller)

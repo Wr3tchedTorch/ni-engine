@@ -1,8 +1,6 @@
 #include <NiEngine/TilemapGraphicsComponent.h>
 
-#include <vector>
 #include <cmath>
-#include <cassert>
 #include <algorithm>
 #include <limits>
 
@@ -62,22 +60,20 @@ void ni::TilemapGraphicsComponent::Render(sf::RenderTarget& target, sf::RenderSt
 	}
 }
 
-sf::FloatRect ni::TilemapGraphicsComponent::GetBounds() const
+sf::FloatRect ni::TilemapGraphicsComponent::GetBounds(sf::Vector2i map_size, sf::Vector2i tile_size) const
 {
 	sf::FloatRect result = {};
+
+	result.size.x = map_size.x * tile_size.x;
+	result.size.y = map_size.y * tile_size.y;
+
 	result.position = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
 
 	for (const auto& [texture_key, tileset_drawable] : tileset_drawables_)
 	{
-		sf::Vector2f vertices_size = tileset_drawable.vertices_.getBounds().size;
-
 		result.position.x = std::min(result.position.x, tileset_drawable.position_offset_.x);
 		result.position.y = std::min(result.position.y, tileset_drawable.position_offset_.y);
-
-		result.size.x = std::max(result.size.x, tileset_drawable.position_offset_.x + vertices_size.x);
-		result.size.y = std::max(result.size.y, tileset_drawable.position_offset_.y + vertices_size.y);
 	}
 
-	result.size -= result.position;
 	return result;
 }

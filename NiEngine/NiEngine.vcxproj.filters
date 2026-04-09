@@ -196,5 +196,8 @@
     <ClCompile Include="src\PhysicsEngine.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="PolygonBlueprint.h">
+      <Filter>Header Files\FileIO\Blueprints</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

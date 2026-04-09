@@ -86,7 +86,7 @@ bool ni::Tilemap::LoadFromFile(const std::string& filepath, bool collision_enabl
 
 sf::FloatRect ni::Tilemap::GetBounds() const
 {
-	return graphics_.GetBounds();
+	return graphics_.GetBounds(blueprint_.map_size_, blueprint_.tile_size_);
 }
 
 void ni::Tilemap::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)

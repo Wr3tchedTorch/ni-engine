@@ -20,18 +20,20 @@ struct LoopInformation
 	std::vector<b2Vec2> data_;
 };
 
+using EdgesMap = std::unordered_map<sf::Vector2i, sf::Vector2i, Vector2iHash>;
+
 class TilemapCollisionComponent
 {
 private:
 	b2BodyId body_id_ = {};
 
-	std::unordered_map<sf::Vector2i, sf::Vector2i, Vector2iHash> exposed_edges_	  = {};
-	std::unordered_map<sf::Vector2i, sf::Vector2i, Vector2iHash> one_sided_edges_ = {};
+	EdgesMap exposed_edges_   = {};
+	EdgesMap one_sided_edges_ = {};
 
 	bool IsTileEmpty(const std::vector<int>& map, sf::Vector2i map_size, sf::Vector2i tile_grid_position);
 	bool IsTileEmpty(const std::vector<int>& map, int tile_index);
 
-	std::vector<LoopInformation> GetCollisionLoops(sf::Vector2i tile_size);
+	std::vector<LoopInformation> GetCollisionLoops(EdgesMap& map, sf::Vector2i tile_size);
 
 	void CreateOnesidedCollision(sf::Vector2i tile_size);
 

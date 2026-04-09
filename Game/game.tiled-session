@@ -29,19 +29,35 @@
             }
         },
         "maps/level_01/level_01.tmx": {
-            "scale": 2,
+            "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 238.25,
-                "y": 172
+                "x": 569.5,
+                "y": 341
+            }
+        },
+        "maps/level_02/level_02.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 662,
+                "y": 502
             }
         },
         "maps/rules/ground_autotile_rules.tmx": {
-            "scale": 4,
+            "scale": 3,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 138.25,
-                "y": 146.75
+                "x": 145.66666666666669,
+                "y": 125
+            }
+        },
+        "maps/rules/ground_autotile_rules_karsioriart.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 246.5,
+                "y": 335
             }
         },
         "maps/tilesets/kenney_1bit.tsx": {
@@ -50,25 +66,35 @@
         "maps/transparent_tiles.tsx": {
             "dynamicWrapping": true
         },
+        "tilesets/karsioriart_tiles_and_backgrounds.tsx": {
+            "dynamicWrapping": false
+        },
         "tilesets/kenney_1bit.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 2,
             "scaleInEditor": 4
         },
+        "tilesets/transparent_tiles.json": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
         "tilesets/transparent_tiles.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
-            "scaleInEditor": 23
+            "scaleInEditor": 8
         }
     },
-    "last.exportedFilePath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/maps/level_01",
+    "last.exportedFilePath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/tilesets",
     "last.externalTilesetPath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/tilesets",
     "last.imagePath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/graphics",
+    "map.height": 30,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.layerDataFormat": "1",
-    "map.tileHeight": 16,
-    "map.tileWidth": 16,
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
+    "map.width": 50,
     "openFiles": [
         "tilesets/kenney_1bit.tsx",
         "tilesets/transparent_tiles.tsx",
@@ -77,19 +103,21 @@
     "project": "game.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "tilesets/kenney_1bit.tsx",
-        "tilesets/transparent_tiles.tsx",
-        "maps/level_01/level_01.tmx",
         "maps/rules/ground_autotile_rules.tmx",
+        "tilesets/transparent_tiles.tsx",
+        "maps/rules/ground_autotile_rules_karsioriart.tmx",
+        "tilesets/transparent_tiles.json",
+        "tilesets/kenney_1bit.tsx",
+        "maps/level_01/level_01.tmx",
         "maps/level_01.tmx",
         "maps/level_01/autotile rules.tmx"
     ],
     "tileset.lastUsedExportFilter": "JSON tileset files (*.tsj *.json)",
     "tileset.lastUsedFormat": "tsx",
-    "tileset.spacing": 1,
+    "tileset.spacing": 0,
     "tileset.tileSize": {
-        "height": 16,
-        "width": 16
+        "height": 32,
+        "width": 32
     },
-    "tileset.type": 1
+    "tileset.type": 0
 }

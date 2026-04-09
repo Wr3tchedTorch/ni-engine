@@ -65,6 +65,11 @@ inline void from_json(const json& j, TilesetBlueprint& tb)
 	j.at("columns").get_to(tb.columns_);
 	j.at("tilecount").get_to(tb.tile_count_);
 
+	if (!j.contains("tiles"))
+	{
+		return;
+	}
+
 	auto& tiles_json = j.at("tiles");
 	for (const auto& tile : tiles_json)
 	{
