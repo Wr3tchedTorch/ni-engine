@@ -48,11 +48,15 @@ void ni::Tilemap::LoadTiles(const LayerBlueprint& layer_blueprint, bool collisio
 			{
 				continue;
 			}
-			graphics_.AddTile({ x, y }, tile_id, tileset_blueprints_, layer_blueprint.position_);
-			collision_.AddTile(layer_blueprint, blueprint_.map_size_, { x, y });
+
+			const TilesetBlueprint& tileset_blueprint = GetTilesetByGid(tileset_blueprints_, tile_id);
+			tile_id -= tileset_blueprint.first_gid_;
+
+			graphics_.AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint.position_);
+			collision_.AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint, blueprint_.map_size_);
 		}
 	}
-	collision_.CreateCollisionBody(blueprint_.tile_size_);
+	collision_.CreateCollision(blueprint_.tile_size_);
 }
 
 ni::Tilemap::Tilemap(b2WorldId world_id) : collision_(world_id)

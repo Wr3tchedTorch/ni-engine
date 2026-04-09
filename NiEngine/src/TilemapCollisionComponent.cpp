@@ -5,23 +5,26 @@
 #include <math_functions.h>
 #include <id.h>
 
+#include <unordered_map>
 #include <vector>
 
 #include <SFML/System/Vector2.hpp>
 #include <NiEngine/Converter.h>
 #include <NiEngine/LayerBlueprint.h>
+#include <NiEngine/TilesetBlueprint.h>
+#include <NiEngine/TileBlueprint.h>
 
-bool ni::TilemapCollisionComponent::IsTileExposed(const std::vector<int>& map, sf::Vector2i map_size, sf::Vector2i tile_grid_position)
+bool ni::TilemapCollisionComponent::IsTileEmpty(const std::vector<int>& map, sf::Vector2i map_size, sf::Vector2i tile_grid_position)
 {
 	if (tile_grid_position.x < 0 || tile_grid_position.x >= map_size.x ||
 		tile_grid_position.y < 0 || tile_grid_position.y >= map_size.y)
 	{
 		return true;
 	}
-	return IsTileExposed(map, tile_grid_position.x + tile_grid_position.y * map_size.x);
+	return IsTileEmpty(map, tile_grid_position.x + tile_grid_position.y * map_size.x);
 }
 
-bool ni::TilemapCollisionComponent::IsTileExposed(const std::vector<int>& map, int tile_index)
+bool ni::TilemapCollisionComponent::IsTileEmpty(const std::vector<int>& map, int tile_index)
 {
 	return tile_index < 0 || tile_index >= (int)map.size() || map[tile_index] == 0;
 }
@@ -61,6 +64,40 @@ std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoop
 	return loops;
 }
 
+void ni::TilemapCollisionComponent::CreateOnesidedCollision(sf::Vector2i tile_size)
+{
+	std::swap(exposed_edges_, one_sided_edges_);
+	std::vector<LoopInformation> one_sided_loops = GetCollisionLoops(tile_size);
+	std::swap(exposed_edges_, one_sided_edges_);
+
+	for (const auto& loop : one_sided_loops)
+	{
+		std::vector<b2Vec2> padded;
+		padded.reserve(loop.data_.size() + 2);
+
+		b2Vec2 ghost_start = {
+			loop.data_[0].x - (loop.data_[0].x - loop.data_[1].x),
+			loop.data_[0].y - (loop.data_[0].y - loop.data_[1].y)
+		};
+		padded.push_back(ghost_start);
+
+		for (const auto& p : loop.data_)
+			padded.push_back(p);
+
+		b2Vec2 ghost_end = {
+			loop.data_.back().x - (loop.data_[loop.data_.size() - 2].x - loop.data_.back().x),
+			loop.data_.back().y - (loop.data_[loop.data_.size() - 2].y - loop.data_.back().y)
+		};
+		padded.push_back(ghost_end);
+
+		b2ChainDef shape = b2DefaultChainDef();
+		shape.points = padded.data();
+		shape.count = padded.size();
+		shape.isLoop = false;
+		b2CreateChain(body_id_, &shape);
+	}
+}
+
 ni::TilemapCollisionComponent::TilemapCollisionComponent(b2WorldId world_id)
 {
 	b2BodyDef body_def = b2DefaultBodyDef();
@@ -69,35 +106,44 @@ ni::TilemapCollisionComponent::TilemapCollisionComponent(b2WorldId world_id)
 	body_id_ = b2CreateBody(world_id, &body_def);
 }
 
-void ni::TilemapCollisionComponent::AddTile(const LayerBlueprint& layer, sf::Vector2i map_size, sf::Vector2i grid_position)
+void ni::TilemapCollisionComponent::AddTile(sf::Vector2i grid_position, int tile_gid, const TilesetBlueprint& tileset, const LayerBlueprint& layer, sf::Vector2i map_size)
 {
 	int gx = grid_position.x;
 	int gy = grid_position.y;
 
 	sf::Vector2i top	= { gx,		gy - 1 };
-	sf::Vector2i bottom = { gx,		gy + 1 };
 	sf::Vector2i left   = { gx - 1, gy	   };
 	sf::Vector2i right	= { gx + 1, gy	   };
+	sf::Vector2i bottom = { gx,		gy + 1 };
 
-	if (IsTileExposed(layer.data_, map_size, top))
+	const TileBlueprint& tile = tileset.tiles_.at(tile_gid);
+
+	bool is_top_empty = IsTileEmpty(layer.data_, map_size, top);
+	if (is_top_empty && tile.one_sided_collision_)
+	{
+		one_sided_edges_[{gx, gy}] = { gx + 1, gy };
+		return;
+	}
+
+	if (is_top_empty)
 	{
 		exposed_edges_[{gx, gy}] = { gx + 1, gy };
 	}
-	if (IsTileExposed(layer.data_, map_size, bottom))
+	if (IsTileEmpty(layer.data_, map_size, bottom))
 	{
 		exposed_edges_[{gx + 1, gy + 1}] = { gx, gy + 1 };
 	}
-	if (IsTileExposed(layer.data_, map_size, left))
+	if (IsTileEmpty(layer.data_, map_size, left))
 	{
 		exposed_edges_[{gx, gy + 1}] = { gx, gy };
 	}
-	if (IsTileExposed(layer.data_, map_size, right))
+	if (IsTileEmpty(layer.data_, map_size, right))
 	{
 		exposed_edges_[{gx + 1, gy}] = { gx + 1, gy + 1 };
 	}
 }
 
-void ni::TilemapCollisionComponent::CreateCollisionBody(sf::Vector2i tile_size)
+void ni::TilemapCollisionComponent::CreateCollision(sf::Vector2i tile_size)
 {	
 	std::vector<LoopInformation> loops = GetCollisionLoops(tile_size);
 
@@ -111,4 +157,6 @@ void ni::TilemapCollisionComponent::CreateCollisionBody(sf::Vector2i tile_size)
 
 		b2CreateChain(body_id_, &shape);
 	}
+
+	CreateOnesidedCollision(tile_size);
 }

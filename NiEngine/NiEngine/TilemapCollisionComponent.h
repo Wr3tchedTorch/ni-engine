@@ -10,6 +10,7 @@
 
 #include "LayerBlueprint.h"
 #include "Vector2iHash.h"
+#include "TilesetBlueprint.h"
 
 namespace ni {
 
@@ -24,18 +25,21 @@ class TilemapCollisionComponent
 private:
 	b2BodyId body_id_ = {};
 
-	std::unordered_map<sf::Vector2i, sf::Vector2i, Vector2iHash> exposed_edges_ = {};
+	std::unordered_map<sf::Vector2i, sf::Vector2i, Vector2iHash> exposed_edges_	  = {};
+	std::unordered_map<sf::Vector2i, sf::Vector2i, Vector2iHash> one_sided_edges_ = {};
 
-	bool IsTileExposed(const std::vector<int>& map, sf::Vector2i map_size, sf::Vector2i tile_grid_position);
-	bool IsTileExposed(const std::vector<int>& map, int tile_index);
+	bool IsTileEmpty(const std::vector<int>& map, sf::Vector2i map_size, sf::Vector2i tile_grid_position);
+	bool IsTileEmpty(const std::vector<int>& map, int tile_index);
 
 	std::vector<LoopInformation> GetCollisionLoops(sf::Vector2i tile_size);
+
+	void CreateOnesidedCollision(sf::Vector2i tile_size);
 
 public:
 	TilemapCollisionComponent(b2WorldId world_id);
 
-	void AddTile(const LayerBlueprint& layer, sf::Vector2i map_size, sf::Vector2i grid_position);
-	void CreateCollisionBody(sf::Vector2i tile_size);
+	void AddTile(sf::Vector2i grid_position, int tile_gid, const TilesetBlueprint& tileset, const LayerBlueprint& layer, sf::Vector2i map_size);
+	void CreateCollision(sf::Vector2i tile_size);
 };
 
 }

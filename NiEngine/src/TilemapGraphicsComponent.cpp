@@ -15,21 +15,18 @@
 
 #include <NiEngine/TilesetBlueprint.h>
 #include <NiEngine/BitmapStore.h>
-#include <NiEngine/Tilemap.h>
 
-void ni::TilemapGraphicsComponent::AddTile(const sf::Vector2i& grid_position, int tile_id, const std::vector<TilesetBlueprint>& tileset_blueprints, const sf::Vector2f& layer_position_offset)
+void ni::TilemapGraphicsComponent::AddTile(const sf::Vector2i& grid_position, int tile_id, const TilesetBlueprint& tileset, const sf::Vector2f& layer_position_offset)
 {
 	int x = grid_position.x;
 	int y = grid_position.y;
-
-	const TilesetBlueprint& tileset = Tilemap::GetTilesetByGid(tileset_blueprints, tile_id);
 
 	float top    = y * tileset.tile_size_.y;
 	float left   = x * tileset.tile_size_.x;
 	float bottom = top  + tileset.tile_size_.y;
 	float right  = left + tileset.tile_size_.x;
 
-	int local_id = tile_id - tileset.first_gid_;
+	int local_id = tile_id;
 
 	float uv_x = local_id % tileset.columns_;
 	float uv_y = std::floor(static_cast<float>(local_id) / tileset.columns_);
