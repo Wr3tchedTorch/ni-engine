@@ -64,6 +64,34 @@ std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoop
 	return loops;
 }
 
+void ni::TilemapCollisionComponent::CreateFullCollisionForTile(const LayerBlueprint& layer, sf::Vector2i tile_grid_position, sf::Vector2i tile_position, sf::Vector2i map_size, sf::Vector2i tile_size) 
+{
+	struct EdgeDef {
+		sf::Vector2i start_offset;
+		sf::Vector2i end_offset;
+		sf::Vector2i neighbor_offset;
+	};
+	
+	const EdgeDef kEdges[] = {
+		{ {0,            0           }, {tile_size.x, 0           }, {0,  -1} },
+		{ {0,            tile_size.y }, {tile_size.x, tile_size.y }, {0,  +1} },
+		{ {0,            tile_size.y }, {0,           0           }, {-1,  0} },
+		{ {tile_size.x,  0           }, {tile_size.x, tile_size.y }, {+1,  0} },
+	};
+
+	for (const auto& edge : kEdges) 
+	{
+		sf::Vector2i neighbor = tile_grid_position + edge.neighbor_offset;
+		if (!IsTileEmpty(layer.data_, map_size, neighbor))
+		{
+			continue;
+		}
+		sf::Vector2i start = tile_position + edge.start_offset;
+		sf::Vector2i end   = tile_position + edge.end_offset;
+		exposed_edges_[start] = end;
+	}
+}
+
 void ni::TilemapCollisionComponent::CreateOnesidedCollision()
 {
 	std::vector<LoopInformation> one_sided_loops = GetCollisionLoops(one_sided_edges_);
@@ -112,12 +140,7 @@ void ni::TilemapCollisionComponent::AddTile(sf::Vector2i grid_position, int tile
 	int x = grid_position.x * tile_size.x;
 	int y = grid_position.y * tile_size.y;
 
-	sf::Vector2i top	= { gx,		gy - 1 };
-	sf::Vector2i left   = { gx - 1, gy	   };
-	sf::Vector2i right	= { gx + 1, gy	   };
-	sf::Vector2i bottom = { gx,		gy + 1 };
-
-	bool is_top_empty = IsTileEmpty(layer.data_, map_size, top);
+	bool is_top_empty = IsTileEmpty(layer.data_, map_size, { gx, gy - 1 });
 
 	auto it = tileset.tiles_.find(tile_gid);
 	if (it != tileset.tiles_.end())
@@ -148,22 +171,7 @@ void ni::TilemapCollisionComponent::AddTile(sf::Vector2i grid_position, int tile
 		}
 	}
 
-	if (is_top_empty)
-	{
-		exposed_edges_[{x, y}] = { x + tile_size.x, y };
-	}
-	if (IsTileEmpty(layer.data_, map_size, bottom))
-	{
-		exposed_edges_[{x + tile_size.x, y + tile_size.y}] = { x, y + tile_size.y };
-	}
-	if (IsTileEmpty(layer.data_, map_size, left))
-	{
-		exposed_edges_[{x, y + tile_size.y}] = { x, y };
-	}
-	if (IsTileEmpty(layer.data_, map_size, right))
-	{
-		exposed_edges_[{x + tile_size.x, y}] = { x + tile_size.x, y + tile_size.y };
-	}
+	CreateFullCollisionForTile(layer, grid_position, {x, y}, map_size, tile_size);
 }
 
 void ni::TilemapCollisionComponent::CreateCollision()

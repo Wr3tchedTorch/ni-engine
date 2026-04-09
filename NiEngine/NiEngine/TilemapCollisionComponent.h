@@ -35,6 +35,9 @@ private:
 
 	std::vector<LoopInformation> GetCollisionLoops(EdgesMap& map);
 
+
+	void CreateFullCollisionForTile(const LayerBlueprint& layer, sf::Vector2i tile_grid_position, sf::Vector2i tile_position, sf::Vector2i map_size, sf::Vector2i tile_size);
+
 	void CreateOnesidedCollision();
 
 public:
