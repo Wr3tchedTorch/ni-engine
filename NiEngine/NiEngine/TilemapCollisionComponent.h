@@ -33,15 +33,15 @@ private:
 	bool IsTileEmpty(const std::vector<int>& map, sf::Vector2i map_size, sf::Vector2i tile_grid_position);
 	bool IsTileEmpty(const std::vector<int>& map, int tile_index);
 
-	std::vector<LoopInformation> GetCollisionLoops(EdgesMap& map, sf::Vector2i tile_size);
+	std::vector<LoopInformation> GetCollisionLoops(EdgesMap& map);
 
-	void CreateOnesidedCollision(sf::Vector2i tile_size);
+	void CreateOnesidedCollision();
 
 public:
 	TilemapCollisionComponent(b2WorldId world_id);
 
-	void AddTile(sf::Vector2i grid_position, int tile_gid, const TilesetBlueprint& tileset, const LayerBlueprint& layer, sf::Vector2i map_size);
-	void CreateCollision(sf::Vector2i tile_size);
+	void AddTile(sf::Vector2i grid_position, int tile_gid, const TilesetBlueprint& tileset, const LayerBlueprint& layer, sf::Vector2i map_size, sf::Vector2i tile_size);
+	void CreateCollision();
 };
 
 }

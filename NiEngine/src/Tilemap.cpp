@@ -53,10 +53,10 @@ void ni::Tilemap::LoadTiles(const LayerBlueprint& layer_blueprint, bool collisio
 			tile_id -= tileset_blueprint.first_gid_;
 
 			graphics_.AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint.position_);
-			collision_.AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint, blueprint_.map_size_);
+			collision_.AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint, blueprint_.map_size_, blueprint_.tile_size_);
 		}
 	}
-	collision_.CreateCollision(blueprint_.tile_size_);
+	collision_.CreateCollision();
 }
 
 ni::Tilemap::Tilemap(b2WorldId world_id) : collision_(world_id)
