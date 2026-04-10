@@ -1,7 +1,7 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
-#include <PolygonBlueprint.h>
+#include <NiEngine/PolygonBlueprint.h>
 
 using json = nlohmann::json;
 

@@ -144,6 +144,7 @@
     <ClInclude Include="NiEngine\Converter.h" />
     <ClInclude Include="NiEngine\DataHandler.h" />
     <ClInclude Include="NiEngine\Engine.h" />
+    <ClInclude Include="NiEngine\EventDispatcher.h" />
     <ClInclude Include="NiEngine\FileUtility.h" />
     <ClInclude Include="NiEngine\GameMode.h" />
     <ClInclude Include="NiEngine\GameModeController.h" />
@@ -155,7 +156,9 @@
     <ClInclude Include="NiEngine\MapUtility.h" />
     <ClInclude Include="NiEngine\PhysicsComponent.h" />
     <ClInclude Include="NiEngine\PhysicsEngine.h" />
+    <ClInclude Include="NiEngine\PolygonBlueprint.h" />
     <ClInclude Include="NiEngine\ShapeGraphicsComponent.h" />
+    <ClInclude Include="NiEngine\Subject.h" />
     <ClInclude Include="NiEngine\StandardGraphicsComponent.h" />
     <ClInclude Include="NiEngine\TileBlueprint.h" />
     <ClInclude Include="NiEngine\Tilemap.h" />
@@ -166,23 +169,24 @@
     <ClInclude Include="NiEngine\TilesetReference.h" />
     <ClInclude Include="NiEngine\TransformComponent.h" />
     <ClInclude Include="NiEngine\UpdateComponent.h" />
-    <ClInclude Include="Vector2iHash.h" />
+    <ClInclude Include="NiEngine\Vector2iHash.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PolygonBlueprint.h" />
     <ClCompile Include="src\BitmapStore.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\ComponentStore.cpp" />
     <ClCompile Include="src\Engine.cpp" />
+    <ClCompile Include="src\EventDispatcher.cpp" />
     <ClCompile Include="src\GameMode.cpp" />
     <ClCompile Include="src\GameModeController.cpp" />
     <ClCompile Include="src\GraphicsComponent.cpp" />
     <ClCompile Include="src\PhysicsComponent.cpp" />
     <ClCompile Include="src\PhysicsEngine.cpp" />
+    <ClCompile Include="src\Signal.cpp" />
     <ClCompile Include="src\StandardGraphicsComponent.cpp" />
     <ClCompile Include="src\Tilemap.cpp" />
     <ClCompile Include="src\TilemapCollisionComponent.cpp" />

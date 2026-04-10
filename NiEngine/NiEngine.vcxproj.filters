@@ -140,7 +140,16 @@
     <ClInclude Include="NiEngine\Tilemap.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Vector2iHash.h">
+    <ClInclude Include="NiEngine\EventDispatcher.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="NiEngine\PolygonBlueprint.h">
+      <Filter>Header Files\FileIO\Blueprints</Filter>
+    </ClInclude>
+    <ClInclude Include="NiEngine\Subject.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="NiEngine\Vector2iHash.h">
       <Filter>Header Files\Hashes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -196,8 +205,11 @@
     <ClCompile Include="src\PhysicsEngine.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="PolygonBlueprint.h">
-      <Filter>Header Files\FileIO\Blueprints</Filter>
+    <ClCompile Include="src\EventDispatcher.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Signal.cpp">
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
