@@ -1,6 +1,7 @@
 #pragma once
 
 #include <math_functions.h>
+#include <id.h>
 
 #include <SFML/Graphics/Color.hpp>
 #include <NiEngine/ComponentStore.h>

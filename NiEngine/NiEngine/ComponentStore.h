@@ -27,9 +27,10 @@ private:
 
 public:
 	// Component Attaching/Removing
-		void AttachPhysicsComponent(Id<GameObjectTag> target, PhysicsComponent& component)
+	void AttachPhysicsComponent(Id<GameObjectTag> target, std::unique_ptr<PhysicsComponent> component)
 	{		
-		physics_components_.emplace(target, std::make_unique<PhysicsComponent>(component));
+		physics_components_.emplace(target, std::move(component));
+
 	}
 
 	void AttachUpdateComponent(Id<GameObjectTag> target, std::unique_ptr<UpdateComponent> component)

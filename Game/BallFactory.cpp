@@ -11,6 +11,7 @@
 #include <NiEngine/PhysicsComponent.h>
 
 #include "Ball.h"
+#include <NiEngine/PhysicsBodyComponent.h>
 
 BallFactory::BallFactory() : rng_(std::random_device{}())
 {
@@ -26,7 +27,7 @@ void BallFactory::SpawnRandomizedBall(ni::GameMode& mode, b2Vec2 starting_positi
 
     Ball ball(mode.CreateGameObject(), starting_position, mode.GetComponentStore(), mode.GetPhysicsEngine().GetWorldId(), sf::Color(red, green, blue), 0.5f);
 
-    ni::PhysicsComponent* component = mode.GetComponentStore().GetPhysicsComponent(ball.GetId());
+    auto component = dynamic_cast<ni::PhysicsBodyComponent*>(mode.GetComponentStore().GetPhysicsComponent(ball.GetId()));
 
     if (component)
     {

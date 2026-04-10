@@ -171,11 +171,13 @@
     <ClInclude Include="NiEngine\UpdateComponent.h" />
     <ClInclude Include="NiEngine\Vector2iHash.h" />
     <ClInclude Include="NiEngine\ServiceLocator.h" />
+    <ClInclude Include="NiEngine\PhysicsBodyComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PhysicsBodyComponent.cpp" />
     <ClCompile Include="src\BitmapStore.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Component.cpp" />

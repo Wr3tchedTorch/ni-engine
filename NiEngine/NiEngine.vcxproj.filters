@@ -15,9 +15,6 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{9ac5a910-107e-417f-8668-ddeb1d3c4094}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components\Entities">
-      <UniqueIdentifier>{9d68ae7c-b8e8-499f-a0e0-2e8395a0a8b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Components\Tilemap">
       <UniqueIdentifier>{fc07fcd5-2f01-43dd-a386-7f9d36334d53}</UniqueIdentifier>
     </Filter>
@@ -50,6 +47,9 @@
     </Filter>
     <Filter Include="Header Files\Hashes">
       <UniqueIdentifier>{cc0c52bc-1435-4bde-a91c-ea8186b04926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components\Entity">
+      <UniqueIdentifier>{9d68ae7c-b8e8-499f-a0e0-2e8395a0a8b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +155,9 @@
     <ClInclude Include="NiEngine\ServiceLocator.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="NiEngine\PhysicsBodyComponent.h">
+      <Filter>Header Files\Components\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -167,10 +170,10 @@
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\Component.cpp">
-      <Filter>Source Files\Components\Entities</Filter>
+      <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\ComponentStore.cpp">
-      <Filter>Source Files\Components\Entities</Filter>
+      <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\GameModeController.cpp">
       <Filter>Source Files\Engine</Filter>
@@ -188,19 +191,19 @@
       <Filter>Source Files\Components\Tilemap</Filter>
     </ClCompile>
     <ClCompile Include="src\TransformComponent.cpp">
-      <Filter>Source Files\Components\Entities</Filter>
+      <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\UpdateComponent.cpp">
-      <Filter>Source Files\Components\Entities</Filter>
+      <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\StandardGraphicsComponent.cpp">
-      <Filter>Source Files\Components\Entities</Filter>
+      <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\GraphicsComponent.cpp">
-      <Filter>Source Files\Components\Entities</Filter>
+      <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\PhysicsComponent.cpp">
-      <Filter>Source Files\Components\Entities</Filter>
+      <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\Tilemap.cpp">
       <Filter>Source Files\Engine</Filter>
@@ -213,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="src\Signal.cpp">
       <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicsBodyComponent.cpp">
+      <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
