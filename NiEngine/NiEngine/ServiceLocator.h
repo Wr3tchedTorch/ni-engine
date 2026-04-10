@@ -26,7 +26,7 @@ public:
 
 	EventDispatcher& GetEventDispatcher() 
 	{ 
-		return event_dispatcher_; 
+		return event_dispatcher_;
 	}
 };
 

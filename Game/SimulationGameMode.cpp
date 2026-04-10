@@ -13,6 +13,9 @@
 #include <NiEngine/Converter.h>
 #include <NiEngine/GameModeController.h>
 #include <NiEngine/BitmapStore.h>
+#include <NiEngine/ServiceLocator.h>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 
 SimulationGameMode::SimulationGameMode()
 {
@@ -21,12 +24,20 @@ SimulationGameMode::SimulationGameMode()
 
     GetPhysicsEngine().CreateWorld(world_def);
 
-    std::string level_to_load = "level_02";
+    std::string level_to_load = "level_01";
 
     ni::Converter::PIXELS_PER_METERS = 32.0f;
     RegisterTilemap(std::format("maps/{}/{}.json", level_to_load, level_to_load));
 
     main_camera_.FitTo(tilemaps_.front().GetBounds());
+
+    ni::ServiceLocator::Instance().GetEventDispatcher().OnKeyPressed([this](const sf::Event::KeyPressed& event)
+    {
+        if (event.scancode == sf::Keyboard::Scancode::Space)
+        {
+            ball_factory_.SpawnRandomizedBall(*this, ni::Converter::PixelsToMeters(current_mouse_position_), { 0, 0 });
+        }
+    });
 }
 
 void SimulationGameMode::Update(ni::GameModeController& controller)

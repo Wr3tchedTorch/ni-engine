@@ -139,7 +139,7 @@ void ni::TilemapCollisionComponent::AddTile(
 	int y = grid_position.y * tile_size.y;
 
 	auto it = tileset.tiles_.find(tile_gid);
-	if (it == tileset.tiles_.end())
+	if (it == tileset.tiles_.end() || (!it->second.is_hill_ && !it->second.one_sided_collision_))
 	{
 		AddFullCollisionForTile(layer, grid_position, { x, y }, map_size, tile_size);
 		return;
