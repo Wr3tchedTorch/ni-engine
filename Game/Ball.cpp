@@ -17,7 +17,7 @@
 #include <NiEngine/ShapeGraphicsComponent.h>
 #include <NiEngine/ComponentStore.h>
 #include <NiEngine/Id.h>
-#include <NiEngine/PhysicsBodyComponent.h>
+#include <NiEngine/BodyPhysicsComponent.h>
 
 Ball::Ball(ni::Id<GameObjectTag> id, b2Vec2 starting_position, ni::ComponentStore& component_store, b2WorldId world_id, sf::Color color, float size)
 {
@@ -53,6 +53,6 @@ Ball::Ball(ni::Id<GameObjectTag> id, b2Vec2 starting_position, ni::ComponentStor
     b2BodyId ball_body_id = b2CreateBody(world_id, &ball_body_def);
     b2CreateCircleShape(ball_body_id, &shape_def, &circle_shape);
 
-    auto ball_physics = std::make_unique<ni::PhysicsBodyComponent>(ball_body_id);
+    auto ball_physics = std::make_unique<ni::BodyPhysicsComponent>(ball_body_id);
     component_store.AttachPhysicsComponent(id, std::move(ball_physics));
 }

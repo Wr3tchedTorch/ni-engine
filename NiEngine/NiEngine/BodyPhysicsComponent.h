@@ -7,13 +7,13 @@
 
 namespace ni {
 
-class PhysicsBodyComponent : public PhysicsComponent
+class BodyPhysicsComponent : public PhysicsComponent
 {
 private:
 	b2BodyId body_id_;
 
 public:
-	PhysicsBodyComponent(b2BodyId body_id);
+	BodyPhysicsComponent(b2BodyId body_id);
 
 	b2BodyId GetBodyId() const { return body_id_; };
 

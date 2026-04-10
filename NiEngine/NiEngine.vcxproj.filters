@@ -155,7 +155,7 @@
     <ClInclude Include="NiEngine\ServiceLocator.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="NiEngine\PhysicsBodyComponent.h">
+    <ClInclude Include="NiEngine\BodyPhysicsComponent.h">
       <Filter>Header Files\Components\Entity</Filter>
     </ClInclude>
   </ItemGroup>
@@ -217,7 +217,7 @@
     <ClCompile Include="src\Signal.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\PhysicsBodyComponent.cpp">
+    <ClCompile Include="src\BodyPhysicsComponent.cpp">
       <Filter>Source Files\Components\Entity</Filter>
     </ClCompile>
   </ItemGroup>
