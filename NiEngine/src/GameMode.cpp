@@ -22,7 +22,7 @@ void ni::GameMode::PhysicsUpdate()
 {
 	physics_engine_.PhysicsUpdate();
 
-	component_store_.PhysicsUpdate();
+	component_store_.PhysicsUpdate(physics_engine_.GetWorldId());
 }
 
 void ni::GameMode::Update(GameModeController& controller)

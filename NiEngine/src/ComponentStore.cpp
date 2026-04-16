@@ -1,5 +1,7 @@
 #include <NiEngine/ComponentStore.h>
 
+#include <id.h>
+
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -31,7 +33,7 @@ ni::PhysicsComponent* ni::ComponentStore::GetPhysicsComponent(Id<GameObjectTag> 
 	return it->second.get();
 }
 
-void ni::ComponentStore::PhysicsUpdate()
+void ni::ComponentStore::PhysicsUpdate(b2WorldId world_id)
 {
 	for (auto& [id, component] : physics_components_)
 	{
@@ -41,7 +43,7 @@ void ni::ComponentStore::PhysicsUpdate()
 		{
 			continue;
 		}
-		component->PhysicsUpdate(*transform);
+		component->PhysicsUpdate(*transform, world_id);
 	}
 }
 

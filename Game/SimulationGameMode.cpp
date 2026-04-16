@@ -80,17 +80,17 @@ bool SimulationGameMode::IsMouseButtonJustPressed(sf::Mouse::Button button)
 
 void SimulationGameMode::SpawnPlayer()
 {
-    ni::Id<GameObjectTag> player;
+    ni::Id<GameObjectTag> player = CreateGameObject();
 
     ni::TransformComponent transform_comp;
 
-    auto physics_comp = std::make_unique<ni::PlatformerCharacterPhysicsComponent>(b2Vec2({ 4, 4 }), b2Capsule({ { 0.0f, -0.4f }, { 0.0f, 0.4f }, 0.3f }));
+    auto physics_comp = std::make_unique<ni::PlatformerCharacterPhysicsComponent>(b2Vec2({ 20, 20 }), b2Capsule({ { 0.0f, -0.4f }, { 0.0f, 0.4f }, 0.3f }));
     auto update_comp  = std::make_unique<PlayerUpdateComponent>(player, *physics_comp.get());
 
     float radius_px = ni::Converter::MetersToPixels(0.3f);
     auto shapes = GetPlayerShape(radius_px);
 
-    auto graphics_comp = std::make_unique<ni::ShapeGraphicsComponent<sf::CircleShape>>(shapes.first);
+    auto graphics_comp  = std::make_unique<ni::ShapeGraphicsComponent<sf::CircleShape>>(shapes.first);
     auto graphics_comp2 = std::make_unique<ni::ShapeGraphicsComponent<sf::CircleShape>>(shapes.second);
     
     GetComponentStore().AttachUpdateComponent(player, std::move(update_comp));

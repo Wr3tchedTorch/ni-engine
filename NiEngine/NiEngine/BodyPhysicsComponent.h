@@ -17,7 +17,7 @@ public:
 
 	b2BodyId GetBodyId() const { return body_id_; };
 
-	void PhysicsUpdate(TransformComponent& transform_component) override;
+	void PhysicsUpdate(TransformComponent& transform_component, b2WorldId world_id) override;
 };
 
 }

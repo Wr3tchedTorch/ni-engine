@@ -1,5 +1,7 @@
 #pragma once
 
+#include <id.h>
+
 #include <unordered_map>
 #include <memory>
 #include <utility>
@@ -14,10 +16,11 @@
 #include <NiEngine/PhysicsComponent.h>
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/TransformComponent.h>
+#include <NiEngine/ComponentLocator.h>
 
 namespace ni {
 
-class ComponentStore
+class ComponentStore : public ComponentLocator
 {
 private:
 	std::unordered_map<Id<GameObjectTag>, std::unique_ptr<TransformComponent>> transform_components_ = {};
@@ -30,7 +33,6 @@ public:
 	void AttachPhysicsComponent(Id<GameObjectTag> target, std::unique_ptr<PhysicsComponent> component)
 	{		
 		physics_components_.emplace(target, std::move(component));
-
 	}
 
 	void AttachUpdateComponent(Id<GameObjectTag> target, std::unique_ptr<UpdateComponent> component)
@@ -68,10 +70,10 @@ public:
 		transform_components_.erase(target);
 	}
 
-	TransformComponent* GetTransformComponent(Id<GameObjectTag> id);
-	PhysicsComponent*	GetPhysicsComponent(Id<GameObjectTag> id);
+	TransformComponent* GetTransformComponent(Id<GameObjectTag> id) override;
+	PhysicsComponent*	GetPhysicsComponent(Id<GameObjectTag> id)   override;
 
-	void PhysicsUpdate();
+	void PhysicsUpdate(b2WorldId world_id);
 	void Update();
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 };

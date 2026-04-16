@@ -161,6 +161,12 @@
     <ClInclude Include="NiEngine\PlatformerCharacterPhysicsComponent.h">
       <Filter>Header Files\Components\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="NiEngine\CollisionBits.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="NiEngine\ComponentLocator.h">
+      <Filter>Header Files\Components\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

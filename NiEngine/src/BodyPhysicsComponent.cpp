@@ -10,7 +10,7 @@ ni::BodyPhysicsComponent::BodyPhysicsComponent(b2BodyId body_id) : body_id_(body
 {
 }
 
-void ni::BodyPhysicsComponent::PhysicsUpdate(TransformComponent& transform_component)
+void ni::BodyPhysicsComponent::PhysicsUpdate(TransformComponent& transform_component, b2WorldId world_id)
 {
     b2Vec2 position = b2Body_GetPosition(body_id_);
     float  radians = b2Rot_GetAngle(b2Body_GetRotation(body_id_));
