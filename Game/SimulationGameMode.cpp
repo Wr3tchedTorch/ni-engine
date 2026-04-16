@@ -14,7 +14,6 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <NiEngine/GameMode.h>
 #include <NiEngine/Converter.h>
 #include <NiEngine/GameModeController.h>
@@ -24,6 +23,7 @@
 #include <NiEngine/Id.h>
 #include <NiEngine/ShapeGraphicsComponent.h>
 #include <NiEngine/TransformComponent.h>
+
 #include "PlayerUpdateComponent.h"
 
 SimulationGameMode::SimulationGameMode()
@@ -84,8 +84,8 @@ void SimulationGameMode::SpawnPlayer()
 
     ni::TransformComponent transform_comp;
 
-    auto physics_comp = std::make_unique<ni::PlatformerCharacterPhysicsComponent>(b2Vec2({ 20, 20 }), b2Capsule({ { 0.0f, -0.4f }, { 0.0f, 0.4f }, 0.3f }));
-    auto update_comp  = std::make_unique<PlayerUpdateComponent>(player, *physics_comp.get());
+    auto physics_comp = std::make_unique<ni::PlatformerCharacterPhysicsComponent>(b2Vec2({ 20, 10 }), b2Capsule({ { 0.0f, -0.4f }, { 0.0f, 0.4f }, 0.3f }));
+    auto update_comp  = std::make_unique<PlayerUpdateComponent>(player, GetComponentStore());
 
     float radius_px = ni::Converter::MetersToPixels(0.3f);
     auto shapes = GetPlayerShape(radius_px);

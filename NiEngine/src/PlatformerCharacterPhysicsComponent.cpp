@@ -36,12 +36,17 @@ void ni::PlatformerCharacterPhysicsComponent::SolveMove(float throttle)
     Accelerate(desired_velocity);
 }
 
+void ni::PlatformerCharacterPhysicsComponent::Move(int throttle)
+{
+    throttle_ = throttle;
+}
+
 void ni::PlatformerCharacterPhysicsComponent::Jump()
 {
     if (on_ground_)
     {
         velocity_.y = jump_speed_;
-        on_ground_= false;
+        on_ground_  = false;
     }
 }
 
@@ -114,6 +119,7 @@ void ni::PlatformerCharacterPhysicsComponent::Accelerate(b2Vec2 desired_velocity
 
 void ni::PlatformerCharacterPhysicsComponent::PhysicsUpdate(TransformComponent& transform_component, b2WorldId world_id)
 {
+    SolveMove(throttle_);
 
     // POGO COLLISION
     CastResult cast_result = CastPogo(world_id);
@@ -189,6 +195,7 @@ void ni::PlatformerCharacterPhysicsComponent::PhysicsUpdate(TransformComponent& 
     velocity_ = b2ClipVector(velocity_, planes_, plane_count_);
 
     std::cout << std::format("\nvelocity: {}, {}", velocity_.x, velocity_.y);
+    std::cout << std::format("\non_ground: {}", on_ground_);
 
     transform_component.SetPositionInMeters(transform_.p);
     transform_component.SetRotation(b2Rot_GetAngle(transform_.q));

@@ -14,6 +14,7 @@
 #include <NiEngine/TilesetBlueprint.h>
 #include <NiEngine/TileBlueprint.h>
 #include <NiEngine/Tilemap.h>
+#include <NiEngine/CollisionBits.h>
 
 std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoops(EdgesMap& map)
 {
@@ -109,6 +110,7 @@ void ni::TilemapCollisionComponent::CreateOnesidedCollision()
 		padded.push_back(ghost_end);
 
 		b2ChainDef shape = b2DefaultChainDef();
+		shape.filter = { StaticBit, AllBits, 0 };
 		shape.points = padded.data();
 		shape.count = padded.size();
 		shape.isLoop = false;
@@ -180,7 +182,7 @@ void ni::TilemapCollisionComponent::CreateCollision()
 	for (const auto& loop : loops)
 	{
 		b2ChainDef shape = b2DefaultChainDef();
-
+		shape.filter = { StaticBit, AllBits, 0 };
 		shape.points = loop.data_.data();
 		shape.count  = loop.data_.size();
 		shape.isLoop = loop.is_closed_;

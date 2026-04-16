@@ -40,11 +40,12 @@ class PlatformerCharacterPhysicsComponent : public PhysicsComponent
 public:
     PlatformerCharacterPhysicsComponent(b2Vec2 start_position, b2Capsule shape);
 
-    void SolveMove(float throttle);
+    void Move(int throttle);
     void Jump();
     CastResult CastPogo(b2WorldId world_id);
 
 private:
+    void SolveMove(float throttle);
     void ApplyFriction();
     void Accelerate(b2Vec2 desired_velocity);
 
@@ -81,6 +82,7 @@ private:
     float gravity_    = 9.8f;
     float air_steer_  = 0.2f;
     float min_speed_  = 0.1f;
+    int throttle_ = 0;
     
     // Pogo attributes
     float pogo_velocity_ = 0.0f;

@@ -1,10 +1,13 @@
 #pragma once
 
-#include <NiEngine/UpdateComponent.h>
-#include <NiEngine/GameObjectTag.h>
 #include <NiEngine/Id.h>
-#include <NiEngine/PlatformerCharacterPhysicsComponent.h>
+#include <NiEngine/GameObjectTag.h>
+#include <NiEngine/UpdateComponent.h>
 #include <NiEngine/ComponentLocator.h>
+
+namespace ni {
+	class PlatformerCharacterPhysicsComponent;
+}
 
 class PlayerUpdateComponent : public ni::UpdateComponent
 {
