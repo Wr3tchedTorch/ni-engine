@@ -45,7 +45,7 @@ void ni::PlatformerCharacterPhysicsComponent::Jump()
 {
     if (on_ground_)
     {
-        velocity_.y = jump_speed_;
+        velocity_.y = -jump_speed_;
         on_ground_  = false;
     }
 }
@@ -55,7 +55,7 @@ ni::CastResult ni::PlatformerCharacterPhysicsComponent::CastPogo(b2WorldId world
     float pogo_rest_length = 3.0f * capsule_.radius;
     float ray_length = pogo_rest_length + capsule_.radius;
 
-    b2Vec2 origin = b2TransformPoint(transform_, capsule_.center1);
+    b2Vec2 origin = b2TransformPoint(transform_, capsule_.center2);
 
     b2Vec2 segmentOffset = { 0.75f * capsule_.radius, 0.0f };
     b2Segment segment = {
@@ -69,7 +69,7 @@ ni::CastResult ni::PlatformerCharacterPhysicsComponent::CastPogo(b2WorldId world
     CastResult result = {};
 
     proxy = b2MakeProxy(&segment.point1, 2, 0.0f);
-    translation = { 0.0f, -ray_length };
+    translation = { 0.0f, ray_length };
 
     b2World_CastShape(world_id, &proxy, translation, pogo_filter, CastCallback, &result);
 
@@ -120,7 +120,7 @@ void ni::PlatformerCharacterPhysicsComponent::Accelerate(b2Vec2 desired_velocity
         velocity_ += accel_speed * desired_direction;
     }
     
-    velocity_.y -= gravity_ * delta;
+    velocity_.y += gravity_ * delta;
 }
 
 void ni::PlatformerCharacterPhysicsComponent::PhysicsUpdate(TransformComponent& transform_component, b2WorldId world_id)
@@ -130,15 +130,13 @@ void ni::PlatformerCharacterPhysicsComponent::PhysicsUpdate(TransformComponent& 
     // POGO COLLISION
     CastResult cast_result = CastPogo(world_id);
 
-    // Avoid snapping to ground if still going up    
-
-    if (cast_result.hit) 
+    if (on_ground_ == false)
     {
-        on_ground_ = true && velocity_.y <= 0.01f;
+        on_ground_ = cast_result.hit && velocity_.y >= -0.01f;
     }
     else
     {
-        on_ground_ = false; // Only lose ground if moving UP
+        on_ground_ = cast_result.hit;
     }
 
     if (cast_result.hit)
@@ -161,7 +159,7 @@ void ni::PlatformerCharacterPhysicsComponent::PhysicsUpdate(TransformComponent& 
     }
     
     // PLANE COLLISION
-    b2Vec2 target = transform_.p + delta * velocity_ + delta * pogo_velocity_ * b2Vec2{ 0.0f, 1.0f };
+    b2Vec2 target = transform_.p + delta * velocity_ + delta * pogo_velocity_ * b2Vec2{ 0.0f, -1.0f };
 
     // Mover overlap filter
     b2QueryFilter collide_filter = { MoverBit, StaticBit | DynamicBit | MoverBit };
