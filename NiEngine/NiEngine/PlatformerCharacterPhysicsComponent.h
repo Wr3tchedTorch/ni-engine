@@ -75,7 +75,7 @@ private:
     bool  jump_released_ = true;
 
     float delta = 1 / 60.0f;
-    float jump_speed_ = 10.0f;
+    float jump_speed_ = 30.0f;
     float max_speed_  = 6.0f;
     float accelerate_ = 20.0f;
     float friction_   = 8.0f;

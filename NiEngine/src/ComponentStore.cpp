@@ -1,6 +1,7 @@
 #include <NiEngine/ComponentStore.h>
 
 #include <id.h>
+#include <vector>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -10,6 +11,8 @@
 #include <NiEngine/TransformComponent.h>
 #include <NiEngine/GameObjectTag.h>
 #include <NiEngine/PhysicsComponent.h>
+#include <NiEngine/GraphicsComponent.h>
+#include <NiEngine/AnimatedGraphicsComponent.h>
 
 ni::TransformComponent* ni::ComponentStore::GetTransformComponent(Id<GameObjectTag> id)
 {
@@ -31,6 +34,21 @@ ni::PhysicsComponent* ni::ComponentStore::GetPhysicsComponent(Id<GameObjectTag> 
 		return nullptr;
 	}
 	return it->second.get();
+}
+
+ni::AnimatedGraphicsComponent* ni::ComponentStore::GetFirstAnimatedGraphicsComponent(Id<GameObjectTag> id)
+{
+	std::vector<ni::GraphicsComponent*> components = GetGraphicsComponents(id);
+	for (auto& component : components)
+	{
+		auto animated_graphics = dynamic_cast<AnimatedGraphicsComponent*>(component);
+
+		if (animated_graphics)
+		{
+			return animated_graphics;
+		}
+	}
+	return nullptr;
 }
 
 void ni::ComponentStore::PhysicsUpdate(b2WorldId world_id)
@@ -73,4 +91,23 @@ void ni::ComponentStore::Render(sf::RenderTarget& target, sf::RenderStates state
 		}
 
 	}
+}
+
+std::vector<ni::GraphicsComponent*> ni::ComponentStore::GetGraphicsComponents(Id<GameObjectTag> id)
+{
+	std::vector<ni::GraphicsComponent*> result = {};
+
+	auto it = graphics_components_.find(id);
+	if (it == graphics_components_.end())
+	{
+		return result;
+	}
+
+	result.reserve(graphics_components_.at(id).size());
+	for (auto& comp : graphics_components_.at(id))
+	{
+		result.push_back(comp.get());
+	}
+
+	return result;
 }

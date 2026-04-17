@@ -167,6 +167,9 @@
     <ClInclude Include="NiEngine\ComponentLocator.h">
       <Filter>Header Files\Components\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="NiEngine\AnimatedGraphicsComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -231,6 +234,9 @@
     </ClCompile>
     <ClCompile Include="src\PlatformerCharacterPhysicsComponent.cpp">
       <Filter>Source Files\Components\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AnimatedGraphicsComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -17,6 +18,7 @@
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/TransformComponent.h>
 #include <NiEngine/ComponentLocator.h>
+#include <NiEngine/AnimatedGraphicsComponent.h>
 
 namespace ni {
 
@@ -70,12 +72,16 @@ public:
 		transform_components_.erase(target);
 	}
 
+	// Inherited via ComponentLocator
+	std::vector<GraphicsComponent*> GetGraphicsComponents(Id<GameObjectTag> id) override;
 	TransformComponent* GetTransformComponent(Id<GameObjectTag> id) override;
 	PhysicsComponent*	GetPhysicsComponent(Id<GameObjectTag> id)   override;
+	AnimatedGraphicsComponent* GetFirstAnimatedGraphicsComponent(Id<GameObjectTag> id) override;
 
 	void PhysicsUpdate(b2WorldId world_id);
 	void Update();
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
+
 };
 
 }

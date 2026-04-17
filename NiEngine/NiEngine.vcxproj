@@ -137,6 +137,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="NiEngine\AnimatedGraphicsComponent.h" />
     <ClInclude Include="NiEngine\ComponentLocator.h" />
     <ClInclude Include="NiEngine\CollisionBits.h" />
     <ClInclude Include="NiEngine\PlatformerCharacterPhysicsComponent.h" />
@@ -180,6 +181,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AnimatedGraphicsComponent.cpp" />
     <ClCompile Include="src\PlatformerCharacterPhysicsComponent.cpp" />
     <ClCompile Include="src\BodyPhysicsComponent.cpp" />
     <ClCompile Include="src\BitmapStore.cpp" />

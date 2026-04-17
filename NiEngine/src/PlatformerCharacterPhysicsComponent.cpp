@@ -151,7 +151,7 @@ void ni::PlatformerCharacterPhysicsComponent::PhysicsUpdate(TransformComponent& 
         pogo_velocity_ = (pogo_velocity_ - omega * omega_h * (pogo_current_length - cast_result.pogo_rest_length)) /
             (1.0f + 2.0f * zeta * omega_h + omega_h * omega_h);
 
-        b2Body_ApplyForce(cast_result.bodyId, { 0.0f, -50.0f }, cast_result.point, true);
+        b2Body_ApplyForce(cast_result.bodyId, { 0.0f, 50.0f }, cast_result.point, true);
     }
     else
     {
@@ -198,11 +198,6 @@ void ni::PlatformerCharacterPhysicsComponent::PhysicsUpdate(TransformComponent& 
     }
 
     velocity_ = b2ClipVector(velocity_, planes_, plane_count_);
-
-    std::cout << std::format("\n\nvelocity: {}, {}", velocity_.x, velocity_.y);
-    std::cout << std::format("\non_ground: {}", on_ground_);
-    std::cout << std::format("\npogo_hit: {}", cast_result.hit);
-    std::cout << std::format("\npogo_point: {}, {}", cast_result.point.x, cast_result.point.y);
 
     transform_component.SetPositionInMeters(transform_.p);
     transform_component.SetRotation(b2Rot_GetAngle(transform_.q));

@@ -32,5 +32,12 @@ void PlayerUpdateComponent::Update()
 
 	float throttle = (int)(sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) - (int)(sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A));
 
+	if (throttle != 0)
+	{
+		auto graphics = component_locator_.GetFirstAnimatedGraphicsComponent(owner_id_);
+		
+		graphics->PlayAnimation(12, .2, true);
+	}
+
 	physics_component_->Move(throttle);
 }

@@ -15,7 +15,7 @@ class StandardGraphicsComponent : public GraphicsComponent
 {
 protected:
 	std::string texture_key_;
-	sf::IntRect first_frame_rect_;
+	sf::IntRect current_frame_rect_;
 
 public:
 	StandardGraphicsComponent(std::string texture_key, sf::IntRect frame_rect = {});
