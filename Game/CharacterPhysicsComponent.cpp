@@ -8,12 +8,21 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Event.hpp>
 #include <NiEngine/TransformComponent.h>
 #include <NiEngine/Tilemap.h>
 #include <NiEngine/MathUtility.h>
+#include <NiEngine/ServiceLocator.h>
 
 CharacterPhysicsComponent::CharacterPhysicsComponent(sf::Vector2i character_size) : size_(character_size)
 {
+	ni::ServiceLocator::Instance().GetEventDispatcher().OnKeyPressed([this](const sf::Event::KeyPressed& event)
+	{
+		if (event.scancode == sf::Keyboard::Scancode::Space)
+		{
+			Jump();
+		}
+	});
 }
 
 void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_component, b2WorldId _, const ni::Tilemap* current_tilemap)
@@ -24,7 +33,7 @@ void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_
 		return;
 	}
 
-	Move();
+	Move(sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A));
 	if (is_falling_)
 	{
 		velocity_.y += GRAVITY / 10.0f;
@@ -48,11 +57,19 @@ void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_
 	HandleCollisions(transform_component, current_tilemap);
 }
 
-void CharacterPhysicsComponent::Move()
+void CharacterPhysicsComponent::Move(float dir)
 {
-	float x_dir = sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A);
+	velocity_.x = dir * speed_ / 10.0f;
+}
 
-	velocity_.x = x_dir * speed_ / 10.0f;
+void CharacterPhysicsComponent::Jump()
+{
+	if (is_falling_)
+	{
+		return;
+	}
+	velocity_.y = -jump_force_;
+	is_falling_ = true;
 }
 
 void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap)
@@ -85,6 +102,16 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 			collision_block.position.x = x * size_.x;
 			collision_block.position.y = y * size_.y;
 
+			if (collision_block.findIntersection(GetHeadBounds(transform_component.GetTransformable().getPosition())))
+			{
+				velocity_.y = 0;
+
+				sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
+
+				snap_position.y = collision_block.position.y + collision_block.size.y + size_.y / 2.0f + 1;
+
+				transform_component.GetTransformable().setPosition(snap_position);
+			}
 			if (collision_block.findIntersection(GetFeetBounds(transform_component.GetTransformable().getPosition())))
 			{
 				sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
@@ -96,8 +123,6 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 			}
 			if (collision_block.findIntersection(GetFrontBounds(transform_component.GetTransformable().getPosition())))
 			{
-				std::cout << "\nfront colliding!";
-
 				sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
 
 				int movement_sign = ni::MathUtility::GetSign(velocity_.x);
@@ -122,6 +147,21 @@ sf::FloatRect CharacterPhysicsComponent::GetFeetBounds(sf::Vector2f position) co
 	feet_bounds.position.y += size_.y / 4.0f;
 
 	return feet_bounds;
+}
+
+sf::FloatRect CharacterPhysicsComponent::GetHeadBounds(sf::Vector2f position) const
+{
+	sf::FloatRect head_bounds;
+	head_bounds.size.x = size_.x * 2.0f / 5.0f;
+	head_bounds.size.y = size_.y / 4.0f;
+
+	head_bounds.position = position;
+	head_bounds.position.x -= size_.x / 5.0f;
+	head_bounds.position.y -= (size_.y / 4.0f) * 2 + 1;
+
+	return head_bounds;
+
+	return sf::FloatRect();
 }
 
 sf::FloatRect CharacterPhysicsComponent::GetFrontBounds(sf::Vector2f position) const
