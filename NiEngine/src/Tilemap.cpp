@@ -10,6 +10,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
 
 #include <NiEngine/DataHandler.h>
 #include <NiEngine/TilemapBlueprint.h>
@@ -18,7 +19,7 @@
 #include <NiEngine/TilesetReference.h>
 #include <NiEngine/LayerBlueprint.h>
 #include <NiEngine/BitmapStore.h>
-#include <SFML/System/Vector2.hpp>
+#include <NiEngine/TileBlueprint.h>
 
 void ni::Tilemap::LoadTilesetBlueprints(const std::vector<TilesetReference>& tileset_references)
 {
@@ -101,6 +102,32 @@ sf::Vector2i ni::Tilemap::GlobalToGridPosition(sf::Vector2f position) const
 	result.x = position.x / blueprint_.tile_size_.x;
 	result.y = position.y / blueprint_.tile_size_.y;
 	return result;
+}
+
+ni::TileBlueprint ni::Tilemap::GetTileInfo(sf::Vector2i tile_grid_position, int layer_index) const
+{
+	bool out_of_bounds = tile_grid_position.x < 0 || tile_grid_position.x >= blueprint_.map_size_.x ||
+						 tile_grid_position.y < 0 || tile_grid_position.y >= blueprint_.map_size_.y;
+	if (out_of_bounds)
+	{
+		return TileBlueprint();
+	}
+	const LayerBlueprint& layer = blueprint_.layers_.at(layer_index);
+
+	int tile_index = tile_grid_position.x + tile_grid_position.y * blueprint_.map_size_.x;
+	if (tile_index > 0 && tile_index < (int)layer.data_.size() && layer.data_[tile_index] != 0)
+	{
+		int tile_gid = layer.data_[tile_index];
+		const TilesetBlueprint& tileset = GetTilesetByGid(tileset_blueprints_, tile_gid);
+
+		auto it = tileset.tiles_.find(tile_gid - tileset.first_gid_);
+		if (it != tileset.tiles_.end())
+		{
+			return tileset.tiles_.at(tile_gid - tileset.first_gid_);
+		}
+	}
+
+	return TileBlueprint();
 }
 
 bool ni::Tilemap::IsTileEmpty(sf::Vector2i tile_grid_position) const

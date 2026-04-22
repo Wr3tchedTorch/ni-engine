@@ -13,6 +13,7 @@
 #include <NiEngine/Tilemap.h>
 #include <NiEngine/MathUtility.h>
 #include <NiEngine/ServiceLocator.h>
+#include <NiEngine/TileBlueprint.h>
 
 CharacterPhysicsComponent::CharacterPhysicsComponent(sf::Vector2i character_size) : size_(character_size)
 {
@@ -101,8 +102,10 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 
 			collision_block.position.x = x * size_.x;
 			collision_block.position.y = y * size_.y;
+			
+			ni::TileBlueprint tile = current_tilemap->GetTileInfo({ x, y }, 1);
 
-			if (collision_block.findIntersection(GetHeadBounds(transform_component.GetTransformable().getPosition())))
+			if (collision_block.findIntersection(GetHeadBounds(transform_component.GetTransformable().getPosition())) && !tile.one_sided_collision_)
 			{
 				velocity_.y = 0;
 
@@ -112,7 +115,8 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 
 				transform_component.GetTransformable().setPosition(snap_position);
 			}
-			if (collision_block.findIntersection(GetFeetBounds(transform_component.GetTransformable().getPosition())))
+
+			if (collision_block.findIntersection(GetFeetBounds(transform_component.GetTransformable().getPosition())) && !(tile.one_sided_collision_ && velocity_.y < 0))
 			{
 				sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
 				snap_position.y = collision_block.position.y - size_.y / 2.0f;
@@ -121,7 +125,8 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 
 				is_falling_ = false;
 			}
-			if (collision_block.findIntersection(GetFrontBounds(transform_component.GetTransformable().getPosition())))
+
+			if (collision_block.findIntersection(GetFrontBounds(transform_component.GetTransformable().getPosition())) && !tile.one_sided_collision_)
 			{
 				sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
 
