@@ -18,7 +18,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameMode.cpp">
+    <ClCompile Include="PlatformerGameMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CharacterPhysicsComponent.cpp">
@@ -27,18 +27,24 @@
     <ClCompile Include="EntityFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerUpdateComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameMode.h">
+    <ClInclude Include="PlatformerGameMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CharacterPhysicsComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EntityFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerUpdateComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,23 +7,13 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/Event.hpp>
 #include <NiEngine/TransformComponent.h>
 #include <NiEngine/Tilemap.h>
 #include <NiEngine/MathUtility.h>
-#include <NiEngine/ServiceLocator.h>
 #include <NiEngine/TileBlueprint.h>
 
 CharacterPhysicsComponent::CharacterPhysicsComponent(sf::Vector2i character_size) : size_(character_size)
 {
-	ni::ServiceLocator::Instance().GetEventDispatcher().OnKeyPressed([this](const sf::Event::KeyPressed& event)
-	{
-		if (event.scancode == sf::Keyboard::Scancode::Space)
-		{
-			Jump();
-		}
-	});
 }
 
 void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_component, b2WorldId _, const ni::Tilemap* current_tilemap)
@@ -34,7 +24,6 @@ void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_
 		return;
 	}
 
-	Move(sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A));
 	if (is_falling_)
 	{
 		velocity_.y += GRAVITY / 10.0f;

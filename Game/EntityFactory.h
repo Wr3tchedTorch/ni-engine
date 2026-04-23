@@ -1,7 +1,9 @@
 #pragma once
 
-#include <NiEngine/GameMode.h>
 #include <SFML/System/Vector2.hpp>
+#include <NiEngine/GameMode.h>
+#include <NiEngine/GameObjectTag.h>
+#include <NiEngine/Id.h>
 
 class EntityFactory
 {

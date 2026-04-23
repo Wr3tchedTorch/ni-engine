@@ -8,10 +8,10 @@
 
 #include "EntityFactory.h"
 
-class GameMode : public ni::GameMode
+class PlatformerGameMode : public ni::GameMode
 {
 public:
-	GameMode();
+	PlatformerGameMode();
 
 	virtual void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store) override;
 

@@ -1,4 +1,4 @@
-#include "GameMode.h"
+#include "PlatformerGameMode.h"
 
 #include <types.h>
 
@@ -8,7 +8,7 @@
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/GameMode.h>
 
-GameMode::GameMode()
+PlatformerGameMode::PlatformerGameMode()
 {
 	ni::Converter::pixels_per_meters_ = 16;
 
@@ -23,7 +23,7 @@ GameMode::GameMode()
 	entity_factory_.CreatePlatformerCharacter(*this, { 16, 16 }, 12);
 }
 
-void GameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
+void PlatformerGameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
 {
 	camera_.ApplyTo(target);
 
