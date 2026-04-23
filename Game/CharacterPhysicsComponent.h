@@ -1,8 +1,11 @@
 #pragma once
 
+#include <functional>
+
 #include <NiEngine/TransformComponent.h>
 #include <NiEngine/PhysicsComponent.h>
 #include <NiEngine/Tilemap.h>
+#include <NiEngine/Subject.h>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
@@ -10,14 +13,22 @@ class CharacterPhysicsComponent : public ni::PhysicsComponent
 {
 public:
 	inline static const float GRAVITY = 4.0f;
-
+	
 	CharacterPhysicsComponent(sf::Vector2i character_size);
 	void PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap) override;
 
 	void Move(float dir);
 	void Jump();
 
+	int OnFalling(std::function<void()> callback) { return on_falling_.Subscribe(callback); }
+	int OnJumping(std::function<void()> callback) { return on_jumping_.Subscribe(callback); }
+	int OnLanding(std::function<void()> callback) { return on_landing_.Subscribe(callback); }
+
 private:
+	ni::Subject<> on_falling_;
+	ni::Subject<> on_jumping_;
+	ni::Subject<> on_landing_;
+
 	sf::Vector2f velocity_;
 	sf::Vector2i size_;
 

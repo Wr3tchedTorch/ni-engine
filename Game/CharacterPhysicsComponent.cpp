@@ -25,6 +25,11 @@ void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_
 	if (is_falling_)
 	{
 		velocity_.y += GRAVITY / 10.0f;
+
+		if (velocity_.y > 0)
+		{
+			on_falling_.Notify();
+		}
 	}
 	else
 	{
@@ -58,6 +63,8 @@ void CharacterPhysicsComponent::Jump()
 	}
 	velocity_.y = -jump_force_;
 	is_falling_ = true;
+
+	on_jumping_.Notify();
 }
 
 void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap)
@@ -111,6 +118,7 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 				transform_component.GetTransformable().setPosition(snap_position);
 
 				is_falling_ = false;
+				on_landing_.Notify();
 			}
 
 			if (collision_block.findIntersection(GetFrontBounds(transform_component.GetTransformable().getPosition())) && !tile.one_sided_collision_)

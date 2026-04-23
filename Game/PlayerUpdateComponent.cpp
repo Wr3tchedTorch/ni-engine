@@ -6,21 +6,41 @@
 #include <NiEngine/GameObjectTag.h>
 #include <NiEngine/Id.h>
 #include <NiEngine/Animation.h>
+#include <NiEngine/AnimatedGraphicsComponent.h>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 
 #include "CharacterPhysicsComponent.h"
 
-PlayerUpdateComponent::PlayerUpdateComponent(ni::ComponentLocator& component_locator, ni::AnimatedGraphicsComponent& graphics, ni::Id<ni::GameObjectTag> owner_id)
+PlayerUpdateComponent::PlayerUpdateComponent(ni::ComponentLocator& component_locator, ni::Id<ni::GameObjectTag> owner_id)
 	: ni::UpdateComponent(component_locator)
 {
-	owner_id_ = owner_id;
+	owner_id_ = owner_id;	
+}
 
+void PlayerUpdateComponent::Init(ni::AnimatedGraphicsComponent& graphics, CharacterPhysicsComponent& physics)
+{
 	ni::ServiceLocator::Instance().GetEventDispatcher().OnKeyPressed([this](const sf::Event::KeyPressed& event) {
 		if (event.scancode == sf::Keyboard::Scancode::Space)
 		{
 			Jump();
 		}
+	});
+
+	physics.OnFalling([this]() {
+		auto graphics = component_locator_.GetFirstAnimatedGraphicsComponent(owner_id_);
+		graphics->SetFrame(kAnimationRow, 4);
+	});
+
+	physics.OnJumping([this]() {
+		auto graphics = component_locator_.GetFirstAnimatedGraphicsComponent(owner_id_);
+		graphics->SetFrame(kAnimationRow, 3);
+
+		airborne_ = true;
+	});
+
+	physics.OnLanding([this]() {
+		airborne_ = false;
 	});
 
 	ni::Animation jump_animation;
@@ -49,16 +69,16 @@ void PlayerUpdateComponent::Update()
 		physics->Move(dir);
 	}
 	auto graphics = component_locator_.GetFirstAnimatedGraphicsComponent(owner_id_);
-	if (!graphics)
+	if (!graphics || airborne_)
 	{		
 		return;
 	}
 	if (dir == 0)
 	{
-		graphics->Stop();
+		graphics->SetFrame(kAnimationRow, 0);
 		return;
 	}
-	graphics->Play(kWalkAnimationKey, .2, true);
+	graphics->Play(kWalkAnimationKey, .1, true);
 }
 
 void PlayerUpdateComponent::Jump()
