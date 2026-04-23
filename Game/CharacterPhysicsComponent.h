@@ -1,7 +1,5 @@
 #pragma once
 
-#include <id.h>
-
 #include <NiEngine/TransformComponent.h>
 #include <NiEngine/PhysicsComponent.h>
 #include <NiEngine/Tilemap.h>
@@ -14,7 +12,7 @@ public:
 	inline static const float GRAVITY = 4.0f;
 
 	CharacterPhysicsComponent(sf::Vector2i character_size);
-	void PhysicsUpdate(ni::TransformComponent& transform_component, b2WorldId world_id, const ni::Tilemap* current_tilemap) override;
+	void PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap) override;
 
 	void Move(float dir);
 	void Jump();

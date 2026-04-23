@@ -1,7 +1,5 @@
 #include "CharacterPhysicsComponent.h"
 
-#include <id.h>
-
 #include <iostream>
 #include <cstdlib>
 
@@ -16,7 +14,7 @@ CharacterPhysicsComponent::CharacterPhysicsComponent(sf::Vector2i character_size
 {
 }
 
-void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_component, b2WorldId _, const ni::Tilemap* current_tilemap)
+void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap)
 {
 	if (!current_tilemap)
 	{

@@ -63,7 +63,8 @@ void ni::ComponentStore::PhysicsUpdate(b2WorldId world_id, const Tilemap* curren
 		{
 			continue;
 		}
-		component->PhysicsUpdate(*transform, world_id, current_tilemap);
+		component->PhysicsUpdate(*transform, current_tilemap);
+		component->PhysicsUpdate(*transform, world_id);
 	}
 }
 

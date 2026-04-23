@@ -1,6 +1,7 @@
 #include <NiEngine/GameMode.h>
 
 #include <string>
+#include <utility>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -10,17 +11,25 @@
 #include <NiEngine/Tilemap.h>
 
 void ni::GameMode::RegisterTilemap(const std::string& filepath, bool enable_collision)
-{
-	Tilemap map(physics_engine_.GetWorldId());
+{	
+	Tilemap map;
 
-	map.LoadFromFile(filepath, enable_collision);
+	if (enable_collision)
+	{
+		map.EnableCollision(physics_engine_.GetWorldId());
+	}
 
-	tilemaps_.push_back(map);
+	map.LoadFromFile(filepath);
+
+	tilemaps_.push_back(std::move(map));
 }
 
 void ni::GameMode::PhysicsUpdate()
 {
-	physics_engine_.PhysicsUpdate();
+	if (box2d_enabled)
+	{
+		physics_engine_.PhysicsUpdate();
+	}
 
 	auto* tilemap = tilemaps_.empty() ? nullptr : &tilemaps_.front();
 	component_store_.PhysicsUpdate(physics_engine_.GetWorldId(), tilemap);

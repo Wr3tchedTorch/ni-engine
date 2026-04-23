@@ -20,6 +20,8 @@
 #include <NiEngine/LayerBlueprint.h>
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/TileBlueprint.h>
+#include <memory>
+#include <NiEngine/TilemapCollisionComponent.h>
 
 void ni::Tilemap::LoadTilesetBlueprints(const std::vector<TilesetReference>& tileset_references)
 {
@@ -38,7 +40,7 @@ void ni::Tilemap::LoadTilesetBlueprints(const std::vector<TilesetReference>& til
 	}
 }
 
-void ni::Tilemap::LoadTiles(const LayerBlueprint& layer_blueprint, bool collision_enabled)
+void ni::Tilemap::LoadTiles(const LayerBlueprint& layer_blueprint)
 {
 	for (int y = 0; y < blueprint_.map_size_.y; ++y)
 	{
@@ -55,17 +57,26 @@ void ni::Tilemap::LoadTiles(const LayerBlueprint& layer_blueprint, bool collisio
 			tile_id -= tileset_blueprint.first_gid_;
 
 			graphics_.AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint.position_);
-			collision_.AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint, blueprint_.map_size_, blueprint_.tile_size_);
+
+			if (collision_)
+			{
+				collision_->AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint, blueprint_.map_size_, blueprint_.tile_size_);
+			}
 		}
 	}
-	collision_.CreateCollision();
+	if (collision_)
+	{
+		collision_->CreateCollision();
+	}
 }
 
-ni::Tilemap::Tilemap(b2WorldId world_id) : collision_(world_id)
+void ni::Tilemap::EnableCollision(b2WorldId world_id)
 {
+	collision_ = std::make_unique<TilemapCollisionComponent>(world_id);
 }
 
-bool ni::Tilemap::LoadFromFile(const std::string& filepath, bool collision_enabled)
+
+bool ni::Tilemap::LoadFromFile(const std::string& filepath)
 {
 	DataHandler<TilemapBlueprint> handler(filepath);
 
@@ -80,7 +91,7 @@ bool ni::Tilemap::LoadFromFile(const std::string& filepath, bool collision_enabl
 		{
 			continue;
 		}
-		LoadTiles(layer_blueprint, collision_enabled);
+		LoadTiles(layer_blueprint);
 	}
 
 	return true;

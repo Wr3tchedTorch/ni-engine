@@ -21,6 +21,8 @@ class GameMode
 private:
 	Id<GameObjectTag> current_game_object_id_{ 0 };
 
+	bool box2d_enabled = false;
+
 protected:
 	std::vector<Tilemap> tilemaps_;
 
@@ -44,6 +46,11 @@ public:
 	}
 
 	void RegisterTilemap(const std::string& filepath, bool enable_collision = true);
+
+	void SetBox2dEnabled(bool value)
+	{
+		box2d_enabled = value;
+	}
 
 	virtual void PhysicsUpdate();
 	virtual void Update(GameModeController& controller);

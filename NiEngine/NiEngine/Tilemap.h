@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -28,8 +29,8 @@ private:
 
 	std::vector<TilesetBlueprint> tileset_blueprints_ = {};
 
-	TilemapGraphicsComponent  graphics_;
-	TilemapCollisionComponent collision_;
+	TilemapGraphicsComponent   graphics_;
+	std::unique_ptr<TilemapCollisionComponent> collision_ = nullptr;
 
 	std::string last_loaded_file_ = "";
 
@@ -39,15 +40,14 @@ private:
 	bool is_collision_enabled = false;
 
 	void LoadTilesetBlueprints(const std::vector<TilesetReference>& tileset_references);
-	void LoadTiles(const LayerBlueprint& layer, bool collision_enabled);
+	void LoadTiles(const LayerBlueprint& layer);
 
 public:
 	inline static const std::string kPrototypeLayerName = "prototype";
 	inline static const std::string kTransparentTilesTilesetName = "transparent_tiles";
 
-	Tilemap(b2WorldId world_id);
-
-	bool LoadFromFile(const std::string& filepath, bool collision_enabled = true);
+	void EnableCollision(b2WorldId world_id);
+	bool LoadFromFile(const std::string& filepath);
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 
 	sf::FloatRect GetBounds() const;
