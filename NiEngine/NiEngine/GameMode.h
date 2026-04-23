@@ -52,7 +52,7 @@ public:
 		box2d_enabled = value;
 	}
 
-	virtual void PhysicsUpdate();
+	virtual void PhysicsUpdate(float delta);
 	virtual void Update(GameModeController& controller);
 	virtual void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 };

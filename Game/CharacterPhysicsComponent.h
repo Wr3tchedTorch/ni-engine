@@ -12,10 +12,10 @@
 class CharacterPhysicsComponent : public ni::PhysicsComponent
 {
 public:
-	inline static const float GRAVITY = 4.0f;
+	inline static const float GRAVITY = 20.0f;
 	
 	CharacterPhysicsComponent(sf::Vector2i character_size);
-	void PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap) override;
+	void PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap, float delta) override;
 
 	void Move(float dir);
 	void Jump();
@@ -32,8 +32,8 @@ private:
 	sf::Vector2f velocity_;
 	sf::Vector2i size_;
 
-	float speed_ = 16;
-	float jump_force_ = 10;
+	float speed_ = 100;
+	float jump_force_ = 400;
 	
 	bool is_jumping_ = true;
 	bool is_falling_ = true;

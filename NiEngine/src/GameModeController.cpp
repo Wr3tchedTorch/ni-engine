@@ -46,13 +46,13 @@ ni::GameMode& ni::GameModeController::GetCurrent()
 	return *game_modes_.at(current_game_mode).get();
 }
 
-void ni::GameModeController::PhysicsUpdate()
+void ni::GameModeController::PhysicsUpdate(float delta)
 {
 	if (current_game_mode.id_ == 0)
 	{
 		return;
 	}
-	game_modes_.at(current_game_mode)->PhysicsUpdate();
+	game_modes_.at(current_game_mode)->PhysicsUpdate(delta);
 }
 
 void ni::GameModeController::Update()

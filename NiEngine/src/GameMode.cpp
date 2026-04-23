@@ -24,7 +24,7 @@ void ni::GameMode::RegisterTilemap(const std::string& filepath, bool enable_coll
 	tilemaps_.push_back(std::move(map));
 }
 
-void ni::GameMode::PhysicsUpdate()
+void ni::GameMode::PhysicsUpdate(float delta)
 {
 	if (box2d_enabled)
 	{
@@ -32,7 +32,7 @@ void ni::GameMode::PhysicsUpdate()
 	}
 
 	auto* tilemap = tilemaps_.empty() ? nullptr : &tilemaps_.front();
-	component_store_.PhysicsUpdate(physics_engine_.GetWorldId(), tilemap);
+	component_store_.PhysicsUpdate(physics_engine_.GetWorldId(), tilemap, delta);
 }
 
 void ni::GameMode::Update(GameModeController& controller)

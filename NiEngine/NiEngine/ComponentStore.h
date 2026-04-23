@@ -79,7 +79,7 @@ public:
 	PhysicsComponent*	GetPhysicsComponent(Id<GameObjectTag> id)   override;
 	AnimatedGraphicsComponent* GetFirstAnimatedGraphicsComponent(Id<GameObjectTag> id) override;
 
-	void PhysicsUpdate(b2WorldId world_id, const Tilemap* current_tilemap);
+	void PhysicsUpdate(b2WorldId world_id, const Tilemap* current_tilemap, float delta);
 	void Update();
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 

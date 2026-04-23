@@ -12,7 +12,7 @@ class PhysicsComponent : public Component
 {
 public:
 	virtual void PhysicsUpdate(TransformComponent& transform_component, b2WorldId world_id) {};
-	virtual void PhysicsUpdate(TransformComponent& transform_component, const Tilemap* current_tilemap) {};
+	virtual void PhysicsUpdate(TransformComponent& transform_component, const Tilemap* current_tilemap, float delta) {};
 };
 
 }

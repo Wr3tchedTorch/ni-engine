@@ -33,7 +33,7 @@ ni::GameModeController& ni::Engine::GetGameModeController()
 
 void ni::Engine::Run()
 {
-	sf::Clock deltaClock;
+	sf::Clock delta_clock;
 	while (window_.isOpen())
 	{
 		while (const std::optional event = window_.pollEvent())
@@ -45,10 +45,11 @@ void ni::Engine::Run()
 			event->visit(ServiceLocator::Instance().GetEventDispatcher());
 		}
 
-		time_elapsed += deltaClock.restart();
+		sf::Time delta_time = delta_clock.restart();
+		time_elapsed += delta_time;
 
 		game_mode_controller_.Update();
-		game_mode_controller_.PhysicsUpdate();
+		game_mode_controller_.PhysicsUpdate(delta_time.asSeconds());
 
 		window_.clear(sf::Color::Black);
 

@@ -53,7 +53,7 @@ ni::AnimatedGraphicsComponent* ni::ComponentStore::GetFirstAnimatedGraphicsCompo
 	return nullptr;
 }
 
-void ni::ComponentStore::PhysicsUpdate(b2WorldId world_id, const Tilemap* current_tilemap)
+void ni::ComponentStore::PhysicsUpdate(b2WorldId world_id, const Tilemap* current_tilemap, float delta)
 {
 	for (auto& [id, component] : physics_components_)
 	{
@@ -63,7 +63,7 @@ void ni::ComponentStore::PhysicsUpdate(b2WorldId world_id, const Tilemap* curren
 		{
 			continue;
 		}
-		component->PhysicsUpdate(*transform, current_tilemap);
+		component->PhysicsUpdate(*transform, current_tilemap, delta);
 		component->PhysicsUpdate(*transform, world_id);
 	}
 }

@@ -14,7 +14,7 @@ CharacterPhysicsComponent::CharacterPhysicsComponent(sf::Vector2i character_size
 {
 }
 
-void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap)
+void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap, float delta)
 {
 	if (!current_tilemap)
 	{
@@ -24,7 +24,7 @@ void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_
 
 	if (is_falling_)
 	{
-		velocity_.y += GRAVITY / 10.0f;
+		velocity_.y += GRAVITY;
 
 		if (velocity_.y > 0)
 		{
@@ -45,14 +45,14 @@ void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_
 	}
 
 	transform_component.GetTransformable().setScale(new_scale);
-	transform_component.GetTransformable().move(velocity_);
+	transform_component.GetTransformable().move(velocity_ * delta);
 
 	HandleCollisions(transform_component, current_tilemap);
 }
 
 void CharacterPhysicsComponent::Move(float dir)
 {
-	velocity_.x = dir * speed_ / 10.0f;
+	velocity_.x = dir * speed_;
 }
 
 void CharacterPhysicsComponent::Jump()
