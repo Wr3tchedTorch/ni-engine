@@ -13,7 +13,8 @@ enum CharacterState
 {
 	Jumping,
 	Falling,
-	Idle
+	Idle,
+	Moving
 };
 
 class CharacterPhysicsComponent : public ni::PhysicsComponent
@@ -42,7 +43,7 @@ private:
 	float speed_ = 100;
 	float jump_force_ = 400;
 	
-	CharacterState state_;
+	CharacterState state_ = CharacterState::Falling;
 	
 	void HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap);
 

@@ -2,7 +2,7 @@
 
 #include <string>
 #include <queue>
-#include <vector>
+#include <unordered_map>
 
 #include <SFML/Audio/Sound.hpp>
 
@@ -16,13 +16,17 @@ class SoundEngine
 friend class Engine;
 
 public:
+	void Preload(const std::string& key);
 	void PlaySound(std::string key);
-
-	void FlushSoundQueue(SoundBufferStore& store);
+	void FlushSoundQueue();
 
 private:
+	inline static const int kMaxSoundsPerFrame = 16;
+
+	SoundBufferStore sound_buffer_store_;
+
 	std::queue<std::string> sound_queue_;
-	std::vector<sf::Sound>  active_sounds_;
+	std::unordered_map<std::string, sf::Sound*> sounds_map_;
 };
 
 }

@@ -54,6 +54,11 @@ void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_
 void CharacterPhysicsComponent::Move(float dir)
 {
 	velocity_.x = dir * speed_;
+
+	if (dir != 0 && state_ != CharacterState::Falling && state_ != CharacterState::Jumping)
+	{
+		state_ = CharacterState::Moving;
+	}
 }
 
 void CharacterPhysicsComponent::Jump()
@@ -63,7 +68,7 @@ void CharacterPhysicsComponent::Jump()
 		return;
 	}
 	velocity_.y = -jump_force_;
-	state_ == CharacterState::Jumping;
+	state_ = CharacterState::Jumping;
 
 	on_jumping_.Notify();
 }
@@ -119,17 +124,12 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 				transform_component.GetTransformable().setPosition(snap_position);
 
 				is_falling = false;
+
 				if (state_ == CharacterState::Falling)
 				{
 					on_landing_.Notify();
 					state_ = CharacterState::Idle;
 				}
-			}
-
-			if (is_falling && state_ != CharacterState::Falling)
-			{
-				state_ = CharacterState::Falling;
-				on_falling_.Notify();
 			}
 
 			if (collision_block.findIntersection(GetFrontBounds(transform_component.GetTransformable().getPosition())) && !tile.one_sided_collision_)
@@ -144,6 +144,12 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 				transform_component.GetTransformable().setPosition(snap_position);
 			}			
 		}
+	}	
+
+	if (is_falling && state_ != CharacterState::Falling)
+	{
+		state_ = CharacterState::Falling;
+		on_falling_.Notify();
 	}
 }
 
@@ -171,8 +177,6 @@ sf::FloatRect CharacterPhysicsComponent::GetHeadBounds(sf::Vector2f position) co
 	head_bounds.position.y -= (size_.y / 4.0f) * 2 + 1;
 
 	return head_bounds;
-
-	return sf::FloatRect();
 }
 
 sf::FloatRect CharacterPhysicsComponent::GetFrontBounds(sf::Vector2f position) const

@@ -21,8 +21,7 @@ private:
 
 	GameModeController game_mode_controller_;
 
-	BitmapStore		 bitmap_store_;
-	SoundBufferStore sound_buffer_store_;
+	BitmapStore bitmap_store_;
 
 public:
 	static sf::Time		time_elapsed;

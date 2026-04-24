@@ -51,12 +51,13 @@ void ni::Engine::Run()
 		game_mode_controller_.Update();
 		game_mode_controller_.PhysicsUpdate(delta_time.asSeconds());
 
-		ServiceLocator::Instance().GetSoundEngine().FlushSoundQueue(sound_buffer_store_);
+		ServiceLocator::Instance().GetSoundEngine().FlushSoundQueue();
 
 		window_.clear(sf::Color::Black);
 
 		game_mode_controller_.Render(window_, sf::RenderStates::Default, bitmap_store_);
 
 		window_.display();
+
 	}
 }

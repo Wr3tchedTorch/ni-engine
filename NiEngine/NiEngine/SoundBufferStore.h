@@ -10,6 +10,7 @@ namespace ni {
 class SoundBufferStore
 {
 public:
+	void Preload(const std::string& key);
 	sf::SoundBuffer& GetSoundBuffer(const std::string& key);
 
 private:

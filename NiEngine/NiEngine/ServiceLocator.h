@@ -15,9 +15,9 @@ private:
 	ServiceLocator() = default;
 
 	ServiceLocator(const ServiceLocator&) = delete;
-	ServiceLocator(ServiceLocator&&) = delete;
+	ServiceLocator(ServiceLocator&&)      = delete;
 
-	ServiceLocator& operator=(ServiceLocator&&) = delete;
+	ServiceLocator& operator=(ServiceLocator&&)      = delete;
 	ServiceLocator& operator=(const ServiceLocator&) = delete;
 
 public:

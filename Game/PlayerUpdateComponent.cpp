@@ -1,7 +1,5 @@
 #include "PlayerUpdateComponent.h"
 
-#include <iostream>
-
 #include <NiEngine/ComponentLocator.h>
 #include <NiEngine/UpdateComponent.h>
 #include <NiEngine/ServiceLocator.h>
@@ -18,7 +16,9 @@
 PlayerUpdateComponent::PlayerUpdateComponent(ni::ComponentLocator& component_locator, ni::Id<ni::GameObjectTag> owner_id)
 	: ni::UpdateComponent(component_locator)
 {
-	owner_id_ = owner_id;	
+	owner_id_ = owner_id;
+
+	ni::ServiceLocator::Instance().GetSoundEngine().Preload(kJumpSoundKey);
 }
 
 void PlayerUpdateComponent::Init(ni::AnimatedGraphicsComponent& graphics, CharacterPhysicsComponent& physics)
@@ -46,8 +46,6 @@ void PlayerUpdateComponent::Init(ni::AnimatedGraphicsComponent& graphics, Charac
 
 	physics.OnLanding([this]() {
 		airborne_ = false;
-
-		ni::ServiceLocator::Instance().GetSoundEngine().PlaySound(kLandSoundKey);
 	});
 
 	ni::Animation jump_animation;
