@@ -33,6 +33,9 @@
     <ClCompile Include="CharacterPhysicsComponentCollision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ObstacleUpdateComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PlayerUpdateComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObstacleUpdateComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,6 +21,8 @@ PlatformerGameMode::PlatformerGameMode()
 	camera_.FitTo(tilemaps_.front().GetBounds());
 
 	entity_factory_.CreatePlatformerCharacter(*this, { 16, 16 }, 12);
+
+	entity_factory_.CreateObstacle(*this, { 16, 16 }, { 3, 9 }, true, true);
 }
 
 void PlatformerGameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
