@@ -8,6 +8,8 @@
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/GameMode.h>
 #include <NiEngine/TilemapUtility.h>
+#include <NiEngine/GameObjectTag.h>
+#include <NiEngine/Id.h>
 
 PlatformerGameMode::PlatformerGameMode()
 {
@@ -21,9 +23,9 @@ PlatformerGameMode::PlatformerGameMode()
 
 	camera_.FitTo(tilemaps_.front().GetBounds());
 
-	entity_factory_.CreatePlatformerCharacter(*this, { 16, 16 }, 12);
+	ni::Id<ni::GameObjectTag> player_id = entity_factory_.CreatePlatformerCharacter(*this, { 16, 16 }, 12);
 
-	entity_factory_.CreateObstacle(*this, {14*16, 16*16}, ni::TilemapUtility::GetTextureBounds({ 3, 9 }, 16, 1), true, true);
+	entity_factory_.CreateObstacle(*this, player_id, {14*16, 16*16}, ni::TilemapUtility::GetTextureBounds({ 3, 9 }, 16, 1), true, true);
 }
 
 void PlatformerGameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)

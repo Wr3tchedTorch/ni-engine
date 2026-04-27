@@ -34,6 +34,10 @@ public:
 	int OnJumping(std::function<void()> callback) { return on_jumping_.Subscribe(callback); }
 	int OnLanding(std::function<void()> callback) { return on_landing_.Subscribe(callback); }
 
+	sf::FloatRect GetFeetBounds(sf::Vector2f position) const;
+	sf::FloatRect GetHeadBounds(sf::Vector2f position) const;
+	sf::FloatRect GetFrontBounds(sf::Vector2f position) const;
+
 private:
 	ni::Subject<> on_falling_;
 	ni::Subject<> on_jumping_;
@@ -55,9 +59,5 @@ private:
 	bool CollideTop(   ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
 	bool CollideBottom(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
 	bool CollideFront( ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
-
-	sf::FloatRect GetFeetBounds(sf::Vector2f position) const;
-	sf::FloatRect GetHeadBounds(sf::Vector2f position) const;
-	sf::FloatRect GetFrontBounds(sf::Vector2f position) const;
 };
 

@@ -14,6 +14,7 @@
 
 #include "CharacterPhysicsComponent.h"
 #include "PlayerUpdateComponent.h"
+#include "ObstacleUpdateComponent.h"
 
 ni::Id<ni::GameObjectTag> EntityFactory::CreatePlatformerCharacter(ni::GameMode& game_mode, sf::Vector2i character_size, int animation_row)
 {
@@ -37,15 +38,17 @@ ni::Id<ni::GameObjectTag> EntityFactory::CreatePlatformerCharacter(ni::GameMode&
 	return id;
 }
 
-ni::Id<ni::GameObjectTag> EntityFactory::CreateObstacle(ni::GameMode& game_mode, sf::Vector2i position, sf::IntRect texture_rect, bool collidable, bool harmful)
+ni::Id<ni::GameObjectTag> EntityFactory::CreateObstacle(ni::GameMode& game_mode, ni::Id<ni::GameObjectTag> player_id, sf::Vector2i position, sf::IntRect texture_rect, bool collidable, bool harmful)
 {
 	ni::Id<ni::GameObjectTag> id = game_mode.CreateGameObject();
 	
 	auto graphics = std::make_unique<ni::StandardGraphicsComponent>("graphics/tilemap.png", texture_rect);
-	
+	auto update   = std::make_unique<ObstacleUpdateComponent>(game_mode.GetComponentStore(), id, player_id);
+
 	ni::TransformComponent transform;
 	transform.GetTransformable().setPosition(sf::Vector2f(position));
 
+	game_mode.GetComponentStore().AttachUpdateComponent   (id, std::move(update));
 	game_mode.GetComponentStore().AttachGraphicsComponent (id, std::move(graphics));
 	game_mode.GetComponentStore().AttachTransformComponent(id, transform);
 
