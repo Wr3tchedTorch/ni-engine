@@ -24,7 +24,7 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 	int end_x   = collision_area.position.x / size_.x + 1;
 	int end_y   = collision_area.position.y / size_.y + 1;
 
-	bool is_on_ground = false;
+	is_on_ground_ = false;
 	for (int x = start_x; x <= end_x; ++x)
 	{
 		for (int y = start_y; y <= end_y; ++y)
@@ -47,13 +47,13 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 				fall_through_platform_    = false;
 			}
 
-			is_on_ground |= CollideBottom(transform_component, tile, collision_block);
-			CollideFront (transform_component, tile, collision_block);
+			is_on_ground_ |= CollideBottom(transform_component, tile, collision_block);
+			CollideFront(transform_component, tile, collision_block);
 		}
 	}
 	fall_through_platform_ = false;
 
-	if (!is_on_ground && state_ != CharacterState::Falling)
+	if ((!is_on_ground_ && !is_on_non_tile_ground_) && state_ != CharacterState::Falling)
 	{
 		state_ = CharacterState::Falling;
 		on_falling_.Notify();
@@ -74,12 +74,7 @@ bool CharacterPhysicsComponent::CollideTop(ni::TransformComponent& transform_com
 		}
 		return false;
 	}
-	velocity_.y = 0;
-
-	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
-	snap_position.y = collision_block.position.y + collision_block.size.y + size_.y / 2.0f + 1;
-
-	transform_component.GetTransformable().setPosition(snap_position);
+	CollideTop(transform_component, collision_block);
 	return true;
 }
 
@@ -91,16 +86,8 @@ bool CharacterPhysicsComponent::CollideBottom(ni::TransformComponent& transform_
 	{
 		return false;
 	}
-	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
-	snap_position.y = collision_block.position.y - size_.y / 2.0f;
+	CollideBottom(transform_component, collision_block);
 
-	transform_component.GetTransformable().setPosition(snap_position);
-
-	if (state_ == CharacterState::Falling)
-	{
-		on_landing_.Notify();
-		state_ = CharacterState::Idle;
-	}
 	return true;
 }
 
@@ -110,14 +97,7 @@ bool CharacterPhysicsComponent::CollideFront(ni::TransformComponent& transform_c
 	{
 		return false;
 	}
-	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
-
-	int movement_sign = ni::MathUtility::GetSign(velocity_.x);
-
-	float block_center_x = collision_block.position.x + collision_block.size.x / 2.0f;
-	snap_position.x = block_center_x + size_.x * -movement_sign;
-
-	transform_component.GetTransformable().setPosition(snap_position);
+	CollideFront(transform_component, collision_block);
 
 	return true;
 }
@@ -163,4 +143,47 @@ sf::FloatRect CharacterPhysicsComponent::GetFrontBounds(sf::Vector2f position) c
 	front_bounds.position.y -= size_.y / 4.0f;
 
 	return front_bounds;
+}
+
+void CharacterPhysicsComponent::CollideTop(ni::TransformComponent& transform_component, const sf::FloatRect& collision_block)
+{
+	velocity_.y = 0;
+
+	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
+	snap_position.y = collision_block.position.y + collision_block.size.y + size_.y / 2.0f + 1;
+
+	transform_component.GetTransformable().setPosition(snap_position);
+}
+
+void CharacterPhysicsComponent::CollideBottom(ni::TransformComponent& transform_component, const sf::FloatRect& collision_block)
+{	
+	is_on_ground_ = true;
+
+	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
+	snap_position.y = collision_block.position.y - size_.y / 2.0f;
+
+	transform_component.GetTransformable().setPosition(snap_position);
+
+	if (state_ == CharacterState::Falling)
+	{
+		on_landing_.Notify();
+		state_ = CharacterState::Idle;
+	}
+}
+
+void CharacterPhysicsComponent::CollideFront(ni::TransformComponent& transform_component, const sf::FloatRect& collision_block)
+{
+	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
+
+	int movement_sign = ni::MathUtility::GetSign(velocity_.x);
+
+	float block_center_x = collision_block.position.x + collision_block.size.x / 2.0f;
+	snap_position.x = block_center_x + size_.x * -movement_sign;
+
+	transform_component.GetTransformable().setPosition(snap_position);
+}
+
+void CharacterPhysicsComponent::SetIsOnGround(bool is_on_non_tile_ground)
+{
+	is_on_non_tile_ground_ = is_on_non_tile_ground;
 }

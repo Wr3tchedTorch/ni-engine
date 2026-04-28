@@ -142,6 +142,8 @@
     <ClCompile Include="CharacterPhysicsComponent.cpp" />
     <ClCompile Include="CharacterPhysicsComponentCollision.cpp" />
     <ClCompile Include="EntityFactory.cpp" />
+    <ClCompile Include="ObstacleCollisionComponent.cpp" />
+    <ClCompile Include="ObstacleSolidCollisionComponent.cpp" />
     <ClCompile Include="ObstacleUpdateComponent.cpp" />
     <ClCompile Include="PlatformerGameMode.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -158,6 +160,8 @@
   <ItemGroup>
     <ClInclude Include="CharacterPhysicsComponent.h" />
     <ClInclude Include="EntityFactory.h" />
+    <ClInclude Include="ObstacleCollisionComponent.h" />
+    <ClInclude Include="ObstacleSolidCollisionComponent.h" />
     <ClInclude Include="ObstacleUpdateComponent.h" />
     <ClInclude Include="PlatformerGameMode.h" />
     <ClInclude Include="PlayerUpdateComponent.h" />

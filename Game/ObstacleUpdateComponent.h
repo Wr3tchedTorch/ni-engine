@@ -4,6 +4,10 @@
 #include <NiEngine/GameObjectTag.h>
 #include <NiEngine/Id.h>
 #include <NiEngine/ComponentLocator.h>
+#include <NiEngine/TransformComponent.h>
+#include <SFML/Graphics/Rect.hpp>
+
+#include "CharacterPhysicsComponent.h"
 
 class ObstacleUpdateComponent : public ni::UpdateComponent
 {
@@ -18,7 +22,13 @@ protected:
 	bool harmful_   = false;
 	bool collidable = false;
 
+	virtual void CollideTop	  (sf::FloatRect collision_box, ni::TransformComponent* player_transform, CharacterPhysicsComponent* player_physics);
+	virtual void CollideBottom(sf::FloatRect collision_box, ni::TransformComponent* player_transform, CharacterPhysicsComponent* player_physics);
+	virtual void CollideFront (sf::FloatRect collision_box, ni::TransformComponent* player_transform, CharacterPhysicsComponent* player_physics);
+
 private:
+
+
 	void HandleCollisions();
 };
 

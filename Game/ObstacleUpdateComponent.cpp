@@ -20,6 +20,22 @@ void ObstacleUpdateComponent::Update()
 	HandleCollisions();
 }
 
+void ObstacleUpdateComponent::CollideTop(sf::FloatRect collision_box, ni::TransformComponent* player_transform, CharacterPhysicsComponent* player_physics)
+{
+	player_physics->CollideBottom(*player_transform, collision_box);
+	player_physics->SetIsOnGround(true);
+}
+
+void ObstacleUpdateComponent::CollideBottom(sf::FloatRect collision_box, ni::TransformComponent* player_transform, CharacterPhysicsComponent* player_physics)
+{
+	player_physics->CollideTop(*player_transform, collision_box);
+}
+
+void ObstacleUpdateComponent::CollideFront(sf::FloatRect collision_box, ni::TransformComponent* player_transform, CharacterPhysicsComponent* player_physics)
+{
+	player_physics->CollideFront(*player_transform, collision_box);
+}
+
 void ObstacleUpdateComponent::HandleCollisions()
 {
 	ni::TransformComponent* transform        = component_locator_.GetTransformComponent(owner_id_ );
@@ -30,9 +46,22 @@ void ObstacleUpdateComponent::HandleCollisions()
 	collision_box.position = transform->GetTransformable().getPosition();
 	collision_box.size     = { 16, 16 };
 
-	if (collision_box.findIntersection(player_physics->GetFrontBounds(player_transform->GetTransformable().getPosition())) ||
-		collision_box.findIntersection(player_physics->GetFeetBounds(player_transform->GetTransformable().getPosition())))
+	if (collision_box.findIntersection(player_physics->GetFeetBounds(player_transform->GetTransformable().getPosition())))
 	{
-		player_transform->GetTransformable().setPosition({ 100, 100 });
+		CollideTop(collision_box, player_transform, player_physics);
+	}
+	else
+	{
+		player_physics->SetIsOnGround(false);
+	}
+
+	if (collision_box.findIntersection(player_physics->GetFrontBounds(player_transform->GetTransformable().getPosition())))
+	{
+		CollideFront(collision_box, player_transform, player_physics);
+	}
+
+	if (collision_box.findIntersection(player_physics->GetHeadBounds(player_transform->GetTransformable().getPosition())))
+	{
+		CollideBottom(collision_box, player_transform, player_physics);
 	}
 }

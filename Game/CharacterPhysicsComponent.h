@@ -38,6 +38,12 @@ public:
 	sf::FloatRect GetHeadBounds(sf::Vector2f position) const;
 	sf::FloatRect GetFrontBounds(sf::Vector2f position) const;
 
+	void CollideTop    (ni::TransformComponent& transform_component, const sf::FloatRect& collision_block);
+	void CollideBottom (ni::TransformComponent& transform_component, const sf::FloatRect& collision_block);
+	void CollideFront  (ni::TransformComponent& transform_component, const sf::FloatRect& collision_block);
+
+	void SetIsOnGround(bool is_on_non_tile_ground);
+
 private:
 	ni::Subject<> on_falling_;
 	ni::Subject<> on_jumping_;
@@ -53,6 +59,8 @@ private:
 
 	bool fall_through_platform_    = false;
 	bool falling_through_platform_ = false;
+	bool is_on_ground_          = false;
+	bool is_on_non_tile_ground_ = false;
 	
 	void HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap);
 

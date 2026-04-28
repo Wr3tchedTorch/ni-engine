@@ -4,7 +4,6 @@
 #include <cstdlib>
 
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/Rect.hpp>
 #include <NiEngine/TransformComponent.h>
 #include <NiEngine/Tilemap.h>
 #include <NiEngine/MathUtility.h>
