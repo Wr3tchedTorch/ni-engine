@@ -1,6 +1,7 @@
 #include "MovingObstacleUpdateComponent.h"
 
 #include <cmath>
+#include <algorithm>
 
 #include <SFML/System/Vector2.hpp>
 #include <NiEngine/ComponentLocator.h>
@@ -26,8 +27,6 @@ MovingObstacleUpdateComponent::MovingObstacleUpdateComponent(
 	sf::Vector2f current_position = transform.GetTransformable().getPosition();
 	target_position_ = current_position + sf::Vector2f(position_offset_);	
 	start_position_  = current_position;
-
-	time_since_movement_started_ = ni::Engine::time_elapsed;
 }
 
 void MovingObstacleUpdateComponent::Update()
@@ -36,8 +35,34 @@ void MovingObstacleUpdateComponent::Update()
 	{
 		Move();
 	}
-	
+	else if (!moved_)
+	{
+		LocatePlayer();
+	}
 	ObstacleUpdateComponent::Update();
+}
+
+void MovingObstacleUpdateComponent::LocatePlayer()
+{
+	ni::TransformComponent* transform        = component_locator_.GetTransformComponent(owner_id_);
+	ni::TransformComponent* player_transform = component_locator_.GetTransformComponent(player_id_);
+
+	float position_x		= transform->GetTransformable().getPosition().x + 8;
+	float player_position_x = player_transform->GetTransformable().getPosition().x;
+
+	float distance = std::max(position_x, player_position_x) - std::min(position_x, player_position_x);
+
+	if (distance < 16)
+	{
+		TriggerMovement();
+	}
+}
+
+void MovingObstacleUpdateComponent::TriggerMovement()
+{
+	moving_ = true;
+	moved_  = true;
+	time_since_movement_started_ = ni::Engine::time_elapsed;
 }
 
 void MovingObstacleUpdateComponent::Move()

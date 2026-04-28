@@ -48,7 +48,7 @@ ni::Id<ni::GameObjectTag> EntityFactory::CreateObstacle(ni::GameMode& game_mode,
 	ni::TransformComponent transform;
 	transform.GetTransformable().setPosition(sf::Vector2f(position));
 
-	auto update = std::make_unique<MovingObstacleUpdateComponent>(game_mode.GetComponentStore(), transform, id, player_id, sf::Vector2i({32, 0}), 1.0f);
+	auto update = std::make_unique<MovingObstacleUpdateComponent>(game_mode.GetComponentStore(), transform, id, player_id, sf::Vector2i({32, 0}), 0.2f);
 	update->RegisterCollisionComponent(std::make_unique<ObstacleHarmfulCollisionComponent>());
 
 	game_mode.GetComponentStore().AttachUpdateComponent   (id, std::move(update));
