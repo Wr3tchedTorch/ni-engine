@@ -32,20 +32,30 @@ MovingObstacleUpdateComponent::MovingObstacleUpdateComponent(
 
 void MovingObstacleUpdateComponent::Update()
 {
-	// MOVEMENT IMPLEMENTATION
-
-	ni::TransformComponent* transform = component_locator_.GetTransformComponent(owner_id_);
-	
-	float time_passed = (ni::Engine::time_elapsed - time_since_movement_started_).asSeconds();
-	if (moving_ && target_position_ != transform->GetTransformable().getPosition() && time_passed < delay_in_seconds_)
+	if (moving_)
 	{
-		sf::Vector2f new_pos = transform->GetTransformable().getPosition();
-
-		new_pos.x = std::lerp(start_position_.x, target_position_.x, time_passed / delay_in_seconds_);
-		new_pos.y = std::lerp(start_position_.y, target_position_.y, time_passed / delay_in_seconds_);
-
-		transform->GetTransformable().setPosition(new_pos);
+		Move();
 	}
 	
 	ObstacleUpdateComponent::Update();
+}
+
+void MovingObstacleUpdateComponent::Move()
+{
+	ni::TransformComponent* transform = component_locator_.GetTransformComponent(owner_id_);
+	if (target_position_ == transform->GetTransformable().getPosition())
+	{
+		return;
+	}
+	float time_passed = (ni::Engine::time_elapsed - time_since_movement_started_).asSeconds();
+	if (time_passed > delay_in_seconds_)
+	{
+		moving_ = false;
+	}
+	sf::Vector2f new_pos = transform->GetTransformable().getPosition();
+
+	new_pos.x = std::lerp(start_position_.x, target_position_.x, time_passed / delay_in_seconds_);
+	new_pos.y = std::lerp(start_position_.y, target_position_.y, time_passed / delay_in_seconds_);
+
+	transform->GetTransformable().setPosition(new_pos);
 }

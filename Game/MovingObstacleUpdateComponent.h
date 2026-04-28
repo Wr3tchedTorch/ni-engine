@@ -13,7 +13,9 @@ class MovingObstacleUpdateComponent : public ObstacleUpdateComponent
 {
 public:
 	MovingObstacleUpdateComponent(ni::ComponentLocator& component_locator, ni::TransformComponent& transform, ni::Id<ni::GameObjectTag> id, ni::Id<ni::GameObjectTag> player_id, sf::Vector2i position_offset, float delay_in_seconds);
-	void Update() override;
+	
+	void Update() override;	
+	void Move();
 
 private:
 	sf::Vector2i position_offset_ = {};
