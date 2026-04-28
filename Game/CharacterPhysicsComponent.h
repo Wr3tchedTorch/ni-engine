@@ -34,13 +34,15 @@ public:
 	int OnJumping(std::function<void()> callback) { return on_jumping_.Subscribe(callback); }
 	int OnLanding(std::function<void()> callback) { return on_landing_.Subscribe(callback); }
 
-	sf::FloatRect GetFeetBounds(sf::Vector2f position) const;
-	sf::FloatRect GetHeadBounds(sf::Vector2f position) const;
+	sf::FloatRect GetFeetBounds (sf::Vector2f position) const;
+	sf::FloatRect GetHeadBounds (sf::Vector2f position) const;
 	sf::FloatRect GetFrontBounds(sf::Vector2f position) const;
+	sf::FloatRect GetSideBounds (sf::Vector2f position, int sign) const;
 
 	void CollideTop    (ni::TransformComponent& transform_component, const sf::FloatRect& collision_block);
 	void CollideBottom (ni::TransformComponent& transform_component, const sf::FloatRect& collision_block);
 	void CollideFront  (ni::TransformComponent& transform_component, const sf::FloatRect& collision_block);
+	void CollideSides  (ni::TransformComponent& transform_component, const sf::FloatRect& collision_block, int sign);
 
 	void SetIsOnGround(bool is_on_non_tile_ground);
 
@@ -64,8 +66,8 @@ private:
 	
 	void HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap);
 
-	bool CollideTop(   ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
-	bool CollideBottom(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
-	bool CollideFront( ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
+	bool TryCollideTop   (ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
+	bool TryCollideBottom(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
+	bool TryCollideSides (ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
 };
 

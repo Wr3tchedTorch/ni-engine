@@ -39,7 +39,7 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 
 			ni::TileBlueprint tile = current_tilemap->GetTileInfo({ x, y }, ni::Tilemap::kTerrainLayerName);
 
-			CollideTop(transform_component, tile, collision_block);			
+			TryCollideTop(transform_component, tile, collision_block);
 
 			if (fall_through_platform_ && tile.one_sided_collision_)
 			{
@@ -47,8 +47,8 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 				fall_through_platform_    = false;
 			}
 
-			is_on_ground_ |= CollideBottom(transform_component, tile, collision_block);
-			CollideFront(transform_component, tile, collision_block);
+			is_on_ground_ |= TryCollideBottom(transform_component, tile, collision_block);
+			TryCollideSides(transform_component, tile, collision_block);
 		}
 	}
 	fall_through_platform_ = false;
@@ -60,7 +60,7 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 	}
 }
 
-bool CharacterPhysicsComponent::CollideTop(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block)
+bool CharacterPhysicsComponent::TryCollideTop(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block)
 {
 	if (!collision_block.findIntersection(GetHeadBounds(transform_component.GetTransformable().getPosition())))
 	{
@@ -78,7 +78,7 @@ bool CharacterPhysicsComponent::CollideTop(ni::TransformComponent& transform_com
 	return true;
 }
 
-bool CharacterPhysicsComponent::CollideBottom(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block)
+bool CharacterPhysicsComponent::TryCollideBottom(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block)
 {
 	bool pass_through    = tile.one_sided_collision_ && velocity_.y < 0;
 	bool below_the_block = GetFeetBounds(transform_component.GetTransformable().getPosition()).position.y > collision_block.position.y + collision_block.size.y / 3.0f;
@@ -91,14 +91,22 @@ bool CharacterPhysicsComponent::CollideBottom(ni::TransformComponent& transform_
 	return true;
 }
 
-bool CharacterPhysicsComponent::CollideFront(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block)
+bool CharacterPhysicsComponent::TryCollideSides(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block)
 {
-	if (!collision_block.findIntersection(GetFrontBounds(transform_component.GetTransformable().getPosition())) || tile.one_sided_collision_)
+	bool left_collision  = static_cast<bool>(collision_block.findIntersection(GetSideBounds(transform_component.GetTransformable().getPosition(), -1)));
+	bool right_collision = static_cast<bool>(collision_block.findIntersection(GetSideBounds(transform_component.GetTransformable().getPosition(),  1)));
+	if ((!left_collision && !right_collision) || tile.one_sided_collision_)
 	{
 		return false;
 	}
-	CollideFront(transform_component, collision_block);
-
+	if (left_collision)
+	{
+		CollideSides(transform_component, collision_block, -1);
+	}
+	if (right_collision)
+	{
+		CollideSides(transform_component, collision_block,  1);
+	}
 	return true;
 }
 
@@ -132,6 +140,11 @@ sf::FloatRect CharacterPhysicsComponent::GetFrontBounds(sf::Vector2f position) c
 {
 	int movement_sign = ni::MathUtility::GetSign(velocity_.x);
 
+	return GetSideBounds(position, movement_sign);
+}
+
+sf::FloatRect CharacterPhysicsComponent::GetSideBounds(sf::Vector2f position, int sign) const
+{
 	float width = size_.x / 4.0f + 1;
 
 	sf::FloatRect front_bounds;
@@ -139,7 +152,7 @@ sf::FloatRect CharacterPhysicsComponent::GetFrontBounds(sf::Vector2f position) c
 	front_bounds.size.y = size_.y / 2.0f;
 
 	front_bounds.position = position;
-	front_bounds.position.x += size_.x / 4.0f * movement_sign - (movement_sign < 0 ? width : 0);
+	front_bounds.position.x += size_.x / 4.0f * sign - (sign < 0 ? width : 0);
 	front_bounds.position.y -= size_.y / 4.0f;
 
 	return front_bounds;
@@ -173,12 +186,17 @@ void CharacterPhysicsComponent::CollideBottom(ni::TransformComponent& transform_
 
 void CharacterPhysicsComponent::CollideFront(ni::TransformComponent& transform_component, const sf::FloatRect& collision_block)
 {
-	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
-
 	int movement_sign = ni::MathUtility::GetSign(velocity_.x);
 
+	CollideSides(transform_component, collision_block, movement_sign);
+}
+
+void CharacterPhysicsComponent::CollideSides(ni::TransformComponent& transform_component, const sf::FloatRect& collision_block, int sign)
+{
+	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
+
 	float block_center_x = collision_block.position.x + collision_block.size.x / 2.0f;
-	snap_position.x = block_center_x + size_.x * -movement_sign;
+	snap_position.x = block_center_x + size_.x * -sign;
 
 	transform_component.GetTransformable().setPosition(snap_position);
 }
