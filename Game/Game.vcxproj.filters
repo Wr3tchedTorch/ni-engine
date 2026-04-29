@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Components\ObstacleCollision">
       <UniqueIdentifier>{5882d7b5-e423-43ab-839e-a0948733bba2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\FileIO">
+      <UniqueIdentifier>{3714566a-568e-4558-826f-fc2536f962d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -97,6 +100,15 @@
     </ClInclude>
     <ClInclude Include="MovingObstacleUpdateComponent.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ObstacleObjectBlueprint.h">
+      <Filter>Header Files\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectLayerBlueprint.h">
+      <Filter>Header Files\FileIO</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectBlueprint.h">
+      <Filter>Header Files\FileIO</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -178,12 +178,14 @@
     <ClInclude Include="NiEngine\SoundBufferStore.h" />
     <ClInclude Include="NiEngine\SoundEngine.h" />
     <ClInclude Include="NiEngine\TilemapUtility.h" />
+    <ClInclude Include="PropertyBlueprint.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NiEngine\MathUtility.h" />
+    <ClCompile Include="NiEngine\ObjectTemplateBlueprint.h" />
     <ClCompile Include="src\SoundBufferStore.cpp" />
     <ClCompile Include="src\SoundEngine.cpp" />
     <ClCompile Include="src\AnimatedGraphicsComponent.cpp" />

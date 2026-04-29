@@ -53,7 +53,7 @@ ni::Id<ni::GameObjectTag> EntityFactory::CreateObstacle(ni::GameMode& game_mode,
 
 	auto update = std::make_unique<MovingObstacleUpdateComponent>(
 		game_mode.GetComponentStore(), transform, id, player_id, 
-		sf::Vector2i({ 32, 0 }), 20, 
+		sf::Vector2i({ 0, -32 }), 20, 
 		sf::Vector2f({ static_cast<float>((repeat_amount.x + 1) * 16), 16}),
 		0.2f
 	);

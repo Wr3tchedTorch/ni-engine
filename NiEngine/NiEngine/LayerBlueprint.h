@@ -36,6 +36,11 @@ inline void to_json(json& j, const LayerBlueprint& lb)
 
 inline void from_json(const json& j, LayerBlueprint& lb)
 {
+	if (j.at("type") != "tilelayer")
+	{
+		return;
+	}
+
 	j.at("x").get_to(lb.position_.x);
 	j.at("y").get_to(lb.position_.y);
 	j.at("name").get_to(lb.name_);

@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <vector>
 #include <cassert>
+#include <memory>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -20,7 +21,6 @@
 #include <NiEngine/LayerBlueprint.h>
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/TileBlueprint.h>
-#include <memory>
 #include <NiEngine/TilemapCollisionComponent.h>
 
 void ni::Tilemap::LoadTilesetBlueprints(const std::vector<TilesetReference>& tileset_references)

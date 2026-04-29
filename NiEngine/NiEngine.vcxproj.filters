@@ -200,6 +200,9 @@
     <ClInclude Include="NiEngine\TilemapUtility.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="PropertyBlueprint.h">
+      <Filter>Header Files\FileIO\Blueprints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -267,6 +270,9 @@
     </ClCompile>
     <ClCompile Include="src\PhysicsEngine.cpp">
       <Filter>Source Files\Engine\Physics and Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="NiEngine\ObjectTemplateBlueprint.h">
+      <Filter>Header Files\FileIO\Blueprints</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

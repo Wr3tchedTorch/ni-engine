@@ -163,12 +163,15 @@
     <ClInclude Include="CharacterPhysicsComponent.h" />
     <ClInclude Include="EntityFactory.h" />
     <ClInclude Include="MovingObstacleUpdateComponent.h" />
+    <ClInclude Include="ObjectBlueprint.h" />
+    <ClInclude Include="ObjectLayerBlueprint.h" />
     <ClInclude Include="ObstacleCollisionComponent.h" />
     <ClInclude Include="ObstacleHarmfulCollisionComponent.h" />
     <ClInclude Include="ObstacleSolidCollisionComponent.h" />
     <ClInclude Include="ObstacleUpdateComponent.h" />
     <ClInclude Include="PlatformerGameMode.h" />
     <ClInclude Include="PlayerUpdateComponent.h" />
+    <ClInclude Include="ObstacleObjectBlueprint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -31,7 +31,7 @@ inline void to_json(json& j, const TilemapBlueprint& tb)
 		{"tileHeight", tb.tile_size_.y },
 		{"tilesets",   tb.tileset_references_ },
 		{"layers",     tb.layers_ }
-	};
+	};	
 }
 
 inline void from_json(const json& j, TilemapBlueprint& tb)
@@ -43,7 +43,7 @@ inline void from_json(const json& j, TilemapBlueprint& tb)
 	j.at("tileheight").get_to(tb.tile_size_.y);
 
 	j.at("tilesets").get_to(tb.tileset_references_);
-	j.at("layers").get_to(tb.layers_);
+	j.at("layers").get_to(tb.layers_);	
 }
 
 }
