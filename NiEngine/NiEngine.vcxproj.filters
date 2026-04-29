@@ -203,6 +203,12 @@
     <ClInclude Include="PropertyBlueprint.h">
       <Filter>Header Files\FileIO\Blueprints</Filter>
     </ClInclude>
+    <ClInclude Include="NiEngine\ObjectBlueprint.h">
+      <Filter>Header Files\FileIO\Blueprints</Filter>
+    </ClInclude>
+    <ClInclude Include="NiEngine\ObjectLayerBlueprint.h">
+      <Filter>Header Files\FileIO\Blueprints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

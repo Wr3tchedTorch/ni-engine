@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <variant>
 
 #include <nlohmann/json.hpp>
 
@@ -8,28 +9,38 @@ using json = nlohmann::json;
 
 namespace ni {
 
+using PropertyValue = std::variant<std::string, float, int, bool>;
+
 struct PropertyBlueprint
 {
-	std::string name_  = "";
-	std::string type_  = "";
-	std::string value_ = "";
+	std::string   name_  = "";
+	std::string   type_  = "";
+	PropertyValue value_ = {};
 };
 
-inline void to_json(json& j, const PropertyBlueprint& lb)
+inline void to_json(json& j, const PropertyBlueprint& pb)
 {
 	j =
 	{
-		{ "name",  lb.name_  },
-		{ "type",  lb.type_  },
-		{ "value", lb.value_ }
+		{ "name",  pb.name_  },
+		{ "type",  pb.type_  }		
 	};
+
+	std::visit([&j](const auto& val)
+	{
+		j["value"] = val;
+	}, pb.value_);
 }
 
-inline void from_json(const json& j, PropertyBlueprint& lb)
+inline void from_json(const json& j, PropertyBlueprint& pb)
 {
-	j.at("name") .get_to(lb.name_);
-	j.at("type") .get_to(lb.type_);
-	j.at("value").get_to(lb.value_);
+	j.at("name") .get_to(pb.name_);
+	j.at("type") .get_to(pb.type_);
+	
+	if (pb.type_ == "float") pb.value_ = j.at("value").get<float>();
+	if (pb.type_ == "int")   pb.value_ = j.at("value").get<int>  ();
+	if (pb.type_ == "bool")  pb.value_ = j.at("value").get<bool> ();
+	else                     pb.value_ = j.at("value").get<std::string>();
 }
 
 }

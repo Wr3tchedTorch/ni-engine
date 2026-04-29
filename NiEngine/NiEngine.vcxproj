@@ -158,6 +158,8 @@
     <ClInclude Include="NiEngine\Id.h" />
     <ClInclude Include="NiEngine\LayerBlueprint.h" />
     <ClInclude Include="NiEngine\MapUtility.h" />
+    <ClInclude Include="NiEngine\ObjectBlueprint.h" />
+    <ClInclude Include="NiEngine\ObjectLayerBlueprint.h" />
     <ClInclude Include="NiEngine\PhysicsComponent.h" />
     <ClInclude Include="NiEngine\PhysicsEngine.h" />
     <ClInclude Include="NiEngine\PolygonBlueprint.h" />
