@@ -9,7 +9,7 @@
 #include <NiEngine/ComponentStore.h>
 #include <NiEngine/Id.h>
 #include <NiEngine/GameObjectTag.h>
-#include <NiEngine/Tilemap.h>
+#include <NiEngine/Level.h>
 #include <NiEngine/PhysicsEngine.h>
 
 namespace ni {
@@ -24,7 +24,7 @@ private:
 	bool box2d_enabled = false;
 
 protected:
-	std::vector<Tilemap> tilemaps_;
+	Level level_;
 
 	ComponentStore component_store_;
 	PhysicsEngine  physics_engine_;
@@ -45,7 +45,7 @@ public:
 		return ++current_game_object_id_;
 	}
 
-	void RegisterTilemap(const std::string& filepath, bool enable_collision = true);
+	void LoadLevel(int index, bool enable_tilemap_collisions = true);
 
 	void SetBox2dEnabled(bool value)
 	{

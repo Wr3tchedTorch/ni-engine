@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <unordered_set>
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -23,6 +24,9 @@ namespace ni {
 class Tilemap
 {
 private:
+	std::unordered_set<LayerBlueprint,   LayerBlueprintHash>   layers_;
+	std::unordered_set<TilesetBlueprint, TilesetBlueprintHash> tilesets_;
+
 	TilemapGraphicsComponent   graphics_;
 
 	std::unique_ptr<TilemapCollisionComponent> collision_ = nullptr;
@@ -36,11 +40,8 @@ private:
 	sf::Vector2i tile_size_ = {};
 
 public:
-	inline static const std::string kPrototypeLayerName = "prototype";
-	inline static const std::string kTerrainLayerName   = "terrain";
-
 	void Init(sf::Vector2i map_size, sf::Vector2i tile_size);
-	void LoadTiles(const LayerBlueprint& layer, const std::vector<TilesetBlueprint>& tileset_blueprints);
+	void LoadTiles(LayerBlueprint layer, const std::vector<TilesetBlueprint>& tileset_blueprints);
 	void EnableCollision(b2WorldId world_id);
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 
@@ -48,7 +49,8 @@ public:
 
 	sf::Vector2i GlobalToGridPosition(sf::Vector2f position) const;
 
-	TileBlueprint GetTileInfo(sf::Vector2i tile_grid_position, const LayerBlueprint& layer, const std::vector<TilesetBlueprint>& tileset_blueprints) const;
+	TileBlueprint  GetTileInfo(sf::Vector2i tile_grid_position, const std::string& layer_name) const;
+	LayerBlueprint GetLayerByName(const std::string& layer_name) const;
 
 	bool IsTileEmpty(sf::Vector2i tile_grid_position) const;
 };

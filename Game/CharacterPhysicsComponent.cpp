@@ -12,14 +12,8 @@ CharacterPhysicsComponent::CharacterPhysicsComponent(sf::Vector2i character_size
 {
 }
 
-void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap, float delta)
+void CharacterPhysicsComponent::PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap& current_tilemap, float delta)
 {
-	if (!current_tilemap)
-	{
-		std::cout << "ERROR! Tilemap not provided!";
-		return;
-	}
-
 	if (state_ == CharacterState::Falling || state_ == CharacterState::Jumping)
 	{
 		velocity_.y += GRAVITY;

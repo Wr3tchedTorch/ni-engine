@@ -24,7 +24,7 @@ public:
 	inline static const float GRAVITY = 20.0f;
 	
 	CharacterPhysicsComponent(sf::Vector2i character_size);
-	void PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap, float delta) override;
+	void PhysicsUpdate(ni::TransformComponent& transform_component, const ni::Tilemap& current_tilemap, float delta) override;
 
 	void Move(float dir);
 	void Jump();
@@ -64,7 +64,7 @@ private:
 	bool is_on_ground_          = false;
 	bool is_on_non_tile_ground_ = false;
 	
-	void HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap);
+	void HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap& current_tilemap);
 
 	bool TryCollideTop   (ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);
 	bool TryCollideBottom(ni::TransformComponent& transform_component, const ni::TileBlueprint& tile, const sf::FloatRect& collision_block);

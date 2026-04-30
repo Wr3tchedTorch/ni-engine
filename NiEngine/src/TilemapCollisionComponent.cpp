@@ -15,6 +15,7 @@
 #include <NiEngine/TileBlueprint.h>
 #include <NiEngine/Tilemap.h>
 #include <NiEngine/CollisionBits.h>
+#include <NiEngine/TilemapUtility.h>
 
 std::vector<ni::LoopInformation> ni::TilemapCollisionComponent::GetCollisionLoops(EdgesMap& map)
 {
@@ -77,7 +78,7 @@ void ni::TilemapCollisionComponent::AddFullCollisionForTile(
 	for (const auto& edge : kEdges) 
 	{
 		sf::Vector2i neighbor = tile_grid_position + edge.neighbor_offset;
-		if (!Tilemap::IsTileEmpty(layer.data_, map_size, neighbor)) continue;
+		if (!TilemapUtility::IsTileEmpty(layer.data_, map_size, neighbor)) continue;
 
 		sf::Vector2i start = tile_position + edge.start_offset;
 		sf::Vector2i end = tile_position + edge.end_offset;
@@ -150,7 +151,7 @@ void ni::TilemapCollisionComponent::AddTile(
 	const TileBlueprint& tile = tileset.tiles_.at(tile_gid);
 
 	// One sided (above only) collision
-	bool is_top_empty = Tilemap::IsTileEmpty(layer.data_, map_size, { gx, gy - 1 });
+	bool is_top_empty = TilemapUtility::IsTileEmpty(layer.data_, map_size, { gx, gy - 1 });
 	if (is_top_empty && tile.one_sided_collision_)
 	{
 		one_sided_edges_[{x, y}] = { x + tile_size.x, y };

@@ -1,28 +1,18 @@
 #include <NiEngine/GameMode.h>
 
-#include <string>
-#include <utility>
-
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/GameModeController.h>
-#include <NiEngine/Tilemap.h>
-#include <NiEngine/SoundEngine.h>
 
-void ni::GameMode::RegisterTilemap(const std::string& filepath, bool enable_collision)
-{	
-	Tilemap map;
-
-	if (enable_collision)
+void ni::GameMode::LoadLevel(int index, bool enable_tilemap_collisions)
+{
+	level_.LoadLevel(index);
+	if (enable_tilemap_collisions)
 	{
-		map.EnableCollision(physics_engine_.GetWorldId());
+		level_.EnableTilemapCollisions(physics_engine_.GetWorldId());
 	}
-
-	map.LoadFromFile(filepath);
-
-	tilemaps_.push_back(std::move(map));
 }
 
 void ni::GameMode::PhysicsUpdate(float delta)
@@ -32,8 +22,7 @@ void ni::GameMode::PhysicsUpdate(float delta)
 		physics_engine_.PhysicsUpdate();
 	}
 
-	auto* tilemap = tilemaps_.empty() ? nullptr : &tilemaps_.front();
-	component_store_.PhysicsUpdate(physics_engine_.GetWorldId(), tilemap, delta);
+	component_store_.PhysicsUpdate(physics_engine_.GetWorldId(), level_.GetCurrentTilemap(), delta);
 }
 
 void ni::GameMode::Update(GameModeController& controller)
@@ -43,9 +32,6 @@ void ni::GameMode::Update(GameModeController& controller)
 
 void ni::GameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
 {
-	for (auto& map : tilemaps_)
-	{
-		map.Render(target, states, store);
-	}
+	level_.RenderTilemap(target, states, store);
 	component_store_.Render(target, states, store);
 }

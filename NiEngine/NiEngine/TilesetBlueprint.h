@@ -8,6 +8,9 @@
 
 #include <NiEngine/MapUtility.h>
 #include <NiEngine/TileBlueprint.h>
+#include <algorithm>
+#include <type_traits>
+#include <vector>
 
 using json = nlohmann::json;
 
@@ -29,6 +32,60 @@ struct TilesetBlueprint
 	std::unordered_map<int, TileBlueprint> tiles_ = {};
 
 	int first_gid_ = 0;
+
+	inline bool operator==(const TilesetBlueprint& b) const
+	{
+		return name_ == b.name_
+			&& texture_key_ == b.texture_key_
+			&& tile_size_.x == b.tile_size_.x
+			&& tile_size_.y == b.tile_size_.y
+			&& image_size_.x == b.image_size_.x
+			&& image_size_.y == b.image_size_.y
+			&& spacing_ == b.spacing_
+			&& margin_ == b.margin_
+			&& columns_ == b.columns_
+			&& tile_count_ == b.tile_count_
+			&& first_gid_ == b.first_gid_
+			&& tiles_ == b.tiles_;
+	}
+};
+
+struct TilesetBlueprintHash
+{
+	std::size_t operator()(const TilesetBlueprint& t) const noexcept
+	{
+		std::size_t seed = 0;
+
+		auto hash_combine = [&seed](std::size_t h)
+			{
+				seed ^= h + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+			};
+
+		hash_combine(std::hash<std::string>{}(t.name_));
+		hash_combine(std::hash<std::string>{}(t.texture_key_));
+		hash_combine(std::hash<int>{}(t.tile_size_.x));
+		hash_combine(std::hash<int>{}(t.tile_size_.y));
+		hash_combine(std::hash<int>{}(t.image_size_.x));
+		hash_combine(std::hash<int>{}(t.image_size_.y));
+		hash_combine(std::hash<int>{}(t.spacing_));
+		hash_combine(std::hash<int>{}(t.margin_));
+		hash_combine(std::hash<int>{}(t.columns_));
+		hash_combine(std::hash<int>{}(t.tile_count_));
+		hash_combine(std::hash<int>{}(t.first_gid_));
+
+		std::vector<int> keys;
+		keys.reserve(t.tiles_.size());
+		for (const auto& [key, _] : t.tiles_)
+			keys.push_back(key);
+		std::sort(keys.begin(), keys.end());
+
+		for (const int key : keys)
+		{
+			hash_combine(std::hash<int>{}(key));
+			hash_combine(TileBlueprintHash{}(t.tiles_.at(key)));
+		}
+		return seed;
+	}
 };
 
 inline void to_json(json& j, const TilesetBlueprint& tb)

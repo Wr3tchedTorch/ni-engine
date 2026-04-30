@@ -1,6 +1,10 @@
 {
-    "activeFile": "tilesets/kenney_1bit.tsx",
+    "activeFile": "maps/level_01/level_01.tmx",
     "expandedProjectPaths": [
+        "maps/templates",
+        ".",
+        "maps",
+        "maps/level_01"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -32,8 +36,8 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 240,
-                "y": 160.25
+                "x": 305.25,
+                "y": 228.5
             }
         },
         "maps/level_02/level_02.tmx": {
@@ -72,7 +76,7 @@
             "scaleInEditor": 2
         },
         "tilesets/kenney_1bit.json": {
-            "scaleInDock": 1,
+            "scaleInDock": 4,
             "scaleInEditor": 5.5
         },
         "tilesets/kenney_1bit.tsx": {
@@ -115,8 +119,8 @@
         "tilesets/karsioriart_tiles_and_backgrounds.tsx",
         "maps/level_02/level_02.tmx",
         "tilesets/kenney_1bit.json",
-        "maps/level_01/level_01.tmx",
         "tilesets/kenney_1bit.tsx",
+        "maps/level_01/level_01.tmx",
         "maps/rules/ground_autotile_rules.tmx",
         "tilesets/transparent_tiles.tsx",
         "maps/rules/ground_autotile_rules_karsioriart.tmx",

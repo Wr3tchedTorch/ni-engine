@@ -19,9 +19,9 @@ PlatformerGameMode::PlatformerGameMode()
 	world_def.gravity = { 0.0f, 9.8f };
 	GetPhysicsEngine().CreateWorld(world_def);
 
-	RegisterTilemap("maps/level_00/level_00.json");
+	level_.LoadNextLevel();
 
-	camera_.FitTo(tilemaps_.front().GetBounds());
+	camera_.FitTo(level_.GetCurrentTilemap().GetBounds());
 
 	ni::Id<ni::GameObjectTag> player_id = entity_factory_.CreatePlatformerCharacter(*this, { 16, 16 }, 12);
 

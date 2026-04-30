@@ -1,22 +1,26 @@
 #include <NiEngine/Level.h>
 
+#include <id.h>
+
 #include <filesystem>
 #include <string>
 #include <vector>
 #include <format>
-#include <iostream>
 
-#include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <NiEngine/TilesetBlueprint.h>
 #include <NiEngine/TilesetReference.h>
 #include <NiEngine/FileUtility.h>
 #include <NiEngine/DataHandler.h>
 #include <NiEngine/LevelBlueprint.h>
-#include <NiEngine/TileBlueprint.h>
 #include <NiEngine/LayerBlueprint.h>
+#include <NiEngine/BitmapStore.h>
+#include <NiEngine/Tilemap.h>
 
-ni::Level::Level(int num_of_levels)
+void ni::Level::SetTotalLevelCount(int count)
 {
+	num_of_levels_ = count;
 }
 
 void ni::Level::ReloadLevel()
@@ -31,6 +35,16 @@ void ni::Level::LoadNextLevel()
 	LoadLevel(current_level_);
 }
 
+void ni::Level::EnableTilemapCollisions(b2WorldId world_id)
+{
+	tilemap_.EnableCollision(world_id);
+}
+
+const ni::Tilemap& ni::Level::GetCurrentTilemap() const
+{
+	return tilemap_;
+}
+
 const ni::LayerBlueprint* ni::Level::GetLayerByName(const std::string& layer_name) const
 {
 	for (auto& layer : current_level_blueprint_.layers_)
@@ -43,35 +57,21 @@ const ni::LayerBlueprint* ni::Level::GetLayerByName(const std::string& layer_nam
 	return nullptr;
 }
 
-ni::TileBlueprint ni::Level::GetTileAt(sf::Vector2i tile_grid_position) const
+void ni::Level::RenderTilemap(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
 {
-	TileBlueprint tile;
-	for (auto& layer : current_level_blueprint_.layers_)
-	{
-		if (layer.type_ == kObjectsLayerType || layer.name_ == kPrototypeLayerName)
-		{
-			continue;
-		}
-		tile = tilemap_.GetTileInfo(tile_grid_position, layer, tileset_blueprints_);
-
-		if (tile.id_ != 0)
-		{
-			return tile;
-		}
-	}
-#ifdef _DEBUG
-	std::cout << std::format("Tile not found at: {}, {}", tile_grid_position.x, tile_grid_position.y);
-#endif // _DEBUG
-	return tile;
+	tilemap_.Render(target, states, store);
 }
 
 void ni::Level::LoadLevel(int index)
 {
-	DataHandler<LevelBlueprint> handler(std::format("{}/level{}.json", kDefaultLevelsDirectory, index));
+	std::string path = std::format("{}/level_{}/level_{}.json", kDefaultLevelsDirectory, index, index);
+	DataHandler<LevelBlueprint> handler(path);
 
 	current_level_blueprint_ = handler.GetBlueprint();
 
 	LoadTilesetBlueprints(current_level_blueprint_.tileset_references_);
+
+	tilemap_.Init(current_level_blueprint_.map_size_, current_level_blueprint_.tile_size_);
 
 	for (int i = 0; i < current_level_blueprint_.layers_.size(); ++i)
 	{

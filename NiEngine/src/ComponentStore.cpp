@@ -15,7 +15,6 @@
 #include <NiEngine/GraphicsComponent.h>
 #include <NiEngine/AnimatedGraphicsComponent.h>
 #include <NiEngine/Tilemap.h>
-#include <NiEngine/SoundEngine.h>
 
 ni::TransformComponent* ni::ComponentStore::GetTransformComponent(Id<ni::GameObjectTag> id)
 {
@@ -54,7 +53,7 @@ ni::AnimatedGraphicsComponent* ni::ComponentStore::GetFirstAnimatedGraphicsCompo
 	return nullptr;
 }
 
-void ni::ComponentStore::PhysicsUpdate(b2WorldId world_id, const Tilemap* current_tilemap, float delta)
+void ni::ComponentStore::PhysicsUpdate(b2WorldId world_id, const Tilemap& current_tilemap, float delta)
 {
 	for (auto& [id, component] : physics_components_)
 	{

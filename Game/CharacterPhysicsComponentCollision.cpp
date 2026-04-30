@@ -6,8 +6,9 @@
 #include <NiEngine/Tilemap.h>
 #include <NiEngine/MathUtility.h>
 #include <NiEngine/TileBlueprint.h>
+#include <NiEngine/Level.h>
 
-void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap* current_tilemap)
+void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transform_component, const ni::Tilemap& current_tilemap)
 {
 	sf::Vector2f character_position = transform_component.GetTransformable().getPosition();
 
@@ -29,7 +30,7 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 	{
 		for (int y = start_y; y <= end_y; ++y)
 		{
-			if (current_tilemap->IsTileEmpty({ x, y }))
+			if (current_tilemap.IsTileEmpty({ x, y }))
 			{
 				continue;
 			}
@@ -37,7 +38,7 @@ void CharacterPhysicsComponent::HandleCollisions(ni::TransformComponent& transfo
 			collision_block.position.x = x * size_.x;
 			collision_block.position.y = y * size_.y;
 
-			ni::TileBlueprint tile = current_tilemap->GetTileInfo({ x, y }, ni::Tilemap::kTerrainLayerName);
+			ni::TileBlueprint tile = current_tilemap.GetTileInfo({ x, y }, ni::Level::kTerrainLayerName);
 
 			TryCollideTop(transform_component, tile, collision_block);
 

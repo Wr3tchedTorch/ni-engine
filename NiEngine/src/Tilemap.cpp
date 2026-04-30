@@ -17,6 +17,7 @@
 #include <NiEngine/TileBlueprint.h>
 #include <NiEngine/TilemapCollisionComponent.h>
 #include <NiEngine/TiledUtility.h>
+#include <NiEngine/Level.h>
 
 void ni::Tilemap::Init(sf::Vector2i map_size, sf::Vector2i tile_size)
 {
@@ -24,8 +25,9 @@ void ni::Tilemap::Init(sf::Vector2i map_size, sf::Vector2i tile_size)
 	tile_size_ = tile_size;
 }
 
-void ni::Tilemap::LoadTiles(const LayerBlueprint& layer_blueprint, const std::vector<TilesetBlueprint>& tileset_blueprints)
+void ni::Tilemap::LoadTiles(LayerBlueprint layer_blueprint, const std::vector<TilesetBlueprint>& tileset_blueprints)
 {
+	layers_.emplace(layer_blueprint);
 	for (int y = 0; y < map_size_.y; ++y)
 	{
 		for (int x = 0; x < map_size_.x; ++x)
@@ -38,6 +40,8 @@ void ni::Tilemap::LoadTiles(const LayerBlueprint& layer_blueprint, const std::ve
 			}
 
 			const TilesetBlueprint& tileset_blueprint = TiledUtility::GetTilesetByGid(tileset_blueprints, tile_id);
+			tilesets_.emplace(tileset_blueprint);
+
 			tile_id -= tileset_blueprint.first_gid_;
 
 			graphics_.AddTile({ x, y }, tile_id, tileset_blueprint, layer_blueprint.position_);
@@ -77,7 +81,7 @@ sf::Vector2i ni::Tilemap::GlobalToGridPosition(sf::Vector2f position) const
 	return result;
 }
 
-ni::TileBlueprint ni::Tilemap::GetTileInfo(sf::Vector2i tile_grid_position, const LayerBlueprint& layer, const std::vector<TilesetBlueprint>& tileset_blueprints) const
+ni::TileBlueprint ni::Tilemap::GetTileInfo(sf::Vector2i tile_grid_position, const std::string& layer_name) const
 {
 	bool out_of_bounds = tile_grid_position.x < 0 || tile_grid_position.x >= map_size_.x ||
 						 tile_grid_position.y < 0 || tile_grid_position.y >= map_size_.y;
@@ -86,11 +90,17 @@ ni::TileBlueprint ni::Tilemap::GetTileInfo(sf::Vector2i tile_grid_position, cons
 		return TileBlueprint();
 	}
 
+	LayerBlueprint layer = GetLayerByName(layer_name);
+	if (layer.name_ == "")
+	{
+		return TileBlueprint();
+	}
+
 	int tile_index = tile_grid_position.x + tile_grid_position.y * map_size_.x;
 	if (tile_index > 0 && tile_index < (int)layer.data_.size() && layer.data_[tile_index] != 0)
 	{
 		int tile_gid = layer.data_[tile_index];
-		const TilesetBlueprint& tileset = TiledUtility::GetTilesetByGid(tileset_blueprints, tile_gid);
+		TilesetBlueprint tileset = TiledUtility::GetTilesetByGid(tilesets_, tile_gid);
 
 		auto it = tileset.tiles_.find(tile_gid - tileset.first_gid_);
 		if (it != tileset.tiles_.end())
@@ -100,6 +110,18 @@ ni::TileBlueprint ni::Tilemap::GetTileInfo(sf::Vector2i tile_grid_position, cons
 	}
 
 	return TileBlueprint();
+}
+
+ni::LayerBlueprint ni::Tilemap::GetLayerByName(const std::string& layer_name) const
+{
+	for (auto& layer : layers_)
+	{
+		if (layer.name_ == layer_name)
+		{
+			return layer;
+		}
+	}
+	return {};
 }
 
 bool ni::Tilemap::IsTileEmpty(sf::Vector2i tile_grid_position) const
@@ -112,9 +134,9 @@ bool ni::Tilemap::IsTileEmpty(sf::Vector2i tile_grid_position) const
 		return true;
 	}
 
-	for (auto& layer : blueprint_.layers_)
+	for (auto& layer : layers_)
 	{
-		if (layer.name_ == kPrototypeLayerName)
+		if (layer.name_ == Level::kPrototypeLayerName || layer.type_ == Level::kObjectsLayerType)
 		{
 			continue;
 		}
