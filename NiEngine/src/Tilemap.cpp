@@ -22,6 +22,7 @@
 void ni::Tilemap::Clear()
 {
 	graphics_.Clear();
+	layers_.clear();
 
 	if (collision_)
 	{

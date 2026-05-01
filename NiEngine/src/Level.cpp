@@ -30,6 +30,8 @@ void ni::Level::ReloadLevel(GameMode& mode)
 {
 	tilemap_.Clear();
 	mode.GetComponentStore().Clear();
+	tileset_blueprints_.clear();
+	current_level_blueprint_ = {};
 
 	LoadLevel(current_level_);
 	LoadObjects(mode);
@@ -37,9 +39,6 @@ void ni::Level::ReloadLevel(GameMode& mode)
 
 void ni::Level::LoadNextLevel(GameMode& mode)
 {
-	tilemap_.Clear();
-	mode.GetComponentStore().Clear();
-
 	current_level_++;
 
 	ReloadLevel(mode);

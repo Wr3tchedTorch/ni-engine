@@ -40,6 +40,8 @@ inline void to_json(json& j, const LevelBlueprint& tb)
 
 inline void from_json(const json& j, LevelBlueprint& tb)
 {
+	std::string dump = j.dump(4);
+
 	j.at("height").get_to(tb.map_size_.y);
 	j.at("width").get_to(tb.map_size_.x);
 
@@ -50,7 +52,6 @@ inline void from_json(const json& j, LevelBlueprint& tb)
 
 	for (auto& layer : j.at("layers"))
 	{
-		std::string dump = layer.dump(4);
 		if (layer.contains("data"))
 		{
 			tb.layers_.push_back(layer);

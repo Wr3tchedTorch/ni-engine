@@ -10,8 +10,8 @@
                 {
                  "id":16,
                  "template":"..\/templates\/player.json",
-                 "x":80,
-                 "y":208
+                 "x":64,
+                 "y":256
                 }, 
                 {
                  "id":18,

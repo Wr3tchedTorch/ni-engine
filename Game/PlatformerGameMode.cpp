@@ -48,7 +48,8 @@ void PlatformerGameMode::Update(ni::GameModeController& controller)
 	}
 	if (load_next_level_)
 	{
-		LoadNextLevel();
+		LoadNextLevel(false);
+		load_next_level_ = false;
 		return;
 	}
 	GameMode::Update(controller);
