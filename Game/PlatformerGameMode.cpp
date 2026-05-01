@@ -28,6 +28,11 @@ PlatformerGameMode::PlatformerGameMode()
 	camera_.FitTo(level_.GetCurrentTilemap().GetBounds());
 }
 
+void PlatformerGameMode::PrepareToLoadNextLevel()
+{
+	load_next_level_ = true;
+}
+
 void PlatformerGameMode::RestartLevel()
 {
 	restart_level_ = true;
@@ -39,6 +44,11 @@ void PlatformerGameMode::Update(ni::GameModeController& controller)
 	{
 		level_.ReloadLevel(*this);
 		restart_level_ = false;
+		return;
+	}
+	if (load_next_level_)
+	{
+		LoadNextLevel();
 		return;
 	}
 	GameMode::Update(controller);

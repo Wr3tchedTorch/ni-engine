@@ -44,6 +44,7 @@ public:
 	}
 
 	void LoadLevel(int index, bool enable_tilemap_collisions = true);
+	void LoadNextLevel(bool enable_tilemap_collisions = true);
 
 	void SetBox2dEnabled(bool value)
 	{

@@ -1,11 +1,12 @@
 {
     "activeFile": "maps/level_01/level_01.tmx",
     "expandedProjectPaths": [
-        "tilesets",
         "maps/level_01",
-        ".",
+        "tilesets",
+        "maps/templates",
         "maps",
-        "maps/templates"
+        "maps/level_02",
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -37,16 +38,16 @@
             "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 410.16666666666663,
-                "y": 306
+                "x": 314.3333333333333,
+                "y": 159.66666666666663
             }
         },
         "maps/level_02/level_02.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 753,
-                "y": 504
+                "x": 754,
+                "y": 505
             }
         },
         "maps/rules/ground_autotile_rules.tmx": {
@@ -96,7 +97,7 @@
             "scaleInEditor": 8
         }
     },
-    "last.exportedFilePath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/maps/level_1",
+    "last.exportedFilePath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/maps/level_2",
     "last.externalTilesetPath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/tilesets",
     "last.imagePath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/graphics",
     "last.objectTemplatePath": "C:/Users/Eric/Documents/01_Projects/02_Games/04_CustomEngine/Game/Game/maps/templates",
@@ -117,8 +118,8 @@
     "project": "game.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "tilesets/karsioriart_tiles_and_backgrounds.tsx",
         "maps/level_02/level_02.tmx",
+        "tilesets/karsioriart_tiles_and_backgrounds.tsx",
         "tilesets/kenney_1bit.json",
         "tilesets/kenney_1bit.tsx",
         "maps/level_01/level_01.tmx",

@@ -23,6 +23,7 @@
 #include "PlatformerGameMode.h"
 #include "CharacterPhysicsComponent.h"
 #include "PlayerUpdateComponent.h"
+#include "ExitDoorUpdateComponent.h"
 
 void PlatformerObjectFactory::SpawnObject(ni::ObjectBlueprint object, ni::ObjectTemplateBlueprint& object_template, const std::vector<ni::TilesetBlueprint>& tileset_blueprints, ni::GameMode& mode, int type)
 {
@@ -47,6 +48,8 @@ void PlatformerObjectFactory::SpawnObject(ni::ObjectBlueprint object, ni::Object
 	case ObjectTypes::Player:
 		SpawnPlayer(object, object_template, texture_key, texture_coords, mode);
 		break;
+	case ObjectTypes::ExitDoor:
+		SpawnExitDoor(object, object_template, texture_key, texture_coords, mode);
 	}
 }
 
@@ -116,6 +119,26 @@ void PlatformerObjectFactory::SpawnSpike(ni::ObjectBlueprint object, ni::ObjectT
 		movement_delay
 	);
 	update->RegisterCollisionComponent(std::make_unique<ObstacleHarmfulCollisionComponent>());
+
+	mode.GetComponentStore().AttachUpdateComponent   (id, std::move(update));
+	mode.GetComponentStore().AttachGraphicsComponent (id, std::move(graphics));
+	mode.GetComponentStore().AttachTransformComponent(id, transform);
+}
+
+void PlatformerObjectFactory::SpawnExitDoor(ni::ObjectBlueprint object, ni::ObjectTemplateBlueprint& object_template, std::string texture_key, sf::IntRect texture_coordinates, ni::GameMode& mode)
+{
+	ni::Id<ni::GameObjectTag> id = mode.CreateGameObject();
+
+	auto graphics = std::make_unique<ni::AnimatedGraphicsComponent>(texture_key, texture_coordinates.size, 1);
+	graphics->SetFrame(2, 16);
+
+	auto update = std::make_unique<ExitDoorUpdateComponent>(mode, mode.GetComponentStore(), id, sf::Vector2f(texture_coordinates.size));
+
+	sf::Vector2f object_top_left_position = object.position_;
+	object_top_left_position.y -= texture_coordinates.size.y;
+
+	ni::TransformComponent transform;
+	transform.GetTransformable().setPosition(object_top_left_position);
 
 	mode.GetComponentStore().AttachUpdateComponent   (id, std::move(update));
 	mode.GetComponentStore().AttachGraphicsComponent (id, std::move(graphics));

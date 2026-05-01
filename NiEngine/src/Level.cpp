@@ -20,7 +20,6 @@
 #include <NiEngine/Tilemap.h>
 #include <NiEngine/ObjectFactory.h>
 #include <NiEngine/GameMode.h>
-#include <NiEngine/ServiceLocator.h>
 
 void ni::Level::SetTotalLevelCount(int count)
 {
@@ -38,6 +37,9 @@ void ni::Level::ReloadLevel(GameMode& mode)
 
 void ni::Level::LoadNextLevel(GameMode& mode)
 {
+	tilemap_.Clear();
+	mode.GetComponentStore().Clear();
+
 	current_level_++;
 
 	ReloadLevel(mode);

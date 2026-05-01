@@ -15,6 +15,15 @@ void ni::GameMode::LoadLevel(int index, bool enable_tilemap_collisions)
 	}
 }
 
+void ni::GameMode::LoadNextLevel(bool enable_tilemap_collisions)
+{
+	level_.LoadNextLevel(*this);
+	if (enable_tilemap_collisions)
+	{
+		level_.EnableTilemapCollisions(physics_engine_.GetWorldId());
+	}
+}
+
 void ni::GameMode::PhysicsUpdate(float delta)
 {
 	if (box2d_enabled)

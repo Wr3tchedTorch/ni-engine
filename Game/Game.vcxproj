@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="CharacterPhysicsComponent.cpp" />
     <ClCompile Include="CharacterPhysicsComponentCollision.cpp" />
+    <ClCompile Include="ExitDoorUpdateComponent.cpp" />
     <ClCompile Include="MovingObstacleUpdateComponent.cpp" />
     <ClCompile Include="ObstacleCollisionComponent.cpp" />
     <ClCompile Include="ObstacleHarmfulCollisionComponent.cpp" />
@@ -161,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterPhysicsComponent.h" />
+    <ClInclude Include="ExitDoorUpdateComponent.h" />
     <ClInclude Include="MovingObstacleUpdateComponent.h" />
     <ClInclude Include="ObstacleCollisionComponent.h" />
     <ClInclude Include="ObstacleHarmfulCollisionComponent.h" />
