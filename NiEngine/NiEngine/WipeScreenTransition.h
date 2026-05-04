@@ -7,6 +7,7 @@
 
 #include "ScreenTransition.h"
 #include "BitmapStore.h"
+#include <SFML/System/Vector2.hpp>
 
 namespace ni {
 

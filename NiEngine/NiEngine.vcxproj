@@ -185,6 +185,7 @@
     <ClInclude Include="PropertyBlueprint.h" />
     <ClInclude Include="NiEngine\ScreenTransition.h" />
     <ClInclude Include="NiEngine\WipeScreenTransition.h" />
+    <ClInclude Include="NiEngine\TextFadeScreenTransition.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -217,6 +218,7 @@
     <ClCompile Include="src\UpdateComponent.cpp" />
     <ClCompile Include="NiEngine\TiledUtility.h" />
     <ClCompile Include="src\WipeScreenTransition.cpp" />
+    <ClCompile Include="src\TextFadeScreenTransition.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

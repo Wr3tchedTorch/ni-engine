@@ -75,6 +75,12 @@
     <Filter Include="Source Files\Engine\Physics and Collision">
       <UniqueIdentifier>{78d10d8b-9f85-475d-a005-9743b15bee94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Engine\Rendering\Transitions">
+      <UniqueIdentifier>{2f06c847-2fc9-4a2b-bcb4-8353f10ae22a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine\Rendering\Transitions">
+      <UniqueIdentifier>{d45302c5-4ab4-451e-ac92-e1aa0fbd3d6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NiEngine\Component.h">
@@ -216,9 +222,12 @@
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="NiEngine\ScreenTransition.h">
-      <Filter>Header Files\Engine\Rendering</Filter>
+      <Filter>Header Files\Engine\Rendering\Transitions</Filter>
     </ClInclude>
     <ClInclude Include="NiEngine\WipeScreenTransition.h">
+      <Filter>Header Files\Engine\Rendering\Transitions</Filter>
+    </ClInclude>
+    <ClInclude Include="NiEngine\TextFadeScreenTransition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -301,10 +310,13 @@
     <ClCompile Include="src\ObjectFactory.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\ScreenTransition.cpp">
-      <Filter>Source Files\Engine\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="src\WipeScreenTransition.cpp">
+      <Filter>Source Files\Engine\Rendering\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ScreenTransition.cpp">
+      <Filter>Source Files\Engine\Rendering\Transitions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextFadeScreenTransition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

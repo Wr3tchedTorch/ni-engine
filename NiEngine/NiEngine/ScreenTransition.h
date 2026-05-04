@@ -14,10 +14,11 @@ class ScreenTransition
 public:
 	ScreenTransition(float delay_in_seconds) { delay_in_seconds_ = delay_in_seconds;  };
 
-	void Play() 
+	void Play(bool start_reversed = false) 
 	{ 
 		playing_ = true; 
 		time_since_start_ = GetTimeElapsed();
+		playing_reversed_ = start_reversed;
 	};
 
 	void Stop() 

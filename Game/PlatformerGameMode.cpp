@@ -29,7 +29,8 @@ PlatformerGameMode::PlatformerGameMode()
 	level_.LoadNextLevel(*this);
 	camera_.FitTo(level_.GetCurrentTilemap().GetBounds());
 	
-	current_transition_ = std::make_unique<ni::WipeScreenTransition>(.4f, camera_.GetView().getSize(), true, sf::Color::Black);
+	current_transition_ = std::make_unique<ni::WipeScreenTransition>(.4f, camera_.GetView().getSize(), false, sf::Color::Black);
+	current_transition_->Play(true);
 
 	current_transition_->OnTransitionCoveredScreen([this]() {
 		if (restart_level_)
