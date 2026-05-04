@@ -7,7 +7,7 @@
  <tileset firstgid="401" source="../../tilesets/transparent_tiles.tsx"/>
  <tileset firstgid="403" source="../../tilesets/kenney_1bit.json"/>
  <objectgroup id="8" name="Obstacles">
-  <object id="16" template="../templates/player.json" x="80" y="208"/>
+  <object id="16" template="../templates/player.json" x="64" y="272"/>
   <object id="18" template="../templates/exit_door.json" x="384" y="288"/>
   <object id="21" template="../templates/spike.json" x="128" y="288">
    <properties>

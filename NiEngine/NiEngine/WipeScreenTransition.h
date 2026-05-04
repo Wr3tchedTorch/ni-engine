@@ -25,6 +25,8 @@ private:
 	sf::RectangleShape upper_rect_;
 	sf::RectangleShape lower_rect_;
 	
+	virtual void Prepare() override;
+
 	void PlayTransition(float time_elapsed);
 	void MoveRectByAxis(bool y_axis, sf::RectangleShape& rect, int sign, float time_elapsed, bool reversed = false);
 };

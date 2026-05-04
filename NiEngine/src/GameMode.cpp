@@ -6,6 +6,11 @@
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/GameModeController.h>
 
+ni::GameMode::GameMode()
+{
+	transitions_camera_.GetView().setViewport({ {0, 0}, {1, 1} });
+}
+
 void ni::GameMode::LoadLevel(int index, bool enable_tilemap_collisions)
 {
 	level_.LoadLevel(index);
@@ -42,15 +47,21 @@ void ni::GameMode::Update(GameModeController& controller)
 	{
 		current_transition_->Update();
 	}
+	engine_title_transition_.Update();
 }
 
 void ni::GameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
-{
+{	
+	world_camera_.ApplyTo(target);
+
 	level_.RenderTilemap(target, states, store);
 	component_store_.Render(target, states, store);
+
+	transitions_camera_.ApplyTo(target);
 
 	if (current_transition_)
 	{
 		current_transition_->Render(target, states, store);
 	}
+	engine_title_transition_.Render(target, states, store);
 }

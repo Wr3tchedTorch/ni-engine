@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -18,14 +19,18 @@ namespace ni {
 class TextFadeScreenTransition : public ScreenTransition
 {
 public:
+	TextFadeScreenTransition() = default;
 	TextFadeScreenTransition(float delay_in_seconds, const std::string& text_string, const std::string& font_path, int font_size, sf::Color text_color, sf::Color background_color, sf::Vector2f camera_size);
+
+	void Init(float delay_in_seconds, const std::string& text_string, const std::string& font_path, int font_size, sf::Color text_color, sf::Color background_color, sf::Vector2f camera_size);
+	void SetDelayInSeconds(float delay_in_seconds) { delay_in_seconds_ = delay_in_seconds;  }
 
 	void Update() override;
 	void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store) override;
 
 private:
-	sf::Font main_font_;
-	sf::Text main_text_;
+	std::unique_ptr<sf::Font> main_font_;
+	std::unique_ptr<sf::Text> main_text_;
 	sf::RectangleShape background_;
 
 	void LerpTextOpacity(float time_elapsed);

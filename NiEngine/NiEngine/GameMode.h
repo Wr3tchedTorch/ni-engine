@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
@@ -10,6 +12,8 @@
 #include <NiEngine/Level.h>
 #include <NiEngine/PhysicsEngine.h>
 #include <NiEngine/ScreenTransition.h>
+#include <NiEngine/TextFadeScreenTransition.h>
+#include <NiEngine/Camera.h>
 
 namespace ni {
 
@@ -24,13 +28,20 @@ private:
 
 protected:
 	Level level_;
+	
+	Camera transitions_camera_;
+	Camera world_camera_;
 
 	ComponentStore component_store_;
 	PhysicsEngine  physics_engine_;
 	
 	std::unique_ptr<ScreenTransition> current_transition_;
 
+	TextFadeScreenTransition engine_title_transition_;
+
 public:
+	GameMode();
+
 	ComponentStore& GetComponentStore()
 	{
 		return component_store_;

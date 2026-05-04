@@ -55,6 +55,15 @@ void ni::WipeScreenTransition::MoveRectByAxis(bool y_axis, sf::RectangleShape& r
 	rect.setPosition(position);
 }
 
+void ni::WipeScreenTransition::Prepare()
+{
+	if (playing_reversed_)
+	{
+		MoveRectByAxis(vertical_, upper_rect_, -1, 1, false);
+		MoveRectByAxis(vertical_, lower_rect_,  1, 1, false);
+	}
+}
+
 void ni::WipeScreenTransition::PlayTransition(float time_elapsed)
 {
 	MoveRectByAxis(vertical_, upper_rect_, -1, time_elapsed, playing_reversed_);

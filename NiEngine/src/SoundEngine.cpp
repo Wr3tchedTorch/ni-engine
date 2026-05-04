@@ -32,6 +32,7 @@ void ni::SoundEngine::FlushSoundQueue()
 		auto it = sounds_map_.find(key);
 		if (it != sounds_map_.end())
 		{
+			it->second->setVolume(.5f);
 			it->second->stop();
 			it->second->play();
 		}

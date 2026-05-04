@@ -14,7 +14,7 @@
     <property name="repeat_x" type="int" value="3"/>
    </properties>
   </object>
-  <object id="16" template="../templates/player.json" x="400" y="224"/>
+  <object id="16" template="../templates/player.json" x="400" y="240"/>
   <object id="18" template="../templates/exit_door.json" x="144" y="272"/>
  </objectgroup>
  <layer id="9" name="gameignore" width="30" height="20">

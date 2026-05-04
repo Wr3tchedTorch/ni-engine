@@ -23,8 +23,6 @@ public:
 	virtual void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store) override;
 
 private:
-	ni::Camera camera_;
-
 	bool transitioning_   = false;
 	bool restart_level_   = false;
 	bool load_next_level_ = false;

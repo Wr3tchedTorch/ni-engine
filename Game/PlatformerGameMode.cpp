@@ -12,6 +12,7 @@
 #include <NiEngine/GameMode.h>
 #include <NiEngine/WipeScreenTransition.h>
 #include <NiEngine/GameModeController.h>
+#include <NiEngine/TextFadeScreenTransition.h>
 
 #include "PlatformerObjectFactory.h"
 
@@ -27,11 +28,15 @@ PlatformerGameMode::PlatformerGameMode()
 	level_.RegisterObjectFactory(std::move(factory));
 
 	level_.LoadNextLevel(*this);
-	camera_.FitTo(level_.GetCurrentTilemap().GetBounds());
-	
-	current_transition_ = std::make_unique<ni::WipeScreenTransition>(.4f, camera_.GetView().getSize(), false, sf::Color::Black);
-	current_transition_->Play(true);
+	world_camera_.FitTo(level_.GetCurrentTilemap().GetBounds());
 
+	engine_title_transition_.Init(2, "NI Engine", "fonts/good timing bd.otf", 30, sf::Color::White, sf::Color::Black, transitions_camera_.GetView().getSize());
+	engine_title_transition_.OnTransitionFinished([this]() {
+		current_transition_->Play(true);
+	});
+	engine_title_transition_.Play();
+	
+	current_transition_ = std::make_unique<ni::WipeScreenTransition>(.4f, transitions_camera_.GetView().getSize(), false, sf::Color::Black);
 	current_transition_->OnTransitionCoveredScreen([this]() {
 		if (restart_level_)
 		{
@@ -43,11 +48,11 @@ PlatformerGameMode::PlatformerGameMode()
 			level_.LoadNextLevel(*this);
 			load_next_level_ = false;
 		}
-	});
+	});	
 
 	current_transition_->OnTransitionFinished([this]() {
 		transitioning_ = false;
-		});
+	});
 }
 
 void PlatformerGameMode::PrepareToLoadNextLevel()
@@ -73,7 +78,7 @@ void PlatformerGameMode::Update(ni::GameModeController& controller)
 
 void PlatformerGameMode::Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store)
 {
-	camera_.ApplyTo(target);
+	world_camera_.ApplyTo(target);
 
 	ni::GameMode::Render(target, states, store);
 }

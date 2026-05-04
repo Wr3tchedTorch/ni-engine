@@ -13,7 +13,6 @@ private:
 	sf::View view_;
 
 public:
-
 	sf::View& GetView()
 	{
 		return view_;

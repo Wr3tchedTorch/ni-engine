@@ -12,6 +12,7 @@ namespace ni {
 class ScreenTransition
 {
 public:
+	ScreenTransition() = default;
 	ScreenTransition(float delay_in_seconds) { delay_in_seconds_ = delay_in_seconds;  };
 
 	void Play(bool start_reversed = false) 
@@ -19,6 +20,8 @@ public:
 		playing_ = true; 
 		time_since_start_ = GetTimeElapsed();
 		playing_reversed_ = start_reversed;
+
+		Prepare();
 	};
 
 	void Stop() 
@@ -44,6 +47,8 @@ protected:
 
 private:
 	sf::Time GetTimeElapsed() const;
+	
+	virtual void Prepare() {};
 };
 
 }
