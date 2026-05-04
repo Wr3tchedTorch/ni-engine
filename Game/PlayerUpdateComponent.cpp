@@ -80,6 +80,10 @@ void PlayerUpdateComponent::Init(ni::AnimatedGraphicsComponent& graphics, Charac
 
 void PlayerUpdateComponent::Update()
 {
+	if (dead_)
+	{
+		return;
+	}
 	int dir = sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D) - sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A);
 
 	auto physics = static_cast<CharacterPhysicsComponent*>(component_locator_.GetPhysicsComponent(owner_id_));
@@ -102,6 +106,7 @@ void PlayerUpdateComponent::Update()
 
 void PlayerUpdateComponent::Die()
 {
+	dead_ = true;
 	on_player_killed_.Notify();
 }
 

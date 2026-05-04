@@ -35,6 +35,7 @@ private:
 	ni::Subject<> on_player_killed_;
 
 	bool airborne_ = false;
+	bool dead_ = false;
 
 	void Jump();
 	void FallFromPlatform();

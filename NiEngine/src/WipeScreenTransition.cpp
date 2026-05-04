@@ -9,6 +9,7 @@
 #include <NiEngine/ScreenTransition.h>
 #include <NiEngine/Engine.h>
 #include <NiEngine/BitmapStore.h>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 
 ni::WipeScreenTransition::WipeScreenTransition(float delay_in_seconds, sf::Vector2f camera_size, bool vertical, sf::Color color) : ScreenTransition(delay_in_seconds),
@@ -17,79 +18,75 @@ ni::WipeScreenTransition::WipeScreenTransition(float delay_in_seconds, sf::Vecto
 {
 	vertical_ = vertical;
 	upper_rect_.setFillColor(color);
-	lower_rect_.setFillColor(sf::Color::Green);
+	lower_rect_.setFillColor(color);
 
 	upper_rect_.setPosition(-upper_rect_.getSize());
 	lower_rect_.setPosition(upper_rect_.getSize());
 }
 
-void ni::WipeScreenTransition::Update()
+void ni::WipeScreenTransition::MoveRectByAxis(bool y_axis, sf::RectangleShape& rect, int sign, float time_elapsed, bool reversed)
 {
-	if (!playing_)
+	sf::Vector2f position = rect.getPosition();
+	float rect_start_y_pos = 0;
+	float rect_end_y_pos   = 0;
+
+	float rect_start_x_pos = 0;
+	float rect_end_x_pos   = 0;
+
+	position.x = 0;
+	position.y = 0;
+
+	if (y_axis)
 	{
-		return;
-	}
+		float rect_start_y_pos = rect.getSize().y * sign;
+		float rect_end_y_pos   = rect.getSize().y / 2.0f * sign + (1 * -sign);
 
-	float time_elapsed = (Engine::time_elapsed - time_since_start_).asSeconds();
-	if (time_elapsed > delay_in_seconds_)
-	{
-		sf::Vector2f upper_rect_pos = { 0, 0 };
-		sf::Vector2f lower_rect_pos = { 0, 0 };
-		if (vertical_)
-		{
-			upper_rect_pos.x = 0;
-			lower_rect_pos.x = 0;
-
-			upper_rect_pos.y =  lower_rect_.getSize().y / 2.0f - 1;
-			lower_rect_pos.y = -upper_rect_.getSize().y / 2.0f + 1;
-		}
-		else
-		{
-			upper_rect_pos.y = 0;
-			lower_rect_pos.y = 0;
-
-			upper_rect_pos.x = -upper_rect_.getSize().x / 2.0f + 5;
-			lower_rect_pos.x =  lower_rect_.getSize().x / 2.0f - 5;
-		}
-		upper_rect_.setPosition(upper_rect_pos);
-		lower_rect_.setPosition(lower_rect_pos);
-		return;
-	}
-
-	sf::Vector2f upper_rect_pos = {0, 0};
-	sf::Vector2f lower_rect_pos = {0, 0};
-	if (vertical_)
-	{
-		upper_rect_pos.x = 0;
-		lower_rect_pos.x = 0;
-
-		float upper_rect_start_y_pos = -upper_rect_.getSize().y;
-		float upper_rect_end_y_pos   = -upper_rect_.getSize().y / 2.0f + 1;
-
-		upper_rect_pos.y = std::lerp(upper_rect_start_y_pos, upper_rect_end_y_pos, time_elapsed / delay_in_seconds_);
-
-		float lower_rect_start_y_pos = lower_rect_.getSize().y;
-		float lower_rect_end_y_pos   = lower_rect_.getSize().y / 2.0f - 1;
-
-		lower_rect_pos.y = std::lerp(lower_rect_start_y_pos, lower_rect_end_y_pos, time_elapsed / delay_in_seconds_);
+		position.y = reversed ? std::lerp(rect_end_y_pos, rect_start_y_pos, time_elapsed / delay_in_seconds_) :
+					            std::lerp(rect_start_y_pos, rect_end_y_pos, time_elapsed / delay_in_seconds_);
 	}
 	else
 	{
-		upper_rect_pos.y = 0;
-		lower_rect_pos.y = 0;
+		float rect_start_x_pos = rect.getSize().x * sign;
+		float rect_end_x_pos   = rect.getSize().x / 2.0f * sign + (5 * -sign);
 
-		float upper_rect_start_x_pos = -upper_rect_.getSize().x;
-		float upper_rect_end_x_pos   = -upper_rect_.getSize().x / 2.0f + 5;
-
-		upper_rect_pos.x = std::lerp(upper_rect_start_x_pos, upper_rect_end_x_pos, time_elapsed / delay_in_seconds_);
-
-		float lower_rect_start_x_pos = lower_rect_.getSize().x;
-		float lower_rect_end_x_pos   = lower_rect_.getSize().x / 2.0f - 5;
-
-		lower_rect_pos.x = std::lerp(lower_rect_start_x_pos, lower_rect_end_x_pos, time_elapsed / delay_in_seconds_);
+		position.x = reversed ? std::lerp(rect_end_x_pos, rect_start_x_pos, time_elapsed / delay_in_seconds_) :
+			                    std::lerp(rect_start_x_pos, rect_end_x_pos, time_elapsed / delay_in_seconds_);
 	}
-	upper_rect_.setPosition(upper_rect_pos);
-	lower_rect_.setPosition(lower_rect_pos);
+	rect.setPosition(position);
+}
+
+void ni::WipeScreenTransition::PlayTransition(float time_elapsed)
+{
+	MoveRectByAxis(vertical_, upper_rect_, -1, time_elapsed, playing_reversed_);
+	MoveRectByAxis(vertical_, lower_rect_,  1, time_elapsed, playing_reversed_);
+}
+
+void ni::WipeScreenTransition::Update()
+{
+	if (!playing_ && !playing_reversed_)
+	{
+		upper_rect_.setPosition({2000, 2000});
+		lower_rect_.setPosition({2000, 2000});
+		return;
+	}
+	float time_elapsed = (Engine::time_elapsed - time_since_start_).asSeconds();
+	if (time_elapsed < delay_in_seconds_)
+	{
+		PlayTransition(time_elapsed);
+		return;
+	}
+	if (!playing_reversed_)
+	{
+		PlayTransition(1);
+		playing_reversed_ = true;
+		time_since_start_ = Engine::time_elapsed;
+
+		on_transition_covered_screen_.Notify();
+		return;
+	}
+	on_transition_finished_.Notify();
+	playing_ = false;
+	playing_reversed_ = false;
 }
 
 void ni::WipeScreenTransition::Render(sf::RenderTarget & target, sf::RenderStates states, BitmapStore & store)

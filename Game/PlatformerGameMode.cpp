@@ -6,6 +6,7 @@
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <NiEngine/Converter.h>
 #include <NiEngine/BitmapStore.h>
 #include <NiEngine/GameMode.h>
@@ -24,12 +25,28 @@ PlatformerGameMode::PlatformerGameMode()
 	
 	auto factory = std::make_unique<PlatformerObjectFactory>();
 	level_.RegisterObjectFactory(std::move(factory));
+
 	level_.LoadNextLevel(*this);
-
 	camera_.FitTo(level_.GetCurrentTilemap().GetBounds());
+	
+	current_transition_ = std::make_unique<ni::WipeScreenTransition>(.4f, camera_.GetView().getSize(), false, sf::Color::Black);
 
-	current_transition_ = std::make_unique<ni::WipeScreenTransition>(.6f, camera_.GetView().getSize(), false, sf::Color::Red);
-	current_transition_->Play();
+	current_transition_->OnTransitionCoveredScreen([this]() {
+		if (restart_level_)
+		{
+			level_.ReloadLevel(*this);
+			restart_level_ = false;
+		}
+		else if (load_next_level_)
+		{
+			level_.LoadNextLevel(*this);
+			load_next_level_ = false;
+		}
+	});
+
+	current_transition_->OnTransitionFinished([this]() {
+		transitioning_ = false;
+		});
 }
 
 void PlatformerGameMode::PrepareToLoadNextLevel()
@@ -44,16 +61,10 @@ void PlatformerGameMode::RestartLevel()
 
 void PlatformerGameMode::Update(ni::GameModeController& controller)
 {
-	if (restart_level_)
+	if ((restart_level_ || load_next_level_) && !transitioning_)
 	{
-		level_.ReloadLevel(*this);
-		restart_level_ = false;
-		return;
-	}
-	if (load_next_level_)
-	{
-		LoadNextLevel(false);
-		load_next_level_ = false;
+		current_transition_->Play();
+		transitioning_ = true;
 		return;
 	}
 	GameMode::Update(controller);

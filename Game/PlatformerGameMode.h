@@ -25,6 +25,7 @@ public:
 private:
 	ni::Camera camera_;
 
+	bool transitioning_   = false;
 	bool restart_level_   = false;
 	bool load_next_level_ = false;
 };
