@@ -46,7 +46,7 @@ public:
 	void RenderTilemap(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store);
 
 private:
-	int current_level_ = 7;
+	int current_level_ = 8;
 	int num_of_levels_ = 0;
 
 	LevelBlueprint current_level_blueprint_;
