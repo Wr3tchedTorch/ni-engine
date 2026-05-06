@@ -27,6 +27,8 @@ protected:
 	virtual void CollideTop	  (sf::FloatRect collision_box);
 	virtual void CollideBottom(sf::FloatRect collision_box);
 	virtual void CollideFront (sf::FloatRect collision_box);
+	virtual void CollideLeft  (sf::FloatRect collision_box);
+	virtual void CollideRight (sf::FloatRect collision_box);
 
 private:
 	std::vector<std::unique_ptr<ObstacleCollisionComponent>> collision_components_;

@@ -3,7 +3,7 @@
      "gid":89,
      "height":16,
      "id":37,
-     "name":"ground",
+     "name":"ground - top",
      "opacity":1,
      "properties":[
             {
@@ -14,7 +14,7 @@
             {
              "name":"movement_delay",
              "type":"float",
-             "value":0.3
+             "value":0
             }, 
             {
              "name":"movement_offset_x",
@@ -29,11 +29,16 @@
             {
              "name":"repeat_x",
              "type":"int",
-             "value":5
+             "value":0
             }, 
             {
              "name":"repeat_y",
              "type":"int",
+             "value":0
+            }, 
+            {
+             "name":"trigger_distance",
+             "type":"float",
              "value":0
             }, 
             {

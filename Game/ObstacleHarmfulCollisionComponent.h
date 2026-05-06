@@ -16,5 +16,9 @@ public:
 
 private:
 	void KillCharacter(ni::ComponentLocator& locator, ni::Id<ni::GameObjectTag> id);
+
+	// Inherited via ObstacleCollisionComponent
+	void SolveRightCollision(sf::FloatRect collision_box, ni::ComponentLocator& locator, ni::Id<ni::GameObjectTag> id) override;
+	void SolveLeftCollision(sf::FloatRect collision_box, ni::ComponentLocator& locator, ni::Id<ni::GameObjectTag> id) override;
 };
 

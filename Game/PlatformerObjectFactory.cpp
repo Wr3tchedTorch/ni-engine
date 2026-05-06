@@ -95,12 +95,15 @@ void PlatformerObjectFactory::SpawnMovingObject(ni::ObjectBlueprint object, ni::
 
 	bool harmful = object_template.properties_map_.at("harmful").GetValue<bool>();
 
+	float trigger_distance = object_template.properties_map_.at("trigger_distance").GetValue<float>();
+
 	if (object.properties_.contains("movement_offset_y")) movement_offset.y = object.properties_.at("movement_offset_y").GetValue<float>();
 	if (object.properties_.contains("movement_offset_x")) movement_offset.x = object.properties_.at("movement_offset_x").GetValue<float>();
 	if (object.properties_.contains("repeat_y"         )) repeat.y = object.properties_.at("repeat_y").GetValue<int>();
 	if (object.properties_.contains("repeat_x"         )) repeat.x = object.properties_.at("repeat_x").GetValue<int>();
 	if (object.properties_.contains("movement_delay"   )) movement_delay    = object.properties_.at("movement_delay"   ).GetValue<float>();
 	if (object.properties_.contains("harmful"          )) harmful = object.properties_.at("harmful").GetValue<bool>();
+	if (object.properties_.contains("trigger_distance" )) trigger_distance = object.properties_.at("trigger_distance").GetValue<float>();
 
 	ni::Id<ni::GameObjectTag> id = mode.CreateGameObject();
 
@@ -124,7 +127,7 @@ void PlatformerObjectFactory::SpawnMovingObject(ni::ObjectBlueprint object, ni::
 
 	auto update = std::make_unique<MovingObstacleUpdateComponent>(
 		mode.GetComponentStore(), transform, id,
-		sf::Vector2i(movement_offset), 20,
+		sf::Vector2i(movement_offset), trigger_distance == 0 ? collision_size.x / 2.0f : trigger_distance,
 		collision_size,
 		movement_delay
 	);

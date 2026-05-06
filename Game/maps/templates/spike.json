@@ -42,6 +42,11 @@
              "value":0
             }, 
             {
+             "name":"trigger_distance",
+             "type":"float",
+             "value":0
+            }, 
+            {
              "name":"type_id",
              "type":"int",
              "value":1

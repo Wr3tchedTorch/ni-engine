@@ -57,6 +57,22 @@ void ObstacleUpdateComponent::CollideFront(sf::FloatRect collision_box)
 	}
 }
 
+void ObstacleUpdateComponent::CollideLeft(sf::FloatRect collision_box)
+{
+	for (auto& collision : collision_components_)
+	{
+		collision->SolveLeftCollision(collision_box, component_locator_, player_id_);
+	}
+}
+
+void ObstacleUpdateComponent::CollideRight(sf::FloatRect collision_box)
+{
+	for (auto& collision : collision_components_)
+	{
+		collision->SolveRightCollision(collision_box, component_locator_, player_id_);
+	}
+}
+
 void ObstacleUpdateComponent::HandleCollisions()
 {
 	if (player_id_.id_ == -1)
@@ -90,6 +106,15 @@ void ObstacleUpdateComponent::HandleCollisions()
 	if (collision_box.findIntersection(player_physics->GetFrontBounds(player_transform->GetTransformable().getPosition())))
 	{
 		CollideFront(collision_box);
+	}
+
+	if (collision_box.findIntersection(player_physics->GetSideBounds(player_transform->GetTransformable().getPosition(), 1)))
+	{
+		CollideLeft(collision_box);
+	}
+	if (collision_box.findIntersection(player_physics->GetSideBounds(player_transform->GetTransformable().getPosition(), -1)))
+	{
+		CollideRight(collision_box);
 	}
 
 	if (collision_box.findIntersection(player_physics->GetHeadBounds(player_transform->GetTransformable().getPosition())))

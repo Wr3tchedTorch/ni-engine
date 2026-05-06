@@ -1,9 +1,9 @@
 { "object":
     {
-     "gid":109,
+     "gid":110,
      "height":16,
-     "id":37,
-     "name":"ground",
+     "id":57,
+     "name":"ground - right",
      "opacity":1,
      "properties":[
             {

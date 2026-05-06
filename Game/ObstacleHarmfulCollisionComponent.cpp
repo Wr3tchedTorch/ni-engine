@@ -30,3 +30,9 @@ void ObstacleHarmfulCollisionComponent::KillCharacter(ni::ComponentLocator& loca
 	auto player_update = static_cast<PlayerUpdateComponent*>(update);
 	player_update->Die();
 }
+
+void ObstacleHarmfulCollisionComponent::SolveRightCollision(sf::FloatRect collision_box, ni::ComponentLocator& locator, ni::Id<ni::GameObjectTag> id)
+{}
+
+void ObstacleHarmfulCollisionComponent::SolveLeftCollision(sf::FloatRect collision_box, ni::ComponentLocator & locator, ni::Id<ni::GameObjectTag> id)
+{}

@@ -111,7 +111,7 @@ void PlayerUpdateComponent::Die()
 	{
 		return;
 	}
-	ni::ServiceLocator::Instance().GetSoundEngine().PlaySound(kDeathSoundKey);
+	ni::ServiceLocator::Instance().GetSoundEngine().PlaySound(kDeathSoundKey, 1.5f);
 	dead_ = true;
 	auto physics = static_cast<CharacterPhysicsComponent*>(component_locator_.GetPhysicsComponent(owner_id_));
 	if (physics)

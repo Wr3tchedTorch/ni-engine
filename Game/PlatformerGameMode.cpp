@@ -1,6 +1,5 @@
 #include "PlatformerGameMode.h"
 
-#include <types.h>
 #include <memory>
 #include <utility>
 #include <format>
@@ -18,42 +17,30 @@
 #include <NiEngine/Text.h>
 #include <NiEngine/HUDComponent.h>
 #include <NiEngine/ServiceLocator.h>
-#include <NiEngine/Engine.h>
 
 #include "PlatformerObjectFactory.h"
 
 PlatformerGameMode::PlatformerGameMode() : hud_(sf::Color::Transparent, { {125, 125}, {100, 50} }, {0, 0}, { 10, 10 }, false, 3)
-{
-	auto level_text = std::make_unique<ni::Text>("fonts/ARCADECLASSIC.TTF", "Level 1", sf::Color::White, 40);
+{	
+	ni::Converter::pixels_per_meters_ = 16;
+
+	auto level_text = std::make_unique<ni::Text>(kMainGameFontKey, "Level 1", sf::Color::White, 40);
 	level_text->SetTextOutline(2, sf::Color::Black);
 	int text_component_index = hud_.AddComponent(std::move(level_text));
 
-	ni::Converter::pixels_per_meters_ = 16;
-
-	b2WorldDef world_def = b2DefaultWorldDef();
-	world_def.gravity = { 0.0f, 9.8f };
-	GetPhysicsEngine().CreateWorld(world_def);
-	
 	auto factory = std::make_unique<PlatformerObjectFactory>();
 	level_.RegisterObjectFactory(std::move(factory));
-	level_.SetTotalLevelCount(10);
+	level_.SetTotalLevelCount(kTotalLevelCount);
 	level_.LoadNextLevel(*this);
 	world_camera_.FitTo(level_.GetCurrentTilemap().GetBounds());
 
-	game_over_transition_.Init(2, "Game   Over!", "fonts/ARCADECLASSIC.TTF", 50, sf::Color::White, sf::Color::Black, transitions_camera_.GetView().getSize());
-	game_over_transition_.OnTransitionFinished([this]() {
-		ni::Engine::exit_game_ = true;
-	});
-	level_.OnLastLevelFinished([this]() {
-		paused_ = true;
-		game_over_transition_.Play();
-		game_over_transition_.StopHalfway();
-	});
+	game_over_transition_   .Init(2, "Game   Over!"                      , kMainGameFontKey, 50, sf::Color::White, sf::Color::Black, transitions_camera_.GetView().getSize());
+	engine_title_transition_.Init(2, "\t\t NI   Engine\nPor  Eric  Moura", kMainGameFontKey, 50, sf::Color::White, sf::Color::Black, transitions_camera_.GetView().getSize());
 
-	engine_title_transition_.Init(2, "\t\t NI   Engine\nPor  Eric  Moura", "fonts/ARCADECLASSIC.TTF", 50, sf::Color::White, sf::Color::Black, transitions_camera_.GetView().getSize());
+	// SIGNALS
 	engine_title_transition_.OnTransitionFinished([this]() {
 		current_transition_->Play(true);
-		ni::ServiceLocator::Instance().GetSoundEngine().PlayMusic("sounds/main_music.wav", true, .6f);
+		ni::ServiceLocator::Instance().GetSoundEngine().PlayMusic(kMainMusicKey, true, .6f);
 	});
 	engine_title_transition_.Play();
 	
@@ -63,23 +50,29 @@ PlatformerGameMode::PlatformerGameMode() : hud_(sf::Color::Transparent, { {125, 
 		{
 			level_.ReloadLevel(*this);
 			restart_level_ = false;
+			return;
 		}
-		else if (load_next_level_)
+		if (load_next_level_)
 		{
 			level_.LoadNextLevel(*this);
 			load_next_level_ = false;
 
 			auto text_component = GetLevelTextHUD(text_component_index);
-			if (text_component)
+			if (!text_component)
 			{
-				std::string level_string = std::format("Level {}", level_.GetCurrentLevelIndex());
-				text_component->SetTextString(level_string);
+				return;
 			}
+			std::string level_string = std::format("Level {}", level_.GetCurrentLevelIndex());
+			text_component->SetTextString(level_string);
 		}
 	});	
-
 	current_transition_->OnTransitionFinished([this]() {
 		transitioning_ = false;
+	});
+	level_.OnLastLevelFinished([this]() {
+		paused_ = true;
+		game_over_transition_.Play();
+		game_over_transition_.StopHalfway();
 	});
 }
 
@@ -134,9 +127,5 @@ ni::Text* PlatformerGameMode::GetLevelTextHUD(int component_index) const
 		return nullptr;
 	}
 	auto text_component = static_cast<ni::Text*>(hud_component);
-	if (!text_component)
-	{
-		return nullptr;
-	}
 	return text_component;
 }

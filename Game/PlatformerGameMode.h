@@ -25,6 +25,10 @@ public:
 	virtual void Render(sf::RenderTarget& target, sf::RenderStates states, BitmapStore& store) override;
 
 private:	
+	inline static const int   kTotalLevelCount = 11;
+	inline static std::string kMainGameFontKey = "fonts/ARCADECLASSIC.TTF";
+	inline static std::string kMainMusicKey    = "sounds/main_music.wav";
+
 	bool transitioning_   = false;
 	bool restart_level_   = false;
 	bool load_next_level_ = false;

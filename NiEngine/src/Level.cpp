@@ -39,12 +39,12 @@ void ni::Level::ReloadLevel(GameMode& mode)
 
 void ni::Level::LoadNextLevel(GameMode& mode)
 {
-	current_level_++;
 	if (current_level_ == num_of_levels_)
 	{
 		last_level_finished_.Notify();
 		return;
 	}
+	current_level_++;
 	ReloadLevel(mode);
 }
 
