@@ -2,6 +2,8 @@
 
 #include "ObstacleUpdateComponent.h"
 
+#include <unordered_map>
+
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Time.hpp>
 #include <NiEngine/ComponentLocator.h>
@@ -13,9 +15,9 @@ class MovingObstacleUpdateComponent : public ObstacleUpdateComponent
 {
 public:
 	MovingObstacleUpdateComponent(
-		ni::ComponentLocator& component_locator, 
-		ni::TransformComponent& transform, 
-		ni::Id<ni::GameObjectTag> id, 
+		ni::ComponentLocator& component_locator,
+		ni::TransformComponent& transform,
+		ni::Id<ni::GameObjectTag> id,
 		sf::Vector2i position_movement_offset,
 		float movement_trigger_distance,
 		sf::Vector2f collision_box_size,

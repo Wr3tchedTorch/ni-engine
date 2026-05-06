@@ -142,7 +142,7 @@
         "tilesets/kenney_1bit.tsx"
     ],
     "project": "game.tiled-project",
-    "property.type": "float",
+    "property.type": "file",
     "recentFiles": [
         "tilesets/karsioriart_tiles_and_backgrounds.tsx",
         "tilesets/kenney_1bit.json",

@@ -75,10 +75,10 @@ void PlatformerObjectFactory::SpawnPlayer(ni::ObjectBlueprint object, ni::Object
 
 	update->Init(*graphics.get(), *physics.get());
 
-	mode.GetComponentStore().RegisterTagForId(id, PlatformerGameMode::kPlayerTag);
-	mode.GetComponentStore().AttachPhysicsComponent(id, std::move(physics));
-	mode.GetComponentStore().AttachUpdateComponent(id, std::move(update));
-	mode.GetComponentStore().AttachGraphicsComponent(id, std::move(graphics));
+	mode.GetComponentStore().RegisterTagForId        (id, PlatformerGameMode::kPlayerTag);
+	mode.GetComponentStore().AttachPhysicsComponent  (id, std::move(physics));
+	mode.GetComponentStore().AttachUpdateComponent   (id, std::move(update));	
+	mode.GetComponentStore().AttachGraphicsComponent (id, std::move(graphics));
 	mode.GetComponentStore().AttachTransformComponent(id, transform);
 }
 
@@ -129,7 +129,7 @@ void PlatformerObjectFactory::SpawnMovingObject(ni::ObjectBlueprint object, ni::
 		mode.GetComponentStore(), transform, id,
 		sf::Vector2i(movement_offset), trigger_distance == 0 ? collision_size.x / 2.0f : trigger_distance,
 		collision_size,
-		movement_delay
+		movement_delay		
 	);
 
 	if (harmful)

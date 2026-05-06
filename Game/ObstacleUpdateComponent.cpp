@@ -107,16 +107,14 @@ void ObstacleUpdateComponent::HandleCollisions()
 	{
 		CollideFront(collision_box);
 	}
-
-	if (collision_box.findIntersection(player_physics->GetSideBounds(player_transform->GetTransformable().getPosition(), 1)))
+	else if (collision_box.findIntersection(player_physics->GetSideBounds(player_transform->GetTransformable().getPosition(), -1)))
 	{
 		CollideLeft(collision_box);
 	}
-	if (collision_box.findIntersection(player_physics->GetSideBounds(player_transform->GetTransformable().getPosition(), -1)))
+	else if (collision_box.findIntersection(player_physics->GetSideBounds(player_transform->GetTransformable().getPosition(), 1)))
 	{
 		CollideRight(collision_box);
 	}
-
 	if (collision_box.findIntersection(player_physics->GetHeadBounds(player_transform->GetTransformable().getPosition())))
 	{
 		CollideBottom(collision_box);

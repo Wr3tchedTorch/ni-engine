@@ -196,8 +196,10 @@ void CharacterPhysicsComponent::CollideSides(ni::TransformComponent& transform_c
 {
 	sf::Vector2f snap_position = transform_component.GetTransformable().getPosition();
 
-	float block_center_x = collision_block.position.x + collision_block.size.x / 2.0f;
-	snap_position.x = block_center_x + size_.x * -sign;
+	float block_side = collision_block.position.x + collision_block.size.x / 2.0f;
+	block_side += collision_block.size.x / 2.0f * -sign;
+
+	snap_position.x = block_side + size_.x/2.0f * -sign;
 
 	transform_component.GetTransformable().setPosition(snap_position);
 }

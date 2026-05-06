@@ -46,7 +46,7 @@ void ObstacleSolidCollisionComponent::SolveRightCollision(sf::FloatRect collisio
 	ni::TransformComponent* transform = locator.GetTransformComponent(id);
 	CharacterPhysicsComponent* physics = GetCharacterPhysics(locator, id);
 
-	physics->CollideSides(*transform, collision_box, -1);
+	physics->CollideSides(*transform, collision_box, 1);
 }
 
 void ObstacleSolidCollisionComponent::SolveLeftCollision(sf::FloatRect collision_box, ni::ComponentLocator & locator, ni::Id<ni::GameObjectTag> id)
@@ -54,5 +54,5 @@ void ObstacleSolidCollisionComponent::SolveLeftCollision(sf::FloatRect collision
 	ni::TransformComponent* transform = locator.GetTransformComponent(id);
 	CharacterPhysicsComponent* physics = GetCharacterPhysics(locator, id);
 
-	physics->CollideSides(*transform, collision_box, 1);
+	physics->CollideSides(*transform, collision_box, -1);
 }
