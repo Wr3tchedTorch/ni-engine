@@ -1,9 +1,9 @@
 { "object":
     {
-     "gid":108,
+     "gid":28,
      "height":16,
-     "id":60,
-     "name":"ground - left",
+     "id":69,
+     "name":"",
      "opacity":1,
      "properties":[
             {
@@ -19,7 +19,7 @@
             {
              "name":"movement_offset_x",
              "type":"float",
-             "value":-16
+             "value":0
             }, 
             {
              "name":"movement_offset_y",

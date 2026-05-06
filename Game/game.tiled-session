@@ -54,6 +54,14 @@
                 "y": 505
             }
         },
+        "maps/level_10/level_10.json": {
+            "scale": 2.064270833333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 257.4759045264168,
+                "y": 151.62739062421153
+            }
+        },
         "maps/level_2/level_2.tmx": {
             "expandedObjectLayers": [
                 8
@@ -70,10 +78,26 @@
                 8
             ],
             "scale": 2,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 268.75,
-                "y": 194
+                "x": 261.75,
+                "y": 192
+            }
+        },
+        "maps/level_8/level_8.json": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 218.16666666666666,
+                "y": 256.3333333333333
+            }
+        },
+        "maps/level_9/level_9.json": {
+            "scale": 2.064270833333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 270.5555835898471,
+                "y": 161.800474340213
             }
         },
         "maps/rules/ground_autotile_rules.tmx": {
@@ -144,18 +168,18 @@
     "project": "game.tiled-project",
     "property.type": "file",
     "recentFiles": [
+        "maps/level_8/level_8.json",
+        "maps/level_9/level_9.json",
+        "maps/level_10/level_10.json",
+        "tilesets/kenney_1bit.tsx",
         "tilesets/karsioriart_tiles_and_backgrounds.tsx",
         "tilesets/kenney_1bit.json",
-        "tilesets/kenney_1bit.tsx",
         "maps/level_4/level_4.tmx",
         "maps/level_01/level_01.tmx",
         "maps/level_2/level_2.tmx",
         "maps/level_02/level_02.tmx",
         "maps/rules/ground_autotile_rules.tmx",
-        "tilesets/transparent_tiles.tsx",
-        "maps/rules/ground_autotile_rules_karsioriart.tmx",
-        "tilesets/transparent_tiles.json",
-        "maps/level_01.tmx"
+        "tilesets/transparent_tiles.tsx"
     ],
     "tileset.lastUsedExportFilter": "JSON tileset files (*.tsj *.json)",
     "tileset.lastUsedFormat": "tsx",
