@@ -20,7 +20,7 @@
 
 #include "PlatformerObjectFactory.h"
 
-PlatformerGameMode::PlatformerGameMode() : hud_(sf::Color::Transparent, { {125, 125}, {100, 50} }, {0, 0}, { 10, 10 }, false, 3)
+PlatformerGameMode::PlatformerGameMode() : hud_(sf::Color::Transparent, { {10, 10}, {100, 50} }, {0, 0}, { 10, 10 }, false, 3)
 {	
 	ni::Converter::pixels_per_meters_ = 16;
 

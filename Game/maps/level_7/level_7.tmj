@@ -37,11 +37,6 @@
                  "id":41,
                  "properties":[
                         {
-                         "name":"movement_delay",
-                         "type":"float",
-                         "value":0.2
-                        }, 
-                        {
                          "name":"movement_offset_y",
                          "type":"float",
                          "value":32
@@ -59,11 +54,6 @@
                 {
                  "id":43,
                  "properties":[
-                        {
-                         "name":"movement_delay",
-                         "type":"float",
-                         "value":0.2
-                        }, 
                         {
                          "name":"movement_offset_y",
                          "type":"float",
